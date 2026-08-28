@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMEGA VIP CHEATS // v3.0.0 [LIVE FIREBASE]</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<style>
+:root{
+  --bg:#000000;--bg-2:#050810;--panel:#0a0f1c;--border:#1a2942;
+  --cyan:#00f3ff;--green:#39ff14;--magenta:#bc13fe;--red:#ff003c;--gold:#ffd700;
+  --orange:#ff9500;--blue:#00b3ff;
+  --fg:#e6f7ff;--muted:#4a5568;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:'Rajdhani',sans-serif;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--cyan) var(--bg-2)}
+body{min-height:100vh}
+
+#matrix{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:0.18;pointer-events:none}
+.portal{position:relative;z-index:1}
+.portal > *{position:relative;z-index:2}
+.grid-bg{position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at top,rgba(0,243,255,.08),transparent 50%),radial-gradient(ellipse at bottom,rgba(188,19,254,.06),transparent 50%);pointer-events:none}
+.grid-bg::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,243,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,243,255,.03) 1px,transparent 1px);background-size:40px 40px;animation:gridMove 20s linear infinite}
+@keyframes gridMove{to{background-position:40px 40px}}
+
+.scanlines{position:fixed;inset:0;pointer-events:none;z-index:9000;background:repeating-linear-gradient(0deg,rgba(0,243,255,.02) 0,rgba(0,243,255,.02) 1px,transparent 1px,transparent 3px)}
+
+.banned-lock header,.banned-lock footer,.banned-lock #main > *:not(#bannedPortal){display:none !important}.banned-lock{overflow:hidden !important}.banned-lock #bannedPortal{display:flex !important;position:fixed !important;inset:0 !important;z-index:999999 !important}
+.portal{position:fixed;inset:0;z-index:10000;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease,transform .8s ease;overflow:hidden;}
+.portal.hidden{opacity:0;transform:scale(1.2);pointer-events:none}
+.portal-corner{position:absolute;font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);text-shadow:0 0 10px var(--cyan);letter-spacing:.2em;opacity:.8;pointer-events:none}
+.portal-corner.tl{top:20px;left:20px}
+.portal-corner.tr{top:20px;right:20px}
+
+.portal-content{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.5rem;max-width:90vw}
+.portal-rings{position:relative;width:200px;height:200px;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.portal-ring{position:absolute;border-radius:50%;border:2px solid transparent}
+.portal-ring.r1{width:100%;height:100%;border-top-color:var(--cyan);border-bottom-color:var(--cyan);box-shadow:0 0 20px var(--cyan),inset 0 0 20px var(--cyan);animation:spin 5s linear infinite}
+.portal-ring.r2{width:70%;height:70%;border-left-color:var(--magenta);border-right-color:var(--magenta);box-shadow:0 0 20px var(--magenta),inset 0 0 15px var(--magenta);animation:spin 3s linear infinite reverse}
+.portal-ring.r3{width:40%;height:40%;border:1px dashed var(--cyan);animation:spin 8s linear infinite;opacity:.5}
+.portal-ring-core{width:20%;height:20%;background:radial-gradient(circle,var(--cyan),var(--magenta));border-radius:50%;box-shadow:0 0 40px var(--cyan),0 0 60px var(--magenta);animation:pulse 2s infinite}
+@keyframes spin{100%{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:0.7}}
+
+.portal-main-title{font-family:'Orbitron';font-weight:900;font-size:clamp(2rem,8vw,4rem);color:#fff;text-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan),0 0 60px var(--blue);margin:0;letter-spacing:.1em}
+.portal-welcome{font-family:'Share Tech Mono';font-size:clamp(.8rem,3vw,1.2rem);color:var(--cyan);text-shadow:0 0 10px var(--cyan);margin:0;letter-spacing:.2em}
+.portal-tagline{font-family:'Rajdhani';font-weight:600;font-size:clamp(1rem,4vw,1.5rem);color:var(--magenta);text-shadow:0 0 10px var(--magenta);margin:0;letter-spacing:.1em;text-transform:uppercase}
+
+.btn-enter-portal{margin-top:1rem;background:transparent;color:var(--cyan);border:2px solid var(--cyan);padding:1rem 3rem;font-family:'Orbitron';font-weight:900;font-size:1.2rem;letter-spacing:.2em;cursor:pointer;transition:all .3s;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%);text-transform:uppercase;opacity:1;pointer-events:auto !important;}
+.btn-enter-portal:hover{background:var(--cyan);color:#000;box-shadow:0 0 30px var(--cyan)}
+
+.portal-features{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap;justify-content:center;pointer-events:none}
+.portal-feature-item{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-family:'Share Tech Mono';font-size:.75rem;letter-spacing:.1em}
+.portal-feature-item i{font-size:1.5rem;color:var(--cyan);text-shadow:0 0 10px var(--cyan)}
+
+nav.topnav{position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);background:rgba(0,0,0,.85);border-bottom:1px solid var(--border);box-shadow:0 4px 20px rgba(0,243,255,.1)}
+
+/* MAANGAS NAV BUTTONS */
+.nav-link{position:relative;padding:.5rem 1.2rem;font-weight:700;letter-spacing:.1em;color:var(--fg);text-transform:uppercase;cursor:pointer;transition:all .3s;font-size:.85rem;text-decoration:none;background:rgba(10,15,28,0.8);border:1px solid var(--border);clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);margin:0 .1rem;text-shadow:0 0 5px rgba(0,243,255,0.3);pointer-events:auto !important;}
+.nav-link:hover{color:var(--cyan);background:rgba(0,243,255,.1);box-shadow:0 0 15px rgba(0,243,255,.4)}
+.nav-link.active{color:#000;background:linear-gradient(135deg,var(--cyan),var(--green));border-color:var(--cyan);box-shadow:0 0 20px rgba(0,243,255,.6)}
+.nav-link.admin-nav{color:var(--magenta);border:1px solid var(--magenta);clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);background:rgba(188,19,254,.1)}
+.nav-link.admin-nav:hover{background:var(--magenta);color:#000;box-shadow:0 0 15px var(--magenta)}
+.nav-link.admin-nav.active{color:#000;background:linear-gradient(135deg,var(--magenta),var(--red));box-shadow:0 0 20px var(--magenta)}
+
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--green));color:#000;font-family:'Orbitron',sans-serif;font-weight:900;letter-spacing:.1em;padding:.75rem 2rem;border:none;cursor:pointer;clip-path:polygon(0 0,100% 0,100% 80%,95% 100%,0 100%);transition:all .3s;box-shadow:0 0 20px rgba(0,243,255,.4);text-transform:uppercase;pointer-events:auto !important;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(0,243,255,.8);filter:brightness(1.2)}
+.btn-secondary{background:transparent;color:var(--cyan);border:1px solid var(--cyan);font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.1em;padding:.75rem 2rem;cursor:pointer;clip-path:polygon(0 0,100% 0,100% 80%,95% 100%,0 100%);transition:all .3s;text-transform:uppercase;pointer-events:auto !important;}
+.btn-secondary:hover{background:rgba(0,243,255,.1);box-shadow:0 0 20px rgba(0,243,255,.4)}
+
+.card{background:linear-gradient(135deg,rgba(10,15,28,.9),rgba(5,8,16,.9));border:1px solid var(--border);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scan 3s linear infinite}
+@keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.card-cyber{clip-path:polygon(0 15px,15px 0,calc(100% - 15px) 0,100% 15px,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 calc(100% - 15px))}
+.card-cyber::after{content:'';position:absolute;width:20px;height:20px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);top:5px;left:5px;opacity:.5}
+
+.pricing-card{position:relative;transition:all 0.4s cubic-bezier(.16,1,.3,1);overflow:hidden;pointer-events:auto !important;}
+.pricing-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 15px 40px rgba(0,243,255,.4);z-index:10}
+.pricing-card::after{content:'';position:absolute;top:-60%;left:-60%;width:220%;height:220%;background:linear-gradient(60deg,transparent 35%,rgba(255,255,255,.10) 48%,rgba(255,255,255,.04) 52%,transparent 65%);filter:blur(10px);transform:translateX(-100%);transition:transform .55s ease;pointer-events:none}.pricing-card:hover::after{transform:translateX(100%)}
+.pricing-card:hover::after{transform:translateX(100%)}
+
+.feature-list-container{max-height:300px;overflow-y:auto;margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem;text-align:left;pointer-events:auto !important;}
+.feature-cat{color:var(--cyan);font-weight:700;margin-top:.75rem;font-size:.85rem;border-bottom:1px solid var(--border);padding-bottom:.25rem}
+.feature-item{color:var(--fg);font-family:'Share Tech Mono';font-size:.75rem;padding:.1rem 0;display:flex;align-items:center;gap:.3rem}
+.feature-item::before{content:'▹';color:var(--muted)}
+
+.chat-panel{position:fixed;top:70px;right:20px;z-index:199;width:min(450px,90vw);height:70vh;background:rgba(0,0,0,.98);border:1px solid var(--cyan);backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(0,243,255,.3);transform:translateX(120%);transition:transform .5s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
+.chat-panel.open{transform:translateX(0)}
+.chat-panel::before{content:'';position:absolute;top:-1px;left:-1px;width:20px;height:20px;border-top:2px solid var(--magenta);border-left:2px solid var(--magenta)}
+.chat-panel::after{content:'';position:absolute;bottom:-1px;right:-1px;width:20px;height:20px;border-bottom:2px solid var(--magenta);border-right:2px solid var(--magenta)}
+
+.chat-line{margin-bottom:.75rem;font-family:'Share Tech Mono',monospace;font-size:.85rem;line-height:1.3;word-wrap:break-word;display:flex;gap:.5rem;align-items:flex-start}
+.chat-time{color:var(--muted);font-size:.65rem;min-width:40px;text-align:right;opacity:.5;padding-top:2px}
+.chat-user{font-weight:bold;white-space:nowrap}
+.chat-text{color:var(--fg);flex:1;padding-left:.5rem;border-left:1px solid rgba(255,255,255,.1)}
+.chat-text.me{color:var(--cyan)}
+.chat-reply-quote{font-size:.7rem;color:var(--muted);background:rgba(255,255,255,.05);padding:.2rem .5rem;margin-bottom:.2rem;border-left:2px solid var(--muted);cursor:pointer}
+.chat-actions{display:flex;gap:.75rem;font-size:.65rem;opacity:0;transition:opacity .2s;margin-top:4px;align-items:center}
+.chat-line:hover .chat-actions{opacity:1}
+.reply-btn{color:var(--cyan);cursor:pointer}
+.reply-btn:hover{text-decoration:underline}
+.react-emoji{cursor:pointer;opacity:.6;transition:all .2s;font-size:.75rem;padding:0 .1rem}
+.react-emoji:hover{opacity:1;transform:scale(1.3)}
+.chat-reactions{display:flex;gap:.25rem;margin-top:.25rem;flex-wrap:wrap}
+.chat-reaction{background:rgba(255,255,255,.05);padding:.1rem .4rem;border-radius:8px;font-size:.7rem;border:1px solid transparent;cursor:pointer}
+.chat-reaction.mine{background:rgba(0,243,255,.2);border-color:var(--cyan);color:var(--cyan)}
+
+.emoji-picker{position:absolute;bottom:70px;left:10px;background:var(--bg-2);border:1px solid var(--cyan);padding:.5rem;display:none;grid-template-columns:repeat(6, 1fr);gap:5px;width:220px;max-height:150px;overflow-y:auto;z-index:200;box-shadow:0 0 15px rgba(0,243,255,.3)}
+.emoji-picker.active{display:grid}
+.emoji-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;padding:.2rem;transition:transform .2s}
+.emoji-btn:hover{transform:scale(1.2)}
+
+.role-admin{color:var(--red);font-weight:900;text-shadow:0 0 8px var(--red);animation:adminPulse 2s infinite alternate}
+@keyframes adminPulse{from{text-shadow:0 0 5px var(--red)}to{text-shadow:0 0 15px var(--red),0 0 25px var(--red)}}
+
+.sub-none{color:#ffffff!important;font-weight:400!important;text-shadow:none!important;filter:none!important;animation:none!important}
+.sub-banned{color:#000000;text-shadow:0 0 3px #444;font-weight:normal;text-decoration:line-through}
+.sub-sf_rush{color:var(--green);font-weight:900;text-shadow:0 0 6px var(--green)}
+.sub-sf_legend{color:var(--orange);font-weight:900;text-shadow:0 0 6px var(--orange)}
+.sub-both{color:var(--blue);font-weight:900;text-shadow:0 0 8px var(--blue)}
+
+.download-box{display:flex;align-items:center;justify-content:center;gap:.55rem;width:190px;min-height:48px;margin:1.25rem auto 0;padding:.72rem 1.35rem;border:1px solid rgba(255,255,255,.16);border-radius:12px;color:#000;font-family:'Orbitron',sans-serif;font-size:.76rem;font-weight:900;letter-spacing:.1em;text-decoration:none;box-sizing:border-box;transition:transform .2s ease,filter .2s ease,box-shadow .25s ease,border-color .25s ease;cursor:pointer}
+.download-box:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.download-box.vip-active{animation:vipDownloadPulse 1.8s ease-in-out infinite;position:relative;overflow:hidden}
+.download-box.vip-active::after{content:'';position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);animation:vipDownloadSweep 2.4s ease-in-out infinite}
+.download-box.vip-active i,.download-box.vip-active span{position:relative;z-index:1}
+.download-box.rush-active{border-color:rgba(0,255,136,.8);box-shadow:0 0 12px rgba(0,255,136,.35),0 0 28px rgba(0,255,136,.18)}
+.download-box.legend-active{border-color:rgba(255,205,64,.85);box-shadow:0 0 12px rgba(255,205,64,.4),0 0 28px rgba(255,165,0,.18)}
+.download-disabled{opacity:.65;cursor:not-allowed;filter:grayscale(.25);box-shadow:none!important;color:#cfd8dc}
+.download-disabled:hover{transform:none;filter:grayscale(.25)}
+@keyframes vipDownloadPulse{0%,100%{transform:translateY(0);filter:brightness(1)}50%{transform:translateY(-1px);filter:brightness(1.12)}}
+@keyframes vipDownloadSweep{0%{left:-120%}55%,100%{left:140%}}
+
+
+/* ===== OMEGA CYBER DOWNLOADS THEME ===== */
+.downloads-page{position:relative;min-height:calc(100vh - 80px);padding:2.5rem 1rem 4rem;overflow:hidden}
+.downloads-page::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 0%,rgba(0,243,255,.08),transparent 32%),radial-gradient(circle at 18% 70%,rgba(57,255,20,.07),transparent 28%),radial-gradient(circle at 82% 70%,rgba(255,215,0,.06),transparent 28%)}
+.downloads-hero{position:relative;text-align:center;margin:0 auto 2.5rem;z-index:2}
+.downloads-kicker{font-family:'Share Tech Mono';color:var(--cyan);letter-spacing:.34em;font-size:.72rem;margin-bottom:.55rem;text-shadow:0 0 8px rgba(0,243,255,.45)}
+.downloads-title{font-family:'Orbitron';font-weight:900;font-size:clamp(2rem,5vw,3.6rem);letter-spacing:.08em;margin:0;background:linear-gradient(90deg,var(--cyan),var(--magenta),var(--cyan));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:titleFlow 5s linear infinite}
+.downloads-subtitle{color:#718096;font-family:'Share Tech Mono';font-size:.8rem;margin:.75rem 0 0;letter-spacing:.05em}
+@keyframes titleFlow{to{background-position:200% center}}
+.downloads-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;max-width:1000px;margin:0 auto}
+.cyber-download-card{position:relative;min-height:390px;padding:3.2rem 2.5rem 2.6rem;background:linear-gradient(145deg,rgba(7,13,23,.97),rgba(1,5,10,.96));border:1px solid rgba(90,120,150,.28);overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;clip-path:polygon(0 18px,18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px))}
+.cyber-download-card::before{content:'';position:absolute;top:0;left:4%;right:4%;height:3px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);box-shadow:0 0 12px var(--card-accent);animation:cardScan 3s ease-in-out infinite}
+.cyber-download-card::after{content:'';position:absolute;inset:7px;border:1px solid rgba(255,255,255,.035);pointer-events:none;clip-path:inherit}
+.cyber-download-card.rush{--card-accent:var(--green);--card-glow:rgba(57,255,20,.38)}
+.cyber-download-card.legend{--card-accent:var(--gold);--card-glow:rgba(255,215,0,.34)}
+@keyframes cardScan{0%,100%{transform:scaleX(.55);opacity:.45}50%{transform:scaleX(1);opacity:1}}
+.cyber-corner{position:absolute;width:28px;height:28px;opacity:.85}
+.cyber-corner.tl{top:12px;left:12px;border-top:2px solid var(--card-accent);border-left:2px solid var(--card-accent)}
+.cyber-corner.br{right:12px;bottom:12px;border-right:2px solid var(--card-accent);border-bottom:2px solid var(--card-accent)}
+.cyber-emblem{width:48px;height:48px;border:1px solid var(--card-accent);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--card-accent);font-size:1.05rem;margin-bottom:1.2rem;box-shadow:0 0 18px var(--card-glow),inset 0 0 12px var(--card-glow);position:relative}
+.cyber-emblem::before,.cyber-emblem::after{content:'';position:absolute;background:var(--card-accent);opacity:.65}
+.cyber-emblem::before{width:74px;height:1px;left:-14px}.cyber-emblem::after{width:1px;height:74px;top:-14px}
+.cyber-download-title{position:relative;z-index:2;font-family:'Orbitron';font-weight:900;font-size:clamp(1.5rem,3vw,2.35rem);line-height:1.15;margin:0;color:var(--card-accent);text-shadow:0 0 12px var(--card-glow);letter-spacing:.02em;max-width:95%}
+.cyber-download-title span{display:block}
+.cyber-divider{width:72%;height:1px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);margin:1.35rem 0 1.15rem;position:relative}
+.cyber-divider::after{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:var(--card-accent);box-shadow:0 0 10px var(--card-accent);left:50%;top:50%;transform:translate(-50%,-50%)}
+.cyber-status{font-family:'Share Tech Mono';font-size:.82rem;color:#78869a;min-height:1.25rem;position:relative;z-index:2}
+.cyber-status strong{font-weight:900;text-shadow:0 0 9px var(--status-glow)}
+.cyber-download-card .download-box{width:260px;min-height:58px;margin:1.8rem auto 0;border-radius:0;padding:.9rem 1.5rem;position:relative;z-index:3;clip-path:polygon(0 10px,10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px));font-size:.86rem;letter-spacing:.16em;border:1px solid var(--card-accent);background:rgba(3,9,13,.72)!important;color:#aab5c0;box-shadow:inset 0 0 14px rgba(255,255,255,.02);transition:transform .25s ease,box-shadow .25s ease,color .25s ease,background .25s ease}
+.cyber-download-card .download-box:hover{transform:translateY(-3px);filter:none}
+.cyber-download-card .download-box i{font-size:1rem}
+.cyber-download-card .download-box.vip-active{background:linear-gradient(180deg,rgba(57,255,20,.2),rgba(3,9,13,.88))!important;color:var(--card-accent);box-shadow:0 0 18px var(--card-glow),inset 0 0 18px var(--card-glow);animation:cyberButtonPulse 1.8s ease-in-out infinite}
+.cyber-download-card.legend .download-box.vip-active{background:linear-gradient(180deg,rgba(255,215,0,.2),rgba(3,9,13,.88))!important}
+.cyber-download-card .download-box.vip-active::after{background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);height:100%;width:35%;top:0;animation:vipDownloadSweep 2.6s ease-in-out infinite}
+.cyber-download-card .download-disabled{opacity:.48;color:#78828d;border-color:rgba(120,130,145,.28);background:rgba(3,9,13,.52)!important;box-shadow:none!important}
+@keyframes cyberButtonPulse{0%,100%{box-shadow:0 0 12px var(--card-glow),inset 0 0 12px var(--card-glow)}50%{box-shadow:0 0 28px var(--card-glow),inset 0 0 20px var(--card-glow)}}
+@media(max-width:760px){.downloads-grid{grid-template-columns:1fr;max-width:560px}.cyber-download-card{min-height:350px;padding:2.8rem 1.5rem 2.3rem}.cyber-download-card .download-box{width:min(260px,88%)} }
+
+.ann-bar{display:flex;align-items:center;border-bottom:1px solid var(--magenta);background:rgba(188,19,254,.1);padding:.25rem .5rem;gap:.5rem}
+.ann-icon{color:var(--magenta);font-size:.8rem}
+.ann-scroll{flex:1;overflow:hidden;white-space:nowrap;font-family:'Share Tech Mono'}
+.ann-content{display:inline-block;animation:annScroll 15s linear infinite;padding-left:100%}
+@keyframes annScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+
+input,textarea,select{background:rgba(0,0,0,.6);border:1px solid var(--border);color:var(--cyan);padding:.75rem 1rem;font-family:'Share Tech Mono',monospace;width:100%;transition:all .3s;font-size:.9rem; pointer-events:auto !important;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 15px rgba(0,243,255,.3);background:rgba(0,243,255,.05)}
+input:disabled{cursor:not-allowed;opacity:.5}
+
+/* DROPDOWN FIX CSS */
+select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%2300f3ff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+select option {
+  background-color: #050810;
+  color: #00f3ff;
+  padding: 10px;
+}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.95);border:1px solid var(--cyan);color:var(--cyan);padding:1rem 2rem;font-family:'Share Tech Mono',monospace;z-index:9999;box-shadow:0 0 30px rgba(0,243,255,.5);opacity:0;pointer-events:none;transition:opacity .3s;clip-path:polygon(0 0,100% 0,100% 80%,95% 100%,0 100%)}
+.toast.show{opacity:1}
+
+.page{display:none;animation:fadeUp .5s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(3rem,10vw,7rem);line-height:.9;background:linear-gradient(135deg,var(--cyan),var(--green),var(--magenta));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(0,243,255,.3))}
+.hero-glitch{position:relative}
+.hero-glitch::before,.hero-glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);overflow:hidden}
+.hero-glitch::before{color:var(--cyan);animation:glitch-1 3s infinite linear alternate-reverse;clip-path:polygon(0 0,100% 0,100% 33%,0 33%)}
+.hero-glitch::after{color:var(--magenta);animation:glitch-2 2s infinite linear alternate-reverse;clip-path:polygon(0 67%,100% 67%,100% 100%,0 100%)}
+@keyframes glitch-1{0%,100%{transform:translate(0)}20%{transform:translate(-3px,2px)}40%{transform:translate(3px,-2px)}60%{transform:translate(-2px,1px)}80%{transform:translate(2px,-1px)}}
+@keyframes glitch-2{0%,100%{transform:translate(0)}20%{transform:translate(3px,-2px)}40%{transform:translate(-3px,2px)}60%{transform:translate(2px,-1px)}80%{transform:translate(-2px,1px)}}
+
+.hex-badge{clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.stat-bar{height:4px;background:rgba(255,255,255,.1);position:relative;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase}
+tr:hover{background:rgba(0,243,255,.05)}
+
+.inject-overlay{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.98);display:none;align-items:center;justify-content:center;flex-direction:column}
+.inject-overlay.active{display:flex}
+.inject-bar{width:min(400px,80vw);height:10px;background:var(--bg-2);border:1px solid var(--cyan);margin-top:1rem}
+.inject-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 15px var(--cyan);transition:width .1s linear}
+
+.pricing-modal{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.98);display:none;align-items:center;justify-content:center;flex-direction:column;padding:2rem;overflow-y:auto}
+.pricing-modal.active{display:flex}
+
+.order-modal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.98);display:none;align-items:center;justify-content:center;padding:2rem;overflow-y:auto}
+.order-modal.active{display:flex}
+.order-form-card{max-width:500px;width:100%;animation:orderPop 0.4s cubic-bezier(.16,1,.3,1)}
+.omega-payment-card{position:relative;overflow:hidden;margin:0 auto 1.5rem;padding:1rem 1.1rem;border:1px solid rgba(0,255,200,.55);border-radius:12px;background:linear-gradient(145deg,rgba(5,18,24,.98),rgba(2,8,14,.94));box-shadow:0 0 22px rgba(0,255,200,.10),inset 0 0 25px rgba(0,220,255,.04)}
+.omega-payment-card:before{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,rgba(0,255,200,.07) 50%,transparent 80%);transform:translateX(-100%);animation:paymentScan 4s linear infinite;pointer-events:none}
+.omega-payment-top{position:relative;display:flex;align-items:center;gap:.8rem;padding-bottom:.8rem;border-bottom:1px solid rgba(0,255,200,.16)}
+.omega-payment-icon{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--cyan);border-radius:10px;color:var(--cyan);font-size:1.15rem;box-shadow:0 0 14px rgba(0,220,255,.18)}
+.omega-payment-kicker{font:700 .62rem 'Share Tech Mono';color:var(--muted);letter-spacing:.14em}.omega-payment-title{font:900 1.15rem 'Orbitron';color:var(--cyan);letter-spacing:.12em;text-shadow:0 0 10px var(--cyan)}
+.omega-payment-status{margin-left:auto;font:700 .58rem 'Share Tech Mono';color:var(--green);letter-spacing:.08em}.omega-payment-status span{display:inline-block;width:7px;height:7px;margin-right:4px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green);animation:pulse 1.4s infinite}
+.omega-payment-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.85rem}.omega-payment-grid>div{padding:.7rem .75rem;border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(0,0,0,.28)}.omega-payment-grid span{display:block;font:700 .58rem 'Share Tech Mono';color:var(--muted);letter-spacing:.1em;margin-bottom:.3rem}.omega-payment-grid strong{display:block;font:900 .88rem 'Share Tech Mono';color:#fff;letter-spacing:.05em;word-break:break-word}.omega-payment-grid>div:first-child strong{color:var(--green);text-shadow:0 0 8px rgba(0,255,140,.35)}
+.omega-payment-note{position:relative;margin-top:.75rem;padding:.55rem .65rem;border-left:2px solid var(--cyan);background:rgba(0,220,255,.035);font:600 .58rem 'Share Tech Mono';color:var(--muted);letter-spacing:.06em}.omega-payment-note i{color:var(--cyan);margin-right:.35rem}@keyframes paymentScan{to{transform:translateX(100%)}}@media(max-width:520px){.omega-payment-grid{grid-template-columns:1fr}.omega-payment-status{font-size:.5rem}}
+
+@keyframes orderPop{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* SUCCESS OVERLAY CSS */
+.success-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.98);display:none;align-items:center;justify-content:center;flex-direction:column;padding:2rem;opacity:0;transition:opacity .3s}
+.success-overlay.active{display:flex;opacity:1}
+.success-box{text-align:center;animation:orderPop 0.4s cubic-bezier(.16,1,.3,1)}
+.success-check{font-size:5rem;color:var(--green);text-shadow:0 0 30px var(--green);margin-bottom:1rem;animation:pulse 1.5s infinite}
+
+.contact-card{transition:all 0.4s ease;position:relative;overflow:hidden;text-decoration:none;display:block}
+.contact-card:hover{transform:translateY(-10px);box-shadow:0 15px 40px rgba(0,0,0,.8)}
+.contact-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,transparent,rgba(255,255,255,.1),transparent);transform:skewX(-45deg) translateX(-150%);transition:0.5s}
+.contact-card:hover::before{transform:skewX(-45deg) translateX(150%)}
+
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg-2)}
+::-webkit-scrollbar-thumb{background:var(--cyan)}
+
+@media (max-width:768px){
+  .dash-grid{grid-template-columns:1fr!important}
+  .nav-link{padding:.5rem .5rem;font-size:.75rem}
+  #navLinks{gap:0!important}
+  .chat-panel{top:120px}
+}
+
+/* AUTH GATE: hide all site content until successful login */
+body.auth-locked #main,
+body.auth-locked #navLinks,
+body.auth-locked #authArea,
+body.auth-locked #chatToggle,
+body.auth-locked #chatPanel { display:none !important; }
+body.auth-locked #main.auth-terminal-visible { display:block !important; }
+.vip-countdown-glow{font-family:'Orbitron';font-weight:900;letter-spacing:.06em;text-shadow:0 0 8px currentColor;white-space:nowrap}.vip-countdown-glow::before{content:'⏱ ';font-family:Arial,sans-serif}.vip-countdown-box{border-radius:6px;padding:.55rem .7rem;background:rgba(0,0,0,.38);box-shadow:0 0 14px rgba(0,255,255,.18)}
+
+
+/* ===== OMEGA SPECIALFORCE PRODUCT THEME ===== */
+.omega-products-page{padding:2.5rem 0 3rem;position:relative;overflow:hidden}
+.omega-products-head{text-align:center}
+.omega-products-kicker{font-family:'Share Tech Mono',monospace;color:var(--cyan);letter-spacing:.45em;font-size:.72rem;margin-bottom:.75rem}
+.omega-products-head h1{margin:.25rem 0 .75rem}
+.omega-products-head p{font-family:'Share Tech Mono',monospace;color:var(--muted);font-size:.8rem;letter-spacing:.28em;margin:0}
+.omega-products-divider{height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);margin:2.25rem 0}
+.omega-product-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:2.5rem;max-width:900px;margin:0 auto;padding:0 1rem}
+.omega-product-card{width:100%;min-height:500px;background:rgba(15,15,20,.94);box-sizing:border-box;padding:1.8rem;position:relative;display:flex;flex-direction:column;clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);transition:transform .3s ease,filter .3s ease}
+.omega-product-card:hover{transform:translateY(-6px) scale(1.015);filter:brightness(1.08)}
+.omega-rush-card{border:2px solid rgba(0,255,136,.3);animation:omegaBoxGreen 2s infinite alternate}
+.omega-legend-card{border:2px solid rgba(255,215,0,.3);animation:omegaBoxGold 2s infinite alternate}
+.omega-tier-tag{font-family:'Orbitron',sans-serif;font-size:.68rem;letter-spacing:.2em;color:#888;margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem}
+.omega-tier-tag:after{content:'';flex:1;height:1px;background:#333}
+.omega-product-title{font-family:'Orbitron',sans-serif;font-size:1.65rem;font-weight:900;letter-spacing:.05em;margin-bottom:.25rem;text-shadow:0 0 10px rgba(255,255,255,.25)}
+.omega-rush-card .omega-product-title,.omega-rush-card .omega-stat-row strong{color:#00ff88}
+.omega-legend-card .omega-product-title,.omega-legend-card .omega-stat-row strong{color:#ffd700}
+.omega-product-subtitle{font-family:'Rajdhani',sans-serif;font-size:.9rem;color:#666;font-weight:700;letter-spacing:.12em;margin-bottom:1.6rem;text-transform:uppercase}
+.omega-stats{margin-bottom:1.25rem}
+.omega-stat-row{display:flex;justify-content:space-between;margin-bottom:.28rem;font-size:.82rem;font-weight:700;text-transform:uppercase;font-family:'Rajdhani',sans-serif}
+.omega-stat-row strong{font-family:'Share Tech Mono',monospace}
+.omega-progress-bar{width:100%;height:7px;background:rgba(255,255,255,.05);margin-bottom:.85rem;position:relative;overflow:hidden;clip-path:polygon(0 0,100% 0,98% 100%,0 100%)}
+.omega-progress-fill{height:100%;position:relative;overflow:hidden}
+.omega-progress-fill:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent);animation:omegaShimmer 1.7s infinite}
+.omega-rush-card .omega-progress-fill{background:#00ff88;box-shadow:0 0 10px #00ff88}
+.omega-legend-card .omega-progress-fill{background:#ffd700;box-shadow:0 0 10px #ffd700}
+.omega-rush-card .omega-progress-bar{border:1px solid rgba(0,255,136,.2);animation:omegaStatGreen 1.5s infinite alternate}
+.omega-legend-card .omega-progress-bar{border:1px solid rgba(255,215,0,.2);animation:omegaStatGold 1.5s infinite alternate}
+.omega-features{flex-grow:1;font-size:.88rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:'Rajdhani',sans-serif;margin-top:.2rem}
+.omega-features div{margin-bottom:.75rem;display:flex;align-items:center;gap:.65rem}
+.omega-features div:before{content:'>';font-family:'Orbitron',sans-serif;font-weight:900;font-size:1rem}
+.omega-rush-card .omega-features div:before{color:#00ff88}
+.omega-legend-card .omega-features div:before{color:#ffd700}
+.omega-inject-btn{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:900;padding:.9rem 1rem;border:none;text-transform:uppercase;cursor:pointer;transition:all .2s ease;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);margin-top:.5rem}
+.omega-rush-card .omega-inject-btn{background:#00ff88;color:#000;box-shadow:0 0 15px rgba(0,255,136,.5)}
+.omega-rush-card .omega-inject-btn:hover{background:#fff;box-shadow:0 0 30px #00ff88,0 0 50px #00ff88}
+.omega-legend-card .omega-inject-btn{background:#ffd700;color:#000;box-shadow:0 0 15px rgba(255,215,0,.5)}
+.omega-legend-card .omega-inject-btn:hover{background:#fff;box-shadow:0 0 30px #ffd700,0 0 50px #ffd700}
+.omega-hud-corner{position:absolute;width:20px;height:20px;border-top:3px solid #fff;border-right:3px solid #fff;top:10px;right:10px}
+.omega-rush-card .omega-hud-corner{border-color:#00ff88}
+.omega-legend-card .omega-hud-corner{border-color:#ffd700}
+.omega-hud-line{position:absolute;bottom:20px;right:-10px;width:40px;height:3px;transform:skewX(-20deg)}
+.omega-rush-card .omega-hud-line{background:#00ff88;box-shadow:0 0 10px #00ff88}
+.omega-legend-card .omega-hud-line{background:#ffd700;box-shadow:0 0 10px #ffd700}
+.omega-card-badge{position:absolute;right:1.7rem;top:3.2rem;width:42px;height:46px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:1rem;clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%);background:rgba(255,255,255,.04)}
+.omega-rush-card .omega-card-badge{color:#00ff88;border:1px solid #00ff88;box-shadow:inset 0 0 12px rgba(0,255,136,.2)}
+.omega-legend-card .omega-card-badge{color:#ffd700;border:1px solid #ffd700;box-shadow:inset 0 0 12px rgba(255,215,0,.2)}
+@keyframes omegaBoxGreen{from{border-color:rgba(0,255,136,.3);box-shadow:0 0 5px rgba(0,255,136,.1),inset 0 0 5px rgba(0,255,136,.05)}to{border-color:#00ff88;box-shadow:0 0 25px rgba(0,255,136,.6),inset 0 0 20px rgba(0,255,136,.4)}}
+@keyframes omegaBoxGold{from{border-color:rgba(255,215,0,.3);box-shadow:0 0 5px rgba(255,215,0,.1),inset 0 0 5px rgba(255,215,0,.05)}to{border-color:#ffd700;box-shadow:0 0 25px rgba(255,215,0,.6),inset 0 0 20px rgba(255,215,0,.4)}}
+@keyframes omegaStatGreen{from{border-color:rgba(0,255,136,.2);box-shadow:inset 0 0 2px rgba(0,255,136,.1)}to{border-color:#00ff88;box-shadow:inset 0 0 8px rgba(0,255,136,.8)}}
+@keyframes omegaStatGold{from{border-color:rgba(255,215,0,.2);box-shadow:inset 0 0 2px rgba(255,215,0,.1)}to{border-color:#ffd700;box-shadow:inset 0 0 8px rgba(255,215,0,.8)}}
+@keyframes omegaShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@media(max-width:760px){.omega-product-grid{grid-template-columns:1fr;max-width:520px;gap:1.5rem}.omega-product-card{min-height:470px}.omega-products-page{padding-top:1.5rem}.omega-products-kicker{letter-spacing:.25em}}
+
+
+/* ===== OMEGA NEW WELCOME PORTAL THEME ===== */
+.omega-new-portal{position:relative;width:min(600px,90vw);height:500px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:10;}
+.omega-portal-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;z-index:-1;pointer-events:none;}
+.omega-ring-1{width:min(450px,75vw);height:min(450px,75vw);border:2px solid rgba(0,210,255,.3);box-shadow:0 0 50px rgba(0,210,255,.2),inset 0 0 50px rgba(0,210,255,.1);animation:omegaSpin 10s linear infinite;}
+.omega-ring-2{width:min(350px,58vw);height:min(350px,58vw);border:2px dashed rgba(188,19,254,.5);box-shadow:0 0 30px rgba(188,19,254,.4);animation:omegaSpinReverse 8s linear infinite;}
+.omega-ring-3{width:min(550px,90vw);height:min(550px,90vw);border:1px solid rgba(255,255,255,.05);animation:omegaPulseRing 4s ease-in-out infinite;}
+.omega-portal-subtitle{font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:8px;color:#00d2ff;text-transform:uppercase;margin-bottom:10px;text-shadow:0 0 10px #00d2ff;opacity:.8;}
+.omega-portal-title{font-family:'Orbitron',sans-serif;font-size:clamp(38px,7vw,60px);font-weight:900;line-height:1;margin:0;text-transform:uppercase;letter-spacing:2px;background:linear-gradient(180deg,#fff 0%,#b8d8ff 50%,#00d2ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(0,210,255,.8));animation:omegaGlitch 3s infinite alternate;}
+.omega-portal-slogan{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:4px;color:#bc13fe;text-transform:uppercase;margin-top:15px;text-shadow:0 0 10px #bc13fe,0 0 20px #bc13fe;position:relative;}
+.omega-portal-slogan:before,.omega-portal-slogan:after{content:'';position:absolute;top:50%;width:40px;height:2px;background:#bc13fe;box-shadow:0 0 10px #bc13fe;}
+.omega-portal-slogan:before{left:-50px}.omega-portal-slogan:after{right:-50px}
+.omega-portal-btn{margin-top:40px;padding:15px 50px;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#fff;background:transparent;border:2px solid #bc13fe;cursor:pointer;position:relative;transition:all .3s ease;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);box-shadow:0 0 15px rgba(188,19,254,.5),inset 0 0 15px rgba(188,19,254,.2);text-shadow:0 0 5px #fff;opacity:1;pointer-events:auto;}
+.omega-portal-btn:hover{background:#bc13fe;color:#fff;box-shadow:0 0 30px #bc13fe,inset 0 0 20px rgba(255,255,255,.5);transform:scale(1.05);}
+.omega-features-row{display:flex;gap:60px;z-index:10;position:absolute;bottom:45px;left:50%;transform:translateX(-50%);}
+.omega-feature-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.omega-feature-icon{width:40px;height:40px;border:1px solid rgba(0,210,255,.5);display:flex;justify-content:center;align-items:center;font-size:18px;color:#00d2ff;background:rgba(0,210,255,.05);box-shadow:0 0 10px rgba(0,210,255,.2);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);}
+.omega-feature-text{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;color:#888;text-transform:uppercase;}
+.omega-feature-item:hover .omega-feature-text{color:#00d2ff;text-shadow:0 0 10px #00d2ff}.omega-feature-item:hover .omega-feature-icon{border-color:#00d2ff;box-shadow:0 0 20px #00d2ff}
+@keyframes omegaSpin{0%{transform:translate(-50%,-50%) rotate(0)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes omegaSpinReverse{0%{transform:translate(-50%,-50%) rotate(360deg)}100%{transform:translate(-50%,-50%) rotate(0)}}
+@keyframes omegaPulseRing{0%,100%{opacity:.2;transform:translate(-50%,-50%) scale(1)}50%{opacity:.6;transform:translate(-50%,-50%) scale(1.05)}}
+@keyframes omegaGlitch{0%,100%{filter:drop-shadow(0 0 15px rgba(0,210,255,.8));transform:translateX(0)}92%{transform:translateX(-2px);filter:drop-shadow(2px 0 rgba(188,19,254,.8))}94%{transform:translateX(2px);filter:drop-shadow(-2px 0 rgba(0,210,255,.8))}96%{transform:translateX(0)}}
+@media(max-width:700px){.omega-new-portal{height:440px}.omega-portal-subtitle{font-size:11px;letter-spacing:5px}.omega-portal-slogan{font-size:16px;letter-spacing:2px}.omega-portal-slogan:before,.omega-portal-slogan:after{width:25px}.omega-portal-slogan:before{left:-32px}.omega-portal-slogan:after{right:-32px}.omega-portal-btn{padding:13px 32px;font-size:15px}.omega-features-row{gap:28px;bottom:25px}.omega-feature-text{font-size:10px;letter-spacing:2px}}
+</style>
+<style id="ban-hammer-theme">.banned-effect{background:#050505!important}.ban-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,0,60,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,60,.03) 1px,transparent 1px);background-size:40px 40px}.ban-scanlines{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(255,255,255,.02) 50%);background-size:100% 4px;pointer-events:none;z-index:100;animation:banScan 6s linear infinite}.ban-warning{position:absolute;width:100%;background:rgba(255,0,60,.1);border-top:1px solid #ff003c;border-bottom:1px solid #ff003c;color:#ff003c;font-family:Orbitron,sans-serif;font-size:12px;font-weight:700;letter-spacing:4px;text-align:center;padding:5px 0;text-shadow:0 0 5px #ff003c;animation:banBlink 1s infinite alternate;z-index:20}.ban-warning.top{top:0}.ban-warning.bottom{bottom:0}.ban-container{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;max-width:95vw}.hammer-area{position:relative;width:300px;height:250px;margin-bottom:20px;display:flex;justify-content:center;align-items:center}.hammer-symbol{font-size:150px;filter:drop-shadow(0 0 15px #00d2ff);animation:banHammer 2s cubic-bezier(.5,0,1,.5) infinite alternate}.shockwave{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border:2px solid #ff003c;border-radius:50%;box-shadow:0 0 20px #ff003c;opacity:0}.sw-1{animation:banShock 2s ease-out infinite}.sw-2{animation:banShock 2s ease-out infinite .5s}.sw-3{animation:banShock 2s ease-out infinite 1s}.ban-title{font-family:Orbitron,sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:900;color:#00d2ff;letter-spacing:4px;margin:0;text-shadow:0 0 20px #00d2ff}.ban-text{font-family:Orbitron,sans-serif;font-size:clamp(1.2rem,3vw,1.75rem);font-weight:700;color:#ff003c;letter-spacing:6px;margin-top:10px;text-shadow:0 0 10px #ff003c,0 0 30px #ff003c;animation:banPulse 1.5s infinite}.ban-subtext{font-family:Share Tech Mono,monospace;font-size:clamp(.8rem,2vw,1rem);color:#bc13fe;letter-spacing:2px;text-transform:uppercase;margin-top:15px;text-shadow:0 0 5px #bc13fe}@keyframes banHammer{0%{transform:rotate(-35deg) translateY(-50px)}70%{transform:rotate(0) translateY(20px)}100%{transform:rotate(0) translateY(0)}}@keyframes banShock{0%{width:50px;height:50px;opacity:1}100%{width:300px;height:300px;opacity:0}}@keyframes banScan{to{background-position:0 100vh}}@keyframes banBlink{from{opacity:.3}to{opacity:1}}@keyframes banPulse{0%,100%{opacity:.8}50%{opacity:1;text-shadow:0 0 20px #ff003c,0 0 40px #ff003c}}@media(max-width:600px){.hammer-area{width:250px;height:190px}.hammer-symbol{font-size:110px}.ban-warning{font-size:9px;letter-spacing:2px}}</style></head>
+<body>
+<canvas id="matrix"></canvas>
+<div class="grid-bg"></div>
+<div class="scanlines"></div>
+
+<div class="portal" id="portal">
+  <div id="particles" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;"></div>
+  <div class="omega-new-portal">
+    <div class="omega-portal-ring omega-ring-3"></div>
+    <div class="omega-portal-ring omega-ring-1"></div>
+    <div class="omega-portal-ring omega-ring-2"></div>
+    <div class="omega-portal-subtitle">Welcome To</div>
+    <h1 class="omega-portal-title">OMEGA VIP<br>CHEATS</h1>
+    <div class="omega-portal-slogan">Unlock The Ultimate Advantage</div>
+    <button class="omega-portal-btn" id="enterBtn" onclick="enterSite(event)">Enter Portal</button>
+  </div>
+  <div class="omega-features-row">
+    <div class="omega-feature-item"><div class="omega-feature-icon">🛡</div><div class="omega-feature-text">Secure</div></div>
+    <div class="omega-feature-item"><div class="omega-feature-icon">⚡</div><div class="omega-feature-text">Powerful</div></div>
+    <div class="omega-feature-item"><div class="omega-feature-icon">👁</div><div class="omega-feature-text">Undetected</div></div>
+  </div>
+</div>
+
+<div class="inject-overlay" id="injectOverlay">
+  <div style="font-family:'Orbitron';font-weight:900;font-size:2rem;color:var(--cyan);letter-spacing:.1em">INJECTING PAYLOAD</div>
+  <div id="injectStatus" style="font-family:'Share Tech Mono';color:var(--green);margin-top:1rem;height:20px">INITIALIZING...</div>
+  <div class="inject-bar"><div class="inject-bar-fill" id="injectFill"></div></div>
+  <div id="injectPercent" style="font-family:'Orbitron';font-size:1.5rem;color:var(--cyan);margin-top:1rem">0%</div>
+</div>
+
+<div class="pricing-modal" id="pricingModal">
+  <div id="pricingModalContent" style="width:100%;max-width:1200px;margin:0 auto"></div>
+</div>
+
+<div class="order-modal" id="orderModal">
+  <div id="orderModalContent" style="width:100%;display:flex;justify-content:center;"></div>
+</div>
+
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <i class="fas fa-check-circle success-check"></i>
+    <h2 style="font-family:'Orbitron';font-weight:900;font-size:2rem;color:var(--cyan);margin:0;text-shadow:0 0 15px var(--cyan)">ORDER SUBMITTED</h2>
+    <p style="font-family:'Share Tech Mono';color:var(--green);margin-top:1rem;font-size:1.2rem;letter-spacing:.1em">SUCCESSFULLY SENT</p>
+    <p style="font-family:'Share Tech Mono';color:var(--muted);margin-top:.5rem;font-size:.85rem">Your order is now pending for admin approval.</p>
+    <button onclick="closeSuccessOverlay()" class="btn-primary" style="margin-top:2rem">CONTINUE</button>
+  </div>
+</div>
+
+<nav class="topnav">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between" style="height:64px">
+    <div class="flex items-center gap-3">
+      <div class="hex-badge" style="width:40px;height:44px;background:linear-gradient(135deg,var(--cyan),var(--magenta));display:flex;align-items:center;justify-content:center;animation:pulse 2s infinite">
+        <span style="font-family:'Orbitron';font-weight:900;color:#000">Ω</span>
+      </div>
+      <div>
+        <div style="font-family:'Orbitron';font-weight:900;letter-spacing:.15em;font-size:1rem">OMEGA<span style="color:var(--cyan)">VIP</span></div>
+        <div style="font-family:'Share Tech Mono';font-size:.65rem;color:var(--muted);letter-spacing:.2em">v3.0 // FIREBASE</div>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-1" id="navLinks"></div>
+    <div class="flex items-center gap-3">
+      <div class="hidden lg:flex flex-col items-end" style="font-family:'Share Tech Mono';font-size:.7rem;line-height:1.2">
+        <span style="color:var(--cyan)"><i class="fas fa-clock"></i> <span id="liveClock">00:00:00</span></span>
+        <span style="color:var(--green)"><i class="fas fa-signal"></i> PING: <span id="livePing">12</span>ms</span>
+        <span style="color:var(--magenta)"><i class="fas fa-microchip"></i> LOAD: <span id="liveLoad">34</span>%</span>
+      </div>
+      <button class="btn-secondary" style="padding:.5rem 1rem;font-size:.85rem" id="chatToggle">
+        <i class="fas fa-comment-dots"></i> CHAT
+      </button>
+      <div class="flex items-center gap-3" id="authArea"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="chat-panel" id="chatPanel">
+  <div style="padding:1rem;border-bottom:1px solid var(--cyan);display:flex;justify-content:space-between;align-items:center;background:rgba(0,243,255,.05);flex-shrink:0">
+    <div>
+      <div style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--cyan);font-size:.9rem"><i class="fas fa-broadcast-tower"></i> LIVE CHAT // REALTIME</div>
+      <div style="font-size:.7rem;color:var(--green);display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';margin-top:.2rem"><span style="width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)"></span> ONLINE • FIREBASE SYNCED</div>
+    </div>
+    <button onclick="toggleChat()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;pointer-events:auto !important;"><i class="fas fa-times"></i></button>
+  </div>
+  <div id="annBar" class="ann-bar" style="display:none;flex-shrink:0">
+    <i class="fas fa-bullhorn ann-icon"></i>
+    <div class="ann-scroll"><span id="annContent" class="ann-content"></span></div>
+  </div>
+  <div id="chatMessages" style="flex:1;overflow-y:auto;padding:1rem;min-height:0">
+    <div style="text-align:center;color:var(--muted);font-family:'Share Tech Mono';font-size:.8rem">Connecting to live chat...</div>
+  </div>
+  <div id="replyIndicator" style="display:none; padding:.5rem 1rem; font-size:.75rem; color:var(--magenta); background:rgba(188,19,254,.1); border-top:1px solid var(--border); align-items:center; justify-content:space-between;flex-shrink:0">
+    <span id="replyText"></span>
+    <button onclick="cancelReply()" style="background:none; border:none; color:var(--red); cursor:pointer; pointer-events:auto !important;"><i class="fas fa-times"></i></button>
+  </div>
+  <div style="padding:1rem;border-top:1px solid var(--border);display:flex;gap:.5rem;align-items:center;flex-shrink:0;position:relative;">
+    <div id="emojiPicker" class="emoji-picker">
+      <button class="emoji-btn" onclick="addEmoji('😀')">😀</button><button class="emoji-btn" onclick="addEmoji('😂')">😂</button><button class="emoji-btn" onclick="addEmoji('❤️')">❤️</button><button class="emoji-btn" onclick="addEmoji('🔥')">🔥</button><button class="emoji-btn" onclick="addEmoji('👍')">👍</button><button class="emoji-btn" onclick="addEmoji('👎')">👎</button>
+      <button class="emoji-btn" onclick="addEmoji('🎯')">🎯</button><button class="emoji-btn" onclick="addEmoji('💀')">💀</button><button class="emoji-btn" onclick="addEmoji('🤡')">🤡</button><button class="emoji-btn" onclick="addEmoji('⚡')">⚡</button><button class="emoji-btn" onclick="addEmoji('✅')">✅</button><button class="emoji-btn" onclick="addEmoji('❌')">❌</button>
+      <button class="emoji-btn" onclick="addEmoji('🆘')">🆘</button><button class="emoji-btn" onclick="addEmoji('💯')">💯</button><button class="emoji-btn" onclick="addEmoji('🙏')">🙏</button><button class="emoji-btn" onclick="addEmoji('😎')">😎</button><button class="emoji-btn" onclick="addEmoji('😱')">😱</button><button class="emoji-btn" onclick="addEmoji('🤬')">🤬</button>
+      <button class="emoji-btn" onclick="addEmoji('🥶')">🥶</button><button class="emoji-btn" onclick="addEmoji('👻')">👻</button><button class="emoji-btn" onclick="addEmoji('🚀')">🚀</button><button class="emoji-btn" onclick="addEmoji('🎮')">🎮</button><button class="emoji-btn" onclick="addEmoji('🔫')">🔫</button><button class="emoji-btn" onclick="addEmoji('💥')">💥</button>
+    </div>
+    <button onclick="toggleEmoji()" class="btn-secondary" style="padding:.5rem .75rem;font-size:1.2rem;height:46px;display:flex;align-items:center;justify-content:center;">😀</button>
+    <input id="chatInput" placeholder="Login to chat..." style="flex:1;height:46px;padding:.75rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.9rem;" disabled>
+    <button class="btn-primary" style="padding:.5rem 1.25rem;height:46px;display:flex;align-items:center;justify-content:center;" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<main class="max-w-7xl mx-auto px-4 py-8" id="main"></main>
+<div class="toast" id="toast"></div>
+
+<footer style="border-top:1px solid var(--border);margin-top:4rem;padding:2rem 0;text-align:center;background:rgba(0,0,0,.5)">
+  <div class="max-w-7xl mx-auto px-4">
+    <div style="font-family:'Orbitron';font-weight:900;letter-spacing:.15em;color:var(--cyan);text-shadow:0 0 10px var(--cyan)">OMEGA VIP CHEATS</div>
+    <div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted);margin-top:.5rem">© 2025 OMEGA SYSTEMS // ALL FEATURES ENCRYPTED // UNDETECTABLE TECHNOLOGY<br><span style="color:var(--red)">WARNING: UNAUTHORIZED USE IS A VIOLATION OF TERMS</span></div>
+  </div>
+</footer>
+
+<script>
+// ====== FIREBASE CONFIG ======
+const firebaseConfig = {
+  apiKey: "AIzaSyCjH5c9YK0i1DYnF0gPYyPjlzrjAWYWBag",
+  authDomain: "omegavipcheats-5908a.firebaseapp.com",
+  projectId: "omegavipcheats-5908a",
+  storageBucket: "omegavipcheats-5908a.firebasestorage.app",
+  messagingSenderId: "262055483209",
+  appId: "1:262055483209:web:848b3b057ac20f26dc2c98",
+  measurementId: "G-SH5X5T7Y9W"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// ====== STATE ======
+const state = { 
+  currentUser: null, 
+  page: 'home', 
+  chatMessages: [], 
+  replyTo: null,
+  bannedLock: false,
+  downloads: { rush: 'Updating', legend: 'Updating', rushLink: '', legendLink: '' } 
+};
+
+// ====== MATRIX RAIN ======
+const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*Ω';
+const fontSize=12,columns=canvas.width/fontSize;
+const drops=Array(Math.floor(columns)).fill(1);
+function drawMatrix(){ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#0f5';ctx.font=fontSize+'px monospace';drops.forEach((y,i)=>{const text=chars[Math.floor(Math.random()*chars.length)];ctx.fillText(text,i*fontSize,y*fontSize);if(y*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++;});}
+setInterval(drawMatrix,50);
+
+// ====== PORTAL PARTICLES & ENTER ======
+function createParticles(){const c=document.getElementById('particles');if(!c)return;for(let i=0;i<50;i++){const p=document.createElement('div');p.style.position='absolute';p.style.width='2px';p.style.height='2px';p.style.background=Math.random()>0.5?'var(--cyan)':'var(--magenta)';p.style.borderRadius='50%';p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';p.style.boxShadow='0 0 5px currentColor';p.style.pointerEvents='none';c.appendChild(p);p.animate([{transform:'translate(0,0)',opacity:0},{opacity:1,offset:.1},{opacity:1,offset:.9},{transform:`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`,opacity:0}],{duration:5000+Math.random()*5000,iterations:Infinity,delay:-Math.random()*5000});}}
+createParticles();
+function enterSite(e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  if(state.bannedLock){ state.page='portal'; renderNav(); renderPage(); return; }
+  const portal=document.getElementById('portal');
+  const btn=document.getElementById('enterBtn');
+  if(!portal)return;
+  if(btn){btn.disabled=true;btn.style.pointerEvents='none';}
+  document.body.classList.add('auth-locked');
+  const main=document.getElementById('main');
+  if(main){ state.page='login'; main.innerHTML=renderLogin(); main.classList.add('auth-terminal-visible'); }
+  portal.classList.add('hidden');
+  setTimeout(()=>{ portal.style.display='none'; portal.setAttribute('aria-hidden','true'); },850);
+  renderNav();
+  switchAuthTab('login');
+}
+
+// ====== LIVE STATS ======
+function updateStats(){document.getElementById('liveClock').textContent=new Date().toLocaleTimeString();document.getElementById('livePing').textContent=Math.floor(Math.random()*15+5);document.getElementById('liveLoad').textContent=Math.floor(Math.random()*40+20);}
+setInterval(updateStats,1000);updateStats();
+
+// ====== TOAST ======
+function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.style.borderColor=type==='error'?'var(--red)':type==='success'?'var(--green)':'var(--cyan)';t.style.color=type==='error'?'var(--red)':type==='success'?'var(--green)':'var(--cyan)';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+// ====== REALTIME LIVE CHAT (GROUP) ======
+function toggleChat(){document.getElementById('chatPanel').classList.toggle('open')}
+document.getElementById('chatToggle').addEventListener('click', toggleChat);
+
+function toggleEmoji() { document.getElementById('emojiPicker').classList.toggle('active'); }
+function addEmoji(e) {
+    const input = document.getElementById('chatInput');
+    input.value += e;
+    input.focus();
+    document.getElementById('emojiPicker').classList.remove('active');
+}
+
+function updateChatInputState(){
+    const input = document.getElementById('chatInput');
+    if(!input) return;
+    if(state.currentUser){ input.disabled = false; input.placeholder = "Enter message..."; } 
+    else { input.disabled = true; input.placeholder = "Login to chat..."; }
+}
+
+function setReply(msgId) {
+    const msg = state.chatMessages.find(m => m.id === msgId);
+    if(!msg) return;
+    state.replyTo = msg;
+    const indicator = document.getElementById('replyIndicator');
+    document.getElementById('replyText').innerHTML = `Replying to <b style="color:var(--cyan)">${msg.username}</b>: ${msg.text.substring(0, 30)}...`;
+    indicator.style.display = 'flex';
+    document.getElementById('chatInput').focus();
+}
+
+function cancelReply() {
+    state.replyTo = null;
+    document.getElementById('replyIndicator').style.display = 'none';
+}
+
+function scrollToMsg(id) {
+    const el = document.getElementById('msg-'+id);
+    if(el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
+}
+
+function reactToMsg(msgId, emoji) {
+    if(!state.currentUser) return toast('Login to react', 'error');
+    const msgRef = db.collection('live_chat').doc(msgId);
+    msgRef.get().then(doc => {
+        if(!doc.exists) return;
+        let reactions = doc.data().reactions || {};
+        let updateObj = {};
+        let prevEmoji = null;
+        for(let e in reactions) {
+            if(reactions[e].includes(state.currentUser.id)) { prevEmoji = e; break; }
+        }
+        if(prevEmoji === emoji) {
+            updateObj[`reactions.${emoji}`] = firebase.firestore.FieldValue.arrayRemove(state.currentUser.id);
+        } else {
+            if(prevEmoji) { updateObj[`reactions.${prevEmoji}`] = firebase.firestore.FieldValue.arrayRemove(state.currentUser.id); }
+            updateObj[`reactions.${emoji}`] = firebase.firestore.FieldValue.arrayUnion(state.currentUser.id);
+        }
+        msgRef.update(updateObj);
+    });
+}
+
+function renderChat(){
+    const c = document.getElementById('chatMessages');
+    if(!c) return;
+    if(!state.chatMessages || state.chatMessages.length === 0){
+        c.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><p>No messages yet. Be the first to speak!</p></div>`;
+        return;
+    }
+    c.innerHTML = state.chatMessages.map(m => {
+        const isMe = m.uid === state.currentUser?.id;
+        let time = '';
+        if (m.timestamp && typeof m.timestamp.toMillis === 'function') {
+            time = new Date(m.timestamp.toMillis()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+        const roleClass = m.role === 'admin' ? 'role-admin' : (m.banned ? 'sub-banned' : `sub-${m.subscription || 'none'}`);
+        const userLabel = m.role === 'admin' ? `[ADMIN] ${(m.username || 'ADMIN').toUpperCase()}` : (m.username || 'User');
+        
+        let replyHtml = '';
+        if(m.replyTo) {
+            replyHtml = `<div class="chat-reply-quote" onclick="scrollToMsg('${m.replyTo.id}')">Reply to ${m.replyTo.username}: ${m.replyTo.text.substring(0, 40)}</div>`;
+        }
+        let reactionsHtml = '<div class="chat-reactions">';
+        if(m.reactions) {
+            for(let e in m.reactions) {
+                if(m.reactions[e].length > 0) {
+                    let isMine = m.reactions[e].includes(state.currentUser?.id);
+                    reactionsHtml += `<span class="chat-reaction ${isMine?'mine':''}" onclick="reactToMsg('${m.id}', '${e}')">${e} ${m.reactions[e].length}</span>`;
+                }
+            }
+        }
+        reactionsHtml += '</div>';
+        return `
+        <div class="chat-line" id="msg-${m.id}">
+            <span class="chat-time">${time}</span>
+            <div style="flex:1;">
+                <span class="chat-user ${roleClass}">${userLabel}:</span>
+                <span class="chat-text ${isMe ? 'me' : ''}">${replyHtml}${m.text}</span>
+                ${reactionsHtml}
+                <div class="chat-actions">
+                    <span class="reply-btn" onclick="setReply('${m.id}')"><i class="fas fa-reply"></i> Reply</span>
+                    <span class="react-emoji" onclick="reactToMsg('${m.id}', '👍')">👍</span>
+                    <span class="react-emoji" onclick="reactToMsg('${m.id}', '❤️')">❤️</span>
+                    <span class="react-emoji" onclick="reactToMsg('${m.id}', '🔥')">🔥</span>
+                    <span class="react-emoji" onclick="reactToMsg('${m.id}', '😂')">😂</span>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+    c.scrollTop = c.scrollHeight;
+}
+
+function sendChat(){
+    const input = document.getElementById('chatInput');
+    let text = input.value.trim();
+    if(!text) return;
+    if(!state.currentUser) { 
+        toast('Hindi ka naka-login. Mag-login muna para makapag-chat.', 'error'); 
+        return; 
+    }
+    
+    const msgData = {
+        uid: state.currentUser.id,
+        username: state.currentUser.username || state.currentUser.email.split('@')[0],
+        role: state.currentUser.role || 'user',
+        subscription: state.currentUser.subscription || 'none',
+        banned: state.currentUser.banned || false,
+        text: text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    
+    if(state.replyTo) {
+        msgData.replyTo = { id: state.replyTo.id, username: state.replyTo.username, text: state.replyTo.text };
+    }
+    
+    db.collection('live_chat').add(msgData).then((docRef) => {
+        input.value = '';
+        cancelReply();
+        toast('Message sent', 'success');
+        
+        msgData.id = docRef.id;
+        msgData.timestamp = { toMillis: () => Date.now() }; 
+        state.chatMessages.push(msgData);
+        renderChat();
+    }).catch(err => {
+        console.error("Chat write error: ", err);
+        toast('Chat Send Failed: '+err.message,'error');
+    });
+}
+
+document.getElementById('chatInput').addEventListener('keypress', e => {
+    if(e.key === 'Enter') {
+        e.preventDefault();
+        sendChat();
+    }
+});
+
+// ====== FIREBASE AUTH & AUTO BAN LOGOUT ======
+async function handleLogin(e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  const email=(document.getElementById('loginUser')?.value||'').trim().toLowerCase();
+  const pass=document.getElementById('loginPass')?.value||'';
+  if(!email||!pass){toast('ENTER EMAIL AND PASSWORD','error');return false;}
+  const form=document.getElementById('loginForm');
+  const submit=form?.querySelector('button[type=submit]');
+  if(submit){submit.disabled=true;submit.dataset.oldText=submit.innerHTML;submit.innerHTML='<i class="fas fa-spinner fa-spin"></i> AUTHENTICATING...';}
+  try{
+    const cred=await auth.signInWithEmailAndPassword(email,pass);
+    const isAdmin=email==='admin@omega.vip';
+    // Unlock immediately after Firebase Authentication succeeds. Do not make UI access depend on Firestore.
+    state.bannedLock=false;
+    state.currentUser={id:cred.user.uid,email:cred.user.email||email,username:(cred.user.email||email).split('@')[0],role:isAdmin?'admin':'user',banned:false,subscription:'none',subDuration:'N/A',hwid:''};
+    state.page='home';
+    document.body.classList.remove('auth-locked','banned-lock');
+    const main=document.getElementById('main');
+    if(main) main.classList.remove('auth-terminal-visible');
+    renderNav();
+    renderPage();
+    updateChatInputState();
+    toast(isAdmin?'ACCESS GRANTED — ADMIN':'ACCESS GRANTED','success');
+
+    // Load Firestore profile after the UI is unlocked. A Firestore-rule/network error must not trap the user on login.
+    db.collection('users').doc(cred.user.uid).get().then(doc=>{
+      if(!doc.exists){
+        return db.collection('users').doc(cred.user.uid).set({username:state.currentUser.username,email:cred.user.email||email,role:isAdmin?'admin':'user',banned:false,subscription:'none',subDuration:'N/A',hwid:'',joined:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(err=>console.warn('Profile create skipped:',err));
+      }
+      const data=doc.data()||{};
+      if(data.banned===true && !isAdmin){
+        state.bannedLock=true;state.currentUser=null;state.page='portal';
+        document.body.classList.add('banned-lock');
+        auth.signOut().catch(()=>{});
+        renderNav();renderPage();updateChatInputState();
+        toast('ACCESS DENIED: ACCOUNT BANNED','error');
+        return;
+      }
+      state.currentUser={id:cred.user.uid,...data,email:cred.user.email||email,role:isAdmin?'admin':(data.role||'user'),banned:false};
+      renderNav();renderPage();updateChatInputState();
+    }).catch(err=>console.warn('Profile read skipped; authentication is already active:',err));
+  }catch(err){
+    console.error('Login error:',err);
+    toast('ERROR: '+(err?.message||'LOGIN FAILED'),'error');
+  }finally{
+    if(submit){submit.disabled=false;submit.innerHTML=submit.dataset.oldText||'<i class="fas fa-sign-in-alt"></i> LOGIN';}
+  }
+  return false;
+}
+function handleRegister(e){e.preventDefault();const email=document.getElementById('regEmail').value;const pass=document.getElementById('regPass').value;const username=document.getElementById('regUser').value;auth.createUserWithEmailAndPassword(email,pass).then(cred=>{const role=(email==='admin@omega.vip')?'admin':'user';return db.collection('users').doc(cred.user.uid).set({username:username,email:email,role:role,banned:false,subscription:'none',subDuration:'N/A',hwid:'',joined:firebase.firestore.FieldValue.serverTimestamp()});}).then(()=>{toast('ACCOUNT CREATED SUCCESSFULLY','success');}).catch(err=>toast('ERROR: '+err.message,'error'));}
+function logout(){
+  // Immediately return to the login screen; do not wait for Firebase's async signOut callback.
+  state.currentUser=null;
+  state.bannedLock=false;
+  state.page='login';
+  document.body.classList.add('auth-locked');
+  const main=document.getElementById('main');
+  if(main) main.classList.add('auth-terminal-visible');
+  renderNav();
+  renderPage();
+  updateChatInputState();
+  window.scrollTo(0,0);
+  toast('SESSION TERMINATED — LOGIN SCREEN READY','success');
+  auth.signOut().catch(err=>console.warn('Sign-out completed locally; Firebase signOut error:',err));
+}
+function handleForgot(e){e.preventDefault();const email=document.getElementById('forgotEmail').value;auth.sendPasswordResetEmail(email).then(()=>{toast('RECOVERY LINK SENT','success');switchAuthTab('login');}).catch(err=>toast('ERROR: '+err.message,'error'));}
+
+auth.onAuthStateChanged(user=>{
+  if(user){
+    db.collection('users').doc(user.uid).onSnapshot(doc => {
+      if(!doc.exists) {
+        db.collection('users').doc(user.uid).set({
+          username: user.email.split('@')[0],
+          email: user.email,
+          role: (user.email === 'admin@omega.vip') ? 'admin' : 'user',
+          banned: false,
+          subscription: 'none',
+          subDuration: 'N/A',
+          hwid: '',
+          joined: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        return;
+      }
+      const userData = doc.data();
+      // ADMIN OVERRIDE: this exact Firebase account is always treated as the site admin.
+      const isOriginalAdmin = (user.email || '').trim().toLowerCase() === 'admin@omega.vip';
+      if(isOriginalAdmin) {
+        userData.role = 'admin';
+        userData.banned = false;
+        if(doc.data().role !== 'admin' || doc.data().banned === true || (doc.data().email || '').toLowerCase() !== 'admin@omega.vip') {
+          db.collection('users').doc(user.uid).set({role:'admin', email:'admin@omega.vip', banned:false}, {merge:true}).catch(err=>console.error('Original admin protection error:',err));
+        }
+      }
+      if(userData.banned === true && !isOriginalAdmin) {
+        state.bannedLock = true;
+        state.currentUser = null;
+        state.page = 'portal';
+        document.body.classList.add('banned-lock');
+        try { renderNav(); renderPage(); updateChatInputState(); window.scrollTo(0,0); } catch(e) { console.error('Ban UI transition error:', e); }
+        toast('ACCESS DENIED: ACCOUNT BANNED', 'error');
+        auth.signOut().catch(err => console.error('Ban sign-out error:', err));
+        return;
+      }
+      state.currentUser = { id: user.uid, ...userData };
+      if (state.currentUser.role !== 'admin' && !isSubscriptionActive(state.currentUser)) {
+        if (state.currentUser.subscription && state.currentUser.subscription !== 'none' && state.currentUser.subExpiresAt) {
+          state.currentUser.subscription = 'none';
+          state.currentUser.subscriptionStatus = 'expired';
+          delete state.currentUser.subDuration;
+          delete state.currentUser.subDurationDays;
+          expireVipIfNeeded({id:user.uid, ...userData});
+        }
+      }
+      document.body.classList.remove('auth-locked');
+      if(state.page === 'login') state.page = 'home';
+      renderNav(); renderPage();
+      updateChatInputState();
+    }, (err) => {
+      console.error("User data fetch error:", err);
+      toast("Error fetching user data. Check Firestore Rules.", "error");
+    });
+  } else {
+    state.currentUser = null;
+    // Unauthenticated users always land on the login screen instead of the public home page.
+    state.page = state.bannedLock ? 'portal' : 'login';
+    if(state.bannedLock) document.body.classList.add('banned-lock');
+    else document.body.classList.add('auth-locked');
+    const main=document.getElementById('main');
+    if(main) main.classList.add('auth-terminal-visible');
+    renderNav(); renderPage();
+    updateChatInputState();
+  }
+});
+
+function renderBannedPortal(){return `<div id="bannedPortal" class="portal banned-effect" style="display:flex"><div class="ban-bg-grid"></div><div class="ban-scanlines"></div><div class="ban-warning top">⚠ BAN HAMMER INITIATED ⚠</div><div class="ban-warning bottom">⚠ CONNECTION TERMINATED ⚠</div><div class="ban-container"><div class="hammer-area"><div class="shockwave sw-1"></div><div class="shockwave sw-2"></div><div class="shockwave sw-3"></div><div class="hammer-symbol">🔨</div></div><h1 class="ban-title">ACCESS DENIED</h1><div class="ban-text">ACCOUNT BANNED</div><div class="ban-subtext">YOU NO LONGER HAVE ACCESS TO THIS PORTAL</div></div></div>`;}
+
+// ====== NAVIGATOR ======
+function renderNav(){const navLinks=document.getElementById('navLinks'),authArea=document.getElementById('authArea');const links=[{id:'home',label:'Products'},{id:'proof',label:'VIP Proof'},{id:'downloads',label:'Downloads'},{id:'contact',label:'Contact'}];if(state.currentUser){links.push({id:'dashboard',label:'Dashboard'});if(state.currentUser.role==='admin')links.push({id:'admin',label:'Admin',isAdmin:true});}navLinks.innerHTML=links.map(l=>`<a class="nav-link ${state.page===l.id?'active':''} ${l.isAdmin?'admin-nav':''}" onclick="goPage('${l.id}')">${l.label}</a>`).join('');if(state.currentUser){const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (isSubscriptionActive(state.currentUser) ? (state.currentUser.subscription==='sf_rush' ? 'var(--green)' : state.currentUser.subscription==='sf_legend' ? 'var(--orange)' : state.currentUser.subscription==='both' ? 'var(--blue)' : '#ffffff') : '#ffffff');authArea.innerHTML=`<div style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem"><i class="fas fa-user-shield" style="color:${nameColor}"></i><span style="color:${nameColor};font-weight:${state.currentUser.role==='admin'?'900':'normal'}">${displayName}</span><span style="color:var(--muted);font-size:.7rem">[${state.currentUser.role}]</span></div><button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="logout()"><i class="fas fa-sign-out-alt"></i> LOG OUT</button>`;}else{authArea.innerHTML=`<button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="goPage('login')"><i class="fas fa-sign-in-alt"></i> LOGIN</button>`;}}
+function goPage(page){
+  if(state.bannedLock){ state.page='portal'; renderNav(); renderPage(); window.scrollTo(0,0); return; }
+  if(!state.currentUser && page!=='login'){ state.page='login'; renderNav(); renderPage(); document.body.classList.add('auth-locked'); return; }
+  if(['dashboard','admin'].includes(page)&&!state.currentUser){goPage('login');return}
+  if(page==='admin'&&state.currentUser?.role!=='admin'){goPage('home');return}
+  state.page=page;renderNav();renderPage();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ====== PAGES ======
+function renderPage(){const main=document.getElementById('main');if(state.bannedLock){main.innerHTML=renderBannedPortal();return;}const p=state.page;if(p==='home')main.innerHTML=renderProducts();else if(p==='proof')main.innerHTML=renderProof();else if(p==='downloads')main.innerHTML=renderDownloads();else if(p==='contact')main.innerHTML=renderContact();else if(p==='login')main.innerHTML=renderLogin();else if(p==='dashboard'&&state.currentUser){main.innerHTML=renderDashboard();loadDashboardData();}else if(p==='admin'&&state.currentUser?.role==='admin'){main.innerHTML=renderAdmin();loadAdminData();}else main.innerHTML=renderProducts();}
+
+// ====== PRODUCTS ======
+function renderProducts(){
+  const products=[
+    {name:'SPECIALFORCE RUSH',features:['Aimbot — Basic Core','ESP — Standard Render','No Recoil Module'],color:'#00ff88',tag:'TIER 01 // ACCESS',subtitle:'RUSH VIP SYSTEM',sym:'R',stats:{'Aimbot Config':88,'ESP Accuracy':85,'Stealth Bypass':98},cls:'omega-rush-card'},
+    {name:'SPECIALFORCE LEGEND',features:['AI Aimbot Neural','Stream Proof Spoofer','Daily Updates Access'],color:'#ffd700',tag:'TIER 02 // ELITE',subtitle:'LEGEND VIP SYSTEM',sym:'L',stats:{'Aimbot Config':99,'ESP Accuracy':99,'Stealth Bypass':100},cls:'omega-legend-card'}
+  ];
+
+  return `
+    <section class="omega-products-page">
+      <div class="omega-products-head">
+        <div class="omega-products-kicker">[ PREMIUM GAMING SOLUTIONS ]</div>
+        <h1 class="hero-title hero-glitch" data-text="OMEGA VIP CHEATS">OMEGA VIP CHEATS</h1>
+        <p>SELECT YOUR SPECIALFORCE SYSTEM</p>
+      </div>
+      <div class="omega-products-divider"></div>
+      <div class="omega-product-grid">
+        ${products.map(p=>`
+          <article class="omega-product-card ${p.cls}">
+            <div class="omega-hud-corner"></div>
+            <div class="omega-tier-tag">${p.tag}</div>
+            <div class="omega-product-title">${p.name}</div>
+            <div class="omega-product-subtitle">${p.subtitle}</div>
+
+            <div class="omega-stats">
+              ${Object.entries(p.stats).map(([label,value])=>`
+                <div class="omega-stat-row"><span>${label}</span><strong>${value}%</strong></div>
+                <div class="omega-progress-bar"><div class="omega-progress-fill" style="width:${value}%"></div></div>
+              `).join('')}
+            </div>
+
+            <div class="omega-features">
+              ${p.features.map(f=>`<div>${f}</div>`).join('')}
+            </div>
+
+            <button class="omega-inject-btn" onclick="triggerInject('${p.name}')">INJECT NOW</button>
+            <div class="omega-hud-line"></div>
+            <div class="omega-card-badge">${p.sym}</div>
+          </article>
+        `).join('')}
+      </div>
+    </section>`;
+}
+
+// ====== INJECT SIMULATION & PRICING MODALS ======
+function triggerInject(name) {
+    const overlay = document.getElementById('injectOverlay'), fill = document.getElementById('injectFill'), percent = document.getElementById('injectPercent'), status = document.getElementById('injectStatus');
+    overlay.classList.add('active');
+    let prog = 0;
+    const stages = ['INITIALIZING...', 'BYPASSING KERNEL...', 'SPOOFING HWID...', 'INJECTING PAYLOAD...', 'FINALIZING...'];
+    const interval = setInterval(() => {
+        prog += Math.random() * 10;
+        if (prog > 100) prog = 100;
+        fill.style.width = prog + '%';
+        percent.textContent = Math.floor(prog) + '%';
+        status.textContent = stages[Math.floor(prog / 20)];
+        if (prog >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                fill.style.width = '0%';
+                toast(`${name} INJECTED SUCCESSFULLY!`, 'success');
+                if (name === 'SPECIALFORCE RUSH') { showRushPricing(); } 
+                else if (name === 'SPECIALFORCE LEGEND') { showLegendPricing(); }
+            }, 1000);
+        }
+    }, 150);
+}
+
+function generateFeatures(features) {
+  const headers = ["D3D", "ESP", "SKELETON", "PLAYER", "WEAPON", "SETTINGS", "AIMBOT", "D3D / VISUALS", "STATS BOOSTER", "GAMEHACK", "OPK", "PLAYER MODS", "WEAPON MODS", "STAT BOOSTERS", "INCOMING FEATURES", "KILLHACK", "🚀 INCOMING FEATURES"];
+  let html = '';
+  features.forEach(f => {
+    if (headers.includes(f)) { html += `<div class="feature-cat">${f}</div>`; } 
+    else { html += `<div class="feature-item">${f}</div>`; }
+  });
+  return html;
+}
+
+function showRushPricing() {
+    document.getElementById('pricingModal').classList.add('active');
+    const nvipFeatures = ["Chams (Front and Back Adjustable Colors)","Crosshair (Adjustable Colors and type)","Naked Hack (Visible Enemy Behind Walls)","ESP","Adjustable Skeleton Type (Low and High)","Skeleton","PLAYER","Kjump","SpeedHack","Multi Exp Points","WEAPON","Norecoil (No Recoil / Adjustable)","Fast Switch","SETTINGS","Stream Proof (OBS Software)"];
+    const pvipFeatures = ["D3D","Chams (Front and Back Adjustable Colors)","Crosshair (Adjustable Colors and type)","Naked Hack (Visible Enemy Behind Walls)","ESP","Adjustable Skeleton Type (Low and High)","Manual Update Database (Less Lag/CPU, Less Detection)","FPS counter","Name (Adjustable Colors)","Health Bar","Distance","Lines","Skeleton","AIMBOT","Selection (Enemy Only / ALL)","AIM type (Head, Neck, Body)","AIM Key (Mouse, X button, CTRL, Shift)","AIM FOV (0-200 size)","AIM Smoothness (1 slow - 5 fastest)","PLAYER","No Flash","No Smoke","No GrenadeShake","Kjump","SpeedHack","SuperJump","Multipoint Boost","WEAPON","Primary Damage (Normal + Add Damage)","Secondary Damage","Melee Damage","Norecoil (No Recoil / Adjustable)","Weapon Type (Grenade, Flash, Smoke, Robot)","Fast Switch","Rapid Fire","Unli Ammo","Long Knife","No Scope","Scope Zoom","Scope Crosshair Type","SETTINGS","Stream Proof (OBS Software)","Disable Screen Capture (Anti Screenshot/Record)"];
+    const svipFeatures = ["D3D / VISUALS","Chams (Front and Back Adjustable Colors)","Crosshair (Adjustable Colors and type)","Naked Hack (Visible Enemy Behind Walls)","ESP","Adjustable Skeleton Type (Low and High)","Manual Update Database (Less Lag/CPU, Less Detection)","FPS counter","Name (Adjustable Colors)","Health Bar","Distance","Lines","Skeleton","Weapon Name (Adjustable Colors)","Grenade Name (Adjustable Colors)","Grenade Skeleton","AIMBOT","Selection (Enemy Only / ALL)","AIM type (Head, Neck, Body)","AIM Key (Mouse, X button, CTRL, Shift)","AIM FOV (0-200 size)","AIM Smoothness (1 slow - 5 fastest)","PLAYER","No Flash","No Smoke","No GrenadeShake","God Mode","Kjump","SpeedHack","SuperJump","Titan Mode","Teleport","Multi Exp Points","WEAPON","Primary Damage (Normal + Add Damage)","Secondary Damage","Melee Damage","Norecoil (No Recoil / Adjustable)","Weapon Type (Grenade, Flash, Smoke, Robot)","Fast Switch","Rapid Fire","Unli Ammo","Long Knife","No Scope","Scope Zoom","Scope Crosshair Type","STATS BOOSTER","Win / Lose","Kill / Death","Mission","Head Shot / Assist","Accuracy","Survival Points / Rate","Score Points (conversion into EXP)","GAMEHACK","Battle Mode / Auto Win","Fast Respawn / Safe Exit","Fake Lobby Chat / Fake Ingame Name (w/ Anti Kick)","Fake Killer / Fake Ingame Chat Name","Force Host / Ping Spoofer / Anti Kick","Killrate / Emblem Unlock (Visual)","OPK","Manual Update List Name (Avoid Detection)","Mode (Follow / Stay)","Type (ALL / Enemy / Single Target)","KILLHACK","Select Killer / Select Victim","Auto Head","Kill Type Weapon","SETTINGS","Stream Proof (OBS Software)","Disable Screen Capture (Anti Screenshot/Record)"];
+
+    document.getElementById('pricingModalContent').innerHTML = `
+        <h2 style="font-family:'Orbitron';font-weight:900;font-size:2rem;color:var(--green);margin-bottom:2rem;text-shadow:0 0 15px var(--green);text-align:center;">SELECT SF RUSH TIER</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1200px;width:100%;">
+            <div class="card card-cyber pricing-card" style="padding:1.5rem;border-top:3px solid var(--green)">
+                <h3 style="color:var(--green);font-family:'Orbitron';text-align:center;font-size:1.2rem;">SF RUSH NVIP</h3>
+                <ul style="list-style:none;padding:0;font-family:'Share Tech Mono';font-size:.85rem;color:var(--cyan);margin-top:1rem;">
+                    <li style="margin:.5rem 0;border-bottom:1px solid var(--border);padding-bottom:.5rem;">250 / 30 days</li>
+                    <li style="margin:.5rem 0;border-bottom:1px solid var(--border);padding-bottom:.5rem;">500 / 60 days + 15 days</li>
+                    <li style="margin:.5rem 0;">750 / 90 days + 30 days</li>
+                </ul>
+                <button onclick="showOrderForm('SF RUSH NVIP')" class="btn-primary" style="width:100%;margin-top:1.5rem;text-decoration:none;display:block;text-align:center;background:linear-gradient(135deg,var(--green),var(--cyan));">PURCHASE</button>
+                <div class="feature-list-container">${generateFeatures(nvipFeatures)}</div>
+            </div>
+            <div class="card card-cyber pricing-card" style="padding:1.5rem;border-top:3px solid var(--magenta)">
+                <h3 style="color:var(--magenta);font-family:'Orbitron';text-align:center;font-size:1.2rem;">SF RUSH PVIP</h3>
+                <ul style="list-style:none;padding:0;font-family:'Share Tech Mono';font-size:.85rem;color:var(--cyan);margin-top:1rem;">
+                    <li style="margin:.5rem 0;border-bottom:1px solid var(--border);padding-bottom:.5rem;">300 / 30 days</li>
+                    <li style="margin:.5rem 0;border-bottom:1px solid var(--border);padding-bottom:.5rem;">600 / 60 days + 15 days</li>
+                    <li style="margin:.5rem 0;">900 / 90 days + 20 days</li>
+                </ul>
+                <button onclick="showOrderForm('SF RUSH PVIP')" class="btn-primary" style="width:100%;margin-top:1.5rem;text-decoration:none;display:block;text-align:center;background:linear-gradient(135deg,var(--magenta),var(--blue));">PURCHASE</button>
+                <div class="feature-list-container">${generateFeatures(pvipFeatures)}</div>
+            </div>
+            <div class="card card-cyber pricing-card" style="padding:1.5rem;border-top:3px solid var(--gold)">
+                <h3 style="color:var(--gold);font-family:'Orbitron';text-align:center;font-size:1.2rem;">SF RUSH SVIP</h3>
+                <ul style="list-style:none;padding:0;font-family:'Share Tech Mono';font-size:.85rem;color:var(--cyan);margin-top:1rem;">
+                    <li style="margin:.5rem 0;border-bottom:1px solid var(--border);padding-bottom:.5rem;">400 / 30 days</li>
+                    <li style="margin:.5rem 0;border-bottom:1px solid var(--border);padding-bottom:.5rem;">800 / 60 days + 15 days</li>
+                    <li style="margin:.5rem 0;">1200 / 90 days + 30 days</li>
+                </ul>
+                <button onclick="showOrderForm('SF RUSH SVIP')" class="btn-primary" style="width:100%;margin-top:1.5rem;text-decoration:none;display:block;text-align:center;background:linear-gradient(135deg,var(--gold),var(--orange));">PURCHASE</button>
+                <div class="feature-list-container">${generateFeatures(svipFeatures)}</div>
+            </div>
+        </div>
+        <button onclick="closePricingModal()" class="btn-secondary" style="margin-top:2rem;">CLOSE</button>
+    `;
+}
+
+function showLegendPricing() {
+    document.getElementById('pricingModal').classList.add('active');
+    const legendFeatures = ["D3D / VISUALS","D3D Chams","Crosshair (Xhair)","PLAYER MODS","No Flash","SpeedHack","SuperJump","Imba Jump","WEAPON MODS","Unli Ammo","No Recoil","Rapid Fire","Primary Damage","Secondary Damage","Melee Setter","STAT BOOSTERS","EXP Boost","SP Boost","Kill","Lose","🚀 INCOMING FEATURES","Imgui Upgrade","ESP","Aimbot","Titan Mode"];
+    document.getElementById('pricingModalContent').innerHTML = `
+        <h2 style="font-family:'Orbitron';font-weight:900;font-size:2rem;color:var(--gold);margin-bottom:2rem;text-shadow:0 0 15px var(--gold);text-align:center;">SF LEGEND VIP</h2>
+        <div style="display:flex;justify-content:center;">
+            <div class="card card-cyber pricing-card" style="padding:2.5rem;max-width:400px;width:100%;text-align:center;border-top:3px solid var(--gold);border-left:3px solid var(--gold);border-right:3px solid var(--gold);">
+                <i class="fas fa-crown" style="font-size:3rem;color:var(--gold);margin-bottom:1rem;text-shadow:0 0 20px var(--gold)"></i>
+                <h3 style="color:var(--gold);font-family:'Orbitron';font-size:1.5rem;text-shadow:0 0 10px var(--gold);">SF LEGEND VIP</h3>
+                <p style="font-family:'Orbitron';font-weight:900;font-size:3rem;color:var(--cyan);margin:1.5rem 0;text-shadow:0 0 15px var(--cyan)">800<span style="font-size:1rem;color:var(--muted);font-weight:400"> / 30 days</span></p>
+                <button onclick="showOrderForm('SF LEGEND VIP')" class="btn-primary" style="width:100%;margin-top:1rem;text-decoration:none;display:block;text-align:center;background:linear-gradient(135deg,var(--gold),var(--orange));font-size:1.1rem;padding:1rem;">PURCHASE NOW</button>
+                <div class="feature-list-container" style="text-align:left;">${generateFeatures(legendFeatures)}</div>
+            </div>
+        </div>
+        <button onclick="closePricingModal()" class="btn-secondary" style="margin-top:2rem;">CLOSE</button>
+    `;
+}
+
+function closePricingModal() {
+    document.getElementById('pricingModal').classList.remove('active');
+    document.getElementById('pricingModalContent').innerHTML = '';
+}
+
+// ====== ORDER FORM MODAL (STATIC GCASH AT TOP) ======
+function showOrderForm(product) {
+    closePricingModal();
+    document.getElementById('orderModal').classList.add('active');
+    document.getElementById('orderModalContent').innerHTML = `
+        <div class="card card-cyber order-form-card" style="padding:2rem;">
+            <h2 style="font-family:'Orbitron';font-weight:900;text-align:center;color:var(--cyan);margin-bottom:1rem;text-shadow:0 0 10px var(--cyan)">PURCHASE ORDER FORM</h2>
+            
+            <div class="omega-payment-card">
+                <div class="omega-payment-top">
+                    <div class="omega-payment-icon"><i class="fas fa-wallet"></i></div>
+                    <div><div class="omega-payment-kicker">SECURE PAYMENT CHANNEL</div><div class="omega-payment-title">GCASH</div></div>
+                    <div class="omega-payment-status"><span></span> ONLINE</div>
+                </div>
+                <div class="omega-payment-grid">
+                    <div><span>GCASH NUMBER</span><strong>09950873267</strong></div>
+                    <div><span>ACCOUNT NAME</span><strong>RU...O J. S.</strong></div>
+                </div>
+                <div class="omega-payment-note"><i class="fas fa-shield-alt"></i> SEND PAYMENT ONLY TO THE DETAILS SHOWN ABOVE</div>
+            </div>
+            
+            <form onsubmit="submitOrder(event)" style="display:flex;flex-direction:column;gap:1rem">
+                <div>
+                    <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan)">SELECTED PRODUCT MODULE</label>
+                    <select id="orderProduct" required style="margin-top:.5rem">
+                        <option value="SF RUSH NVIP" ${product==='SF RUSH NVIP'?'selected':''}>SF RUSH NVIP</option>
+                        <option value="SF RUSH PVIP" ${product==='SF RUSH PVIP'?'selected':''}>SF RUSH PVIP</option>
+                        <option value="SF RUSH SVIP" ${product==='SF RUSH SVIP'?'selected':''}>SF RUSH SVIP</option>
+                        <option value="SF LEGEND VIP" ${product==='SF LEGEND VIP'?'selected':''}>SF LEGEND VIP</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan)">SELECT DURATION</label>
+                    <select id="orderDuration" required style="margin-top:.5rem">
+                        <option value="30 days">30 days</option>
+                        <option value="60 days + 15 days promo">60 days + 15 days promo</option>
+                        <option value="90 days + 30 days promo">90 days + 30 days promo</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan)">USERNAME</label>
+                    <input id="orderUsername" type="text" value="${state.currentUser?.username || ''}" required style="margin-top:.5rem">
+                </div>
+                <div>
+                    <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan)">HWID NUMBER</label>
+                    <input id="orderHwid" type="text" value="${state.currentUser?.hwid || ''}" placeholder="Enter your HWID" required style="margin-top:.5rem">
+                </div>
+                <div>
+                    <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan)">PAYMENT METHOD</label>
+                    <select id="orderPayment" required style="margin-top:.5rem">
+                        <option value="GCash">GCash</option>
+                        <option value="PayMaya">PayMaya</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan)">PROOF REFERENCE NUMBER</label>
+                    <input id="orderRef" type="text" placeholder="Enter Reference Number" required style="margin-top:.5rem">
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top:1rem"><i class="fas fa-paper-plane"></i> SUBMIT ORDER</button>
+                <button type="button" onclick="closeOrderForm()" class="btn-secondary">CANCEL</button>
+            </form>
+        </div>
+    `;
+}
+
+function closeOrderForm() {
+    document.getElementById('orderModal').classList.remove('active');
+    document.getElementById('orderModalContent').innerHTML = '';
+}
+
+function submitOrder(e) {
+    e.preventDefault();
+    const orderData = {
+        product: document.getElementById('orderProduct').value,
+        duration: document.getElementById('orderDuration').value,
+        username: document.getElementById('orderUsername').value,
+        hwid: document.getElementById('orderHwid').value,
+        payment: document.getElementById('orderPayment').value,
+        ref: document.getElementById('orderRef').value,
+        uid: state.currentUser.id,
+        status: 'pending',
+        date: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    db.collection('orders').add(orderData).then(() => {
+        closeOrderForm();
+        showSuccessOverlay();
+    }).catch(err => toast('ERROR: '+err.message,'error'));
+}
+
+function showSuccessOverlay() {
+    document.getElementById('successOverlay').classList.add('active');
+    setTimeout(() => { closeSuccessOverlay(); }, 3000);
+}
+function closeSuccessOverlay() {
+    document.getElementById('successOverlay').classList.remove('active');
+}
+
+// ====== DOWNLOADS PAGE (WITH ACCESS RESTRICTION) ======
+function renderDownloads(){
+  const rushStatus = state.downloads.rush;
+  const legendStatus = state.downloads.legend;
+  const rushLink = state.downloads.rushLink;
+  const legendLink = state.downloads.legendLink;
+
+  const sub = state.currentUser ? state.currentUser.subscription : 'none';
+  const subActive = state.currentUser ? isSubscriptionActive(state.currentUser) : false;
+  const hasRush = subActive && (sub === 'sf_rush' || sub === 'both');
+  const hasLegend = subActive && (sub === 'sf_legend' || sub === 'both');
+
+  const downloadButton = (link, enabled, tone='green') => {
+    const activeClass = enabled && link ? (tone === 'gold' ? 'vip-active legend-active' : 'vip-active rush-active') : '';
+    return enabled && link
+      ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="download-box ${activeClass}"><i class="fas fa-download"></i><span>DOWNLOAD</span></a>`
+      : `<button class="download-box download-disabled" type="button" disabled><i class="fas fa-download"></i><span>DOWNLOAD</span></button>`;
+  };
+
+  const rushColor = rushStatus === 'Undetected' ? 'var(--green)' : rushStatus === 'Detected' ? 'var(--red)' : 'var(--gold)';
+  const legendColor = legendStatus === 'Undetected' ? 'var(--green)' : legendStatus === 'Detected' ? 'var(--red)' : 'var(--gold)';
+
+  return `
+    <section class="downloads-page">
+      <div class="downloads-hero">
+        <div class="downloads-kicker">[ OMEGA // SOFTWARE DOWNLOAD TERMINAL ]</div>
+        <h1 class="downloads-title">DOWNLOADS</h1>
+        <p class="downloads-subtitle">Download the software based on your purchased VIP subscription.</p>
+      </div>
+
+      <div class="downloads-grid">
+        <article class="cyber-download-card rush">
+          <span class="cyber-corner tl"></span><span class="cyber-corner br"></span>
+          <div class="cyber-emblem"><i class="fas fa-crosshairs"></i></div>
+          <h2 class="cyber-download-title"><span>SPECIALFORCE</span><span>RUSH</span></h2>
+          <div class="cyber-divider"></div>
+          <div class="cyber-status" style="--status-glow:${rushColor}">Status: <strong style="color:${rushColor};text-shadow:0 0 9px ${rushColor}">${rushStatus}</strong></div>
+          ${downloadButton(rushLink, hasRush, 'green')}
+        </article>
+
+        <article class="cyber-download-card legend">
+          <span class="cyber-corner tl"></span><span class="cyber-corner br"></span>
+          <div class="cyber-emblem"><i class="fas fa-star"></i></div>
+          <h2 class="cyber-download-title"><span>SPECIALFORCE</span><span>LEGEND</span></h2>
+          <div class="cyber-divider"></div>
+          <div class="cyber-status" style="--status-glow:${legendColor}">Status: <strong style="color:${legendColor};text-shadow:0 0 9px ${legendColor}">${legendStatus}</strong></div>
+          ${downloadButton(legendLink, hasLegend, 'gold')}
+        </article>
+      </div>
+    </section>`;
+}
+
+// Global Realtime listener for download statuses and links
+db.collection('config').doc('download_statuses').onSnapshot(doc => {
+    if (doc.exists) {
+        state.downloads.rush = doc.data().rush || 'Updating';
+        state.downloads.legend = doc.data().legend || 'Updating';
+        state.downloads.rushLink = doc.data().rushLink || '';
+        state.downloads.legendLink = doc.data().legendLink || '';
+    } else {
+        state.downloads.rush = 'Updating';
+        state.downloads.legend = 'Updating';
+        state.downloads.rushLink = '';
+        state.downloads.legendLink = '';
+    }
+    
+    if (state.page === 'downloads') document.getElementById('main').innerHTML = renderDownloads();
+    if (state.page === 'admin') {
+        const rushSel = document.getElementById('rushStatus');
+        const legendSel = document.getElementById('legendStatus');
+        const rushInp = document.getElementById('rushLink');
+        const legendInp = document.getElementById('legendLink');
+        if(rushSel) rushSel.value = state.downloads.rush;
+        if(legendSel) legendSel.value = state.downloads.legend;
+        if(rushInp) rushInp.value = state.downloads.rushLink;
+        if(legendInp) legendInp.value = state.downloads.legendLink;
+    }
+}, (err) => { console.error("Download status error:", err); });
+
+// ====== VIP PROOF ======
+function renderProof(){
+  return `
+    <section style="padding:2rem 0">
+      <div style="text-align:center;margin-bottom:3rem">
+        <div style="font-family:'Share Tech Mono';color:var(--cyan);letter-spacing:.4em;font-size:.8rem;margin-bottom:1rem">[ VERIFIED RESULTS ]</div>
+        <h1 style="font-family:'Orbitron';font-weight:900;font-size:clamp(2rem,6vw,4rem);background:linear-gradient(135deg,var(--cyan),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent">VIP PROOF</h1>
+        <p style="color:var(--muted);font-family:'Share Tech Mono';margin-top:1rem">Watch actual gameplay from our VIP members using OMEGA Cheats on Special Force 2.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;max-width:900px;margin:0 auto">
+        <div class="card card-cyber pricing-card" style="overflow:hidden">
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-bottom:1px solid var(--green)">
+            <iframe src="https://www.youtube.com/embed/fKFHV_36m6U" style="position:absolute;top:0;left:0;width:100%;height:100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:'Orbitron';font-weight:700;color:var(--green);margin:0;text-shadow:0 0 10px var(--green)">SF RUSH VIP</h3>
+            <p style="font-family:'Share Tech Mono';font-size:.8rem;color:var(--muted);margin-top:.5rem">Gameplay footage using SF RUSH package. Smooth aimbot and ESP features.</p>
+          </div>
+        </div>
+        <div class="card card-cyber pricing-card" style="overflow:hidden">
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-bottom:1px solid var(--gold)">
+            <iframe src="https://www.youtube.com/embed/q2RHfCF36G8" style="position:absolute;top:0;left:0;width:100%;height:100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:'Orbitron';font-weight:700;color:var(--gold);margin:0;text-shadow:0 0 10px var(--gold)">SF LEGEND VIP</h3>
+            <p style="font-family:'Share Tech Mono';font-size:.8rem;color:var(--muted);margin-top:.5rem">Premium gameplay footage using SF LEGEND package. AI Aimbot and full stream proof.</p>
+          </div>
+        </div>
+      </div>
+    </section>`;
+}
+
+// ====== CONTACT ======
+function renderContact(){
+  return `
+    <section style="padding:2rem 0">
+      <div style="text-align:center;margin-bottom:3rem">
+        <div style="font-family:'Share Tech Mono';color:var(--cyan);letter-spacing:.4em;font-size:.8rem;margin-bottom:1rem">[ SECURE COMMUNICATION ]</div>
+        <h1 class="hero-title" style="font-size:clamp(2rem,6vw,4rem);background:linear-gradient(135deg,var(--cyan),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent">CONTACT US</h1>
+        <p style="color:var(--muted);font-family:'Share Tech Mono';margin-top:1rem">Reach out to us directly through our official channels.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;max-width:800px;margin:0 auto;">
+        <a href="https://discord.gg/FyzuFnhqP2" target="_blank" class="card card-cyber contact-card" style="padding:2.5rem;text-align:center;border-top:3px solid #5865F2;">
+          <i class="fab fa-discord" style="font-size:4rem;color:#5865F2;text-shadow:0 0 20px #5865F2;margin-bottom:1rem;display:block;"></i>
+          <h2 style="font-family:'Orbitron';font-weight:700;color:var(--cyan);margin:0;">DISCORD</h2>
+          <p style="font-family:'Share Tech Mono';color:var(--muted);font-size:.8rem;margin-top:.5rem;">Join our server for support and updates.</p>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61593510722329" target="_blank" class="card card-cyber contact-card" style="padding:2.5rem;text-align:center;border-top:3px solid #0084FF;">
+          <i class="fab fa-facebook-messenger" style="font-size:4rem;color:#0084FF;text-shadow:0 0 20px #0084FF;margin-bottom:1rem;display:block;"></i>
+          <h2 style="font-family:'Orbitron';font-weight:700;color:var(--cyan);margin:0;">MESSENGER</h2>
+          <p style="font-family:'Share Tech Mono';color:var(--muted);font-size:.8rem;margin-top:.5rem;">Message us directly on Facebook.</p>
+        </a>
+      </div>
+    </section>`;
+}
+
+// ====== LOGIN & REGISTER ======
+function renderLogin(){return `<section style="padding:3rem 0;max-width:480px;margin:0 auto"><div style="text-align:center;margin-bottom:2rem"><div style="font-family:'Share Tech Mono';color:var(--cyan);letter-spacing:.4em;font-size:.8rem;margin-bottom:1rem">[ SECURE ACCESS ]</div><h1 style="font-family:'Orbitron';font-weight:900;font-size:2.5rem;color:var(--cyan);letter-spacing:.1em">ACCESS TERMINAL</h1></div><div style="display:flex;gap:1rem;margin-bottom:2rem"><button id="tabLogin" class="btn-primary" style="flex:1" onclick="switchAuthTab('login')">LOGIN</button><button id="tabRegister" class="btn-secondary" style="flex:1" onclick="switchAuthTab('register')">CREATE</button></div><form id="loginForm" onsubmit="handleLogin(event)" class="card card-cyber" style="padding:2rem;display:flex;flex-direction:column;gap:1rem"><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">EMAIL ADDRESS</label><input id="loginUser" type="email" placeholder="enter email" required style="margin-top:.5rem"></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">PASSWORD</label><input id="loginPass" type="password" placeholder="enter password" required style="margin-top:.5rem"></div><div style="text-align:right"><a onclick="showForgot()" style="color:var(--magenta);font-family:'Share Tech Mono';font-size:.8rem;cursor:pointer">Forgot password?</a></div><button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> LOGIN</button></form><form id="registerForm" onsubmit="handleRegister(event)" class="card card-cyber" style="padding:2rem;display:none;flex-direction:column;gap:1rem"><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">USERNAME</label><input id="regUser" placeholder="choose username" required style="margin-top:.5rem"></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">EMAIL</label><input id="regEmail" type="email" placeholder="enter email" required style="margin-top:.5rem"></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">PASSWORD</label><input id="regPass" type="password" placeholder="create password (min 6 chars)" required style="margin-top:.5rem"></div><button type="submit" class="btn-primary"><i class="fas fa-user-plus"></i> CREATE ACCOUNT</button></form><form id="forgotForm" onsubmit="handleForgot(event)" class="card card-cyber" style="padding:2rem;display:none;flex-direction:column;gap:1rem"><div style="text-align:center"><i class="fas fa-key" style="font-size:2rem;color:var(--magenta);margin-bottom:1rem"></i><h3 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em">PASSWORD RECOVERY</h3></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">EMAIL</label><input id="forgotEmail" type="email" placeholder="enter registered email" required style="margin-top:.5rem"></div><button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> SEND RECOVERY LINK</button><button type="button" class="btn-secondary" onclick="switchAuthTab('login')">BACK TO LOGIN</button></form><div style="text-align:center;font-family:'Orbitron';font-size:.75rem;color:var(--muted);margin-top:1rem">Powered by: <span style="color:var(--cyan);font-weight:700">OMEGAVIP</span></div></section>`;}
+function switchAuthTab(tab){document.getElementById('loginForm').style.display=tab==='login'?'flex':'none';document.getElementById('registerForm').style.display=tab==='register'?'flex':'none';document.getElementById('forgotForm').style.display=tab==='forgot'?'flex':'none';const l=document.getElementById('tabLogin'),r=document.getElementById('tabRegister');if(tab==='login'){l.style.opacity='1';r.style.opacity='.5'}else if(tab==='register'){l.style.opacity='.5';r.style.opacity='1'}else{l.style.opacity='.5';r.style.opacity='.5'}}
+function showForgot(){switchAuthTab('forgot')}
+
+// ====== USER DASHBOARD (WITH INBOX, SEND MSG, HWID BOX) ======
+function renderDashboard(){
+  const sub = state.currentUser.subscription || 'none';
+  let subColor = sub === 'sf_rush' ? 'var(--green)' : sub === 'sf_legend' ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : 'var(--muted)';
+  let subLabel = sub === 'sf_rush' ? 'SF RUSH VIP' : sub === 'sf_legend' ? 'SF LEGEND VIP' : sub === 'both' ? 'RUSH + LEGEND' : 'NO SUBSCRIPTION';
+  const subActive = isSubscriptionActive(state.currentUser);
+  const countdown = state.currentUser.subExpiresAt ? formatCountdown(state.currentUser.subExpiresAt) : '';
+  const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;
+  const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (subActive ? (sub === 'sf_rush' ? 'var(--green)' : sub === 'sf_legend' ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : '#ffffff') : '#ffffff');
+  const hwid = state.currentUser.hwid || '';
+  
+  return `<section style="padding:2rem 0">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+      <div>
+        <div style="font-family:'Share Tech Mono';color:var(--cyan);letter-spacing:.4em;font-size:.8rem">[ USER DASHBOARD ]</div>
+        <h1 style="font-family:'Orbitron';font-weight:900;font-size:2.5rem;color:${nameColor};letter-spacing:.05em;margin:.5rem 0">WELCOME, ${displayName}</h1>
+        <p style="font-family:'Share Tech Mono';color:var(--muted);font-size:.85rem">ID: ${state.currentUser.id} • <span style="color:${subColor};font-weight:700">${subLabel}</span></p>
+        <p style="font-family:'Share Tech Mono';color:${subActive?'var(--green)':'var(--red)'};font-size:.78rem;margin-top:.45rem">${subActive ? '● ACTIVE VIP' : '● NORMAL MEMBER'}${subActive ? ' • <span data-vip-countdown="'+(state.currentUser.subExpiresAt && (state.currentUser.subExpiresAt.toDate ? state.currentUser.subExpiresAt.toDate().toISOString() : new Date(state.currentUser.subExpiresAt).toISOString()))+'" style="color:var(--green);font-weight:900;letter-spacing:.08em">'+countdown+'</span>' : ''}</p>
+      </div>
+      <div class="hex-badge" style="width:80px;height:88px;background:linear-gradient(135deg,var(--cyan),var(--green));display:flex;align-items:center;justify-content:center;font-family:'Orbitron';font-weight:900;font-size:2rem;color:#000;box-shadow:0 0 20px var(--cyan)">${displayName[0].toUpperCase()}</div>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem">
+      <div class="card card-cyber" style="padding:1.5rem;border-left:3px solid ${subColor}">
+        <i class="fas fa-crown" style="color:${subColor};font-size:1.5rem"></i>
+        <div style="font-family:'Orbitron';font-weight:900;font-size:1.2rem;margin-top:.5rem;color:${subColor}">${subLabel}</div>
+        ${subActive ? `<div style="margin-top:.75rem;padding:.65rem .8rem;border:1px solid ${subColor};background:rgba(0,0,0,.35);box-shadow:0 0 12px ${subColor};border-radius:6px;text-align:center"><div style="font-family:'Share Tech Mono';font-size:.62rem;color:var(--muted);letter-spacing:.15em">VIP TIME REMAINING</div><div data-vip-countdown="${state.currentUser.subExpiresAt && (state.currentUser.subExpiresAt.toDate ? state.currentUser.subExpiresAt.toDate().toISOString() : new Date(state.currentUser.subExpiresAt).toISOString())}" style="font-family:'Orbitron';font-size:1rem;font-weight:900;color:${subColor};margin-top:.3rem;letter-spacing:.05em">${countdown}</div></div>` : ''}
+      </div>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem" class="dash-grid">
+      <div class="card card-cyber" style="padding:1.5rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:1rem"><h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--cyan);margin:0"><i class="fas fa-inbox"></i> INBOX</h2><button type="button" class="btn-secondary" onclick="clearUserInbox()" style="padding:.5rem .8rem;font-size:.7rem;color:var(--red);border-color:var(--red)"><i class="fas fa-trash"></i> CLEAR INBOX</button></div>
+        <div style="max-height:400px;overflow-y:auto" id="userInbox">
+          <div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading messages...</p></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2rem">
+        <div class="card card-cyber" style="padding:1.5rem">
+          <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--magenta);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-paper-plane"></i> SEND MESSAGE TO ADMIN</h2>
+          <form onsubmit="sendUserMsgToAdmin(event)" style="display:flex;flex-direction:column;gap:1rem">
+            <textarea id="msgToAdmin" rows="4" placeholder="Type your message... (Enter to send • Shift+Enter for new line)" required></textarea>
+            <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,var(--magenta),var(--green))"><i class="fas fa-paper-plane"></i> SEND</button>
+          </form>
+        </div>
+        <div class="card card-cyber" style="padding:1.5rem">
+          <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--gold);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-fingerprint"></i> HWID SUBMISSION</h2>
+          <form onsubmit="saveHwid(event)" style="display:flex;flex-direction:column;gap:1rem">
+            <input id="hwidInput" type="text" value="${hwid}" placeholder="Paste your HWID here">
+            <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,var(--gold),var(--orange))"><i class="fas fa-save"></i> SAVE HWID</button>
+          </form>
+        </div>
+        <div class="card card-cyber" style="padding:1.5rem">
+          <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--magenta);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-key"></i> CHANGE PASSWORD</h2>
+          <form onsubmit="changePassword(event)" style="display:flex;flex-direction:column;gap:1rem">
+            <input id="currPass" type="password" placeholder="Current Password" required>
+            <input id="newPass" type="password" placeholder="New Password" required>
+            <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,var(--magenta),var(--red))"><i class="fas fa-save"></i> UPDATE PASSWORD</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+function loadDashboardData(){
+  // Real-time Inbox Listener
+  db.collection('messages').where("to", "==", state.currentUser.id).onSnapshot(snap=>{
+    const c=document.getElementById('userInbox'); if(!c) return;
+    if(snap.empty){
+      c.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-inbox" style="font-size:2rem;opacity:.3"></i><p>No messages</p></div>`;
+      return;
+    }
+    c.innerHTML=snap.docs.slice().sort((a,b)=>{ const av=(a.data().timestamp||a.data().date||a.data().createdAt); const bv=(b.data().timestamp||b.data().date||b.data().createdAt); const am=av&&av.toMillis?av.toMillis():av?new Date(av).getTime():0; const bm=bv&&bv.toMillis?bv.toMillis():bv?new Date(bv).getTime():0; return bm-am; }).map(d=>{
+      const m=d.data();
+      let date = '';
+      const ts = m.timestamp || m.date || m.createdAt; if (ts && typeof ts.toMillis === 'function') date = new Date(ts.toMillis()).toLocaleString(); else if (ts) date = new Date(ts).toLocaleString();
+      const isRead = m.read === true;
+      const bgColor = isRead ? 'rgba(255,255,255,0.02)' : 'rgba(0,243,255,.05)';
+      const borderColor = isRead ? 'var(--muted)' : 'var(--cyan)';
+      return `<div style="padding:1rem;border-left:2px solid ${borderColor};margin-bottom:.5rem;background:${bgColor};cursor:pointer;" onclick="markUserInboxRead('${d.id}')">
+        <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted);margin-bottom:.25rem">
+          <span>FROM: <span style="color:var(--cyan)">${m.fromName}</span></span>
+          <span>${date}</span>
+        </div>
+        <div style="font-family:'Share Tech Mono';font-size:.9rem;color:var(--fg)">${m.text}</div>
+      </div>`;
+    }).join('');
+  }, err => { console.error("Inbox error:", err); });
+}
+function markUserInboxRead(id) { db.collection('messages').doc(id).update({read: true}).catch(()=>{}); }
+async function clearUserInbox(){ if(!state.currentUser) return; if(!confirm('Clear all messages in your inbox?')) return; try{ const snap=await db.collection('messages').where('to','==',state.currentUser.id).get(); const batch=db.batch(); snap.docs.forEach(d=>batch.delete(d.ref)); await batch.commit(); toast('INBOX CLEARED','success'); }catch(err){ toast('ERROR: '+err.message,'error'); } }
+async function clearAdminInbox(){ if(!confirm('Clear all admin inbox messages?')) return; try{ const snap=await db.collection('messages').where('to','==','admin').get(); const batch=db.batch(); snap.docs.forEach(d=>batch.delete(d.ref)); await batch.commit(); toast('ADMIN INBOX CLEARED','success'); }catch(err){ toast('ERROR: '+err.message,'error'); } }
+function sendUserMsgToAdmin(e) {
+  e.preventDefault();
+  const text = document.getElementById('msgToAdmin').value.trim();
+  if(!text) return;
+  db.collection('messages').add({
+    from: state.currentUser.id,
+    fromName: state.currentUser.username,
+    to: 'admin',
+    text: text,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    document.getElementById('msgToAdmin').value = '';
+    toast('MESSAGE SENT TO ADMIN', 'success');
+  }).catch(err => toast('ERROR: '+err.message, 'error'));
+}
+// Reliable Enter-to-send handlers for Dashboard User -> Admin and Admin -> User.
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' || e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return;
+  const el = e.target;
+  if (!el || el.tagName !== 'TEXTAREA') return;
+  if (el.id === 'msgToAdmin') {
+    e.preventDefault();
+    sendUserMsgToAdmin(e);
+  } else if (el.id === 'adminMsgText') {
+    e.preventDefault();
+    sendAdminMessage(e);
+  }
+}, true);
+
+function saveHwid(e) {
+  e.preventDefault();
+  const hwid = document.getElementById('hwidInput').value.trim();
+  db.collection('users').doc(state.currentUser.id).update({ hwid: hwid }).then(()=>{
+    state.currentUser.hwid = hwid;
+    toast('HWID SAVED SUCCESSFULLY', 'success');
+  }).catch(err => toast('ERROR: '+err.message, 'error'));
+}
+function changePassword(e) {
+  e.preventDefault();
+  const user = firebase.auth().currentUser;
+  const currPass = document.getElementById('currPass').value;
+  const newPass = document.getElementById('newPass').value;
+  const cred = firebase.auth.EmailAuthProvider.credential(user.email, currPass);
+  user.reauthenticateWithCredential(cred).then(() => {
+    return user.updatePassword(newPass);
+  }).then(() => {
+    toast('PASSWORD UPDATED SUCCESSFULLY', 'success');
+    document.getElementById('currPass').value = '';
+    document.getElementById('newPass').value = '';
+  }).catch(err => toast('ERROR: '+err.message, 'error'));
+}
+
+// ====== ADMIN DASHBOARD (WITH LINK CONTROL) ======
+function renderAdmin(){return `
+<section style="padding:2rem 0">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+    <div>
+      <div style="font-family:'Share Tech Mono';color:var(--magenta);letter-spacing:.4em;font-size:.8rem">[ ADMIN CONTROL ]</div>
+      <h1 style="font-family:'Orbitron';font-weight:900;font-size:2.5rem;color:var(--magenta);letter-spacing:.05em;margin:.5rem 0">ADMIN PANEL</h1>
+      <p style="font-family:'Share Tech Mono';color:var(--muted);font-size:.85rem">Logged in as: <span style="color:var(--red);font-weight:900">${state.currentUser.username.toUpperCase()}</span></p>
+    </div>
+    <div class="hex-badge" style="width:80px;height:88px;background:linear-gradient(135deg,var(--magenta),var(--red));display:flex;align-items:center;justify-content:center;font-family:'Orbitron';font-weight:900;font-size:2rem;color:#fff;box-shadow:0 0 20px var(--magenta)">A</div>
+  </div>
+  
+  <div class="card card-cyber" style="padding:1.5rem;margin-bottom:2rem;background:rgba(0,0,0,.8)">
+    <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--gold);margin:0 0 1rem 0"><i class="fas fa-bullhorn"></i> BROADCAST CONTROL</h2>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <input id="annText" placeholder="Type message to broadcast..." style="border-color:var(--gold);color:var(--gold)">
+      <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem;cursor:pointer">
+          <input type="color" id="annColor" value="#bc13fe" style="width:50px;height:30px;padding:0;border:none;cursor:pointer"> Color
+        </label>
+        <label style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem;cursor:pointer">
+          <input type="number" id="annSize" value="14" min="10" max="48" style="width:60px;padding:.25rem;"> Size
+        </label>
+        <label style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem;cursor:pointer">
+          <input type="checkbox" id="annBold" style="width:auto;cursor:pointer"> Bold
+        </label>
+        <button onclick="saveAnnouncement()" class="btn-primary" style="margin-left:auto;background:linear-gradient(135deg,var(--gold),var(--orange))">BROADCAST</button>
+        <button onclick="clearAnnouncement()" class="btn-secondary" style="border-color:var(--red);color:var(--red)">CLEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-cyber" style="padding:1.5rem;margin-bottom:2rem;background:rgba(0,0,0,.8)">
+    <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--cyan);margin:0 0 1rem 0"><i class="fas fa-download"></i> DOWNLOAD CONTROL & LINKS</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+      <div>
+        <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--green)">SPECIALFORCE RUSH STATUS</label>
+        <select id="rushStatus" style="margin-top:.5rem">
+          <option value="Updating">Updating</option>
+          <option value="Undetected">Undetected</option>
+          <option value="Detected">Detected</option>
+        </select>
+        <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--green);margin-top:.75rem;display:block">SPECIALFORCE RUSH DOWNLOAD LINK</label>
+        <input id="rushLink" type="text" placeholder="Enter Mediafire/Google Drive Link" style="margin-top:.5rem">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--gold)">SPECIALFORCE LEGEND STATUS</label>
+        <select id="legendStatus" style="margin-top:.5rem">
+          <option value="Updating">Updating</option>
+          <option value="Undetected">Undetected</option>
+          <option value="Detected">Detected</option>
+        </select>
+        <label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--gold);margin-top:.75rem;display:block">SPECIALFORCE LEGEND DOWNLOAD LINK</label>
+        <input id="legendLink" type="text" placeholder="Enter Mediafire/Google Drive Link" style="margin-top:.5rem">
+      </div>
+    </div>
+    <button onclick="saveDownloadStatus()" class="btn-primary" style="margin-top:1rem">SAVE STATUS & LINKS</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem">
+    <div class="card card-cyber" style="padding:1.5rem;border-left:3px solid var(--cyan)"><i class="fas fa-users" style="color:var(--cyan);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="totalUsers">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">TOTAL MEMBERS</div></div>
+    <div class="card card-cyber" style="padding:1.5rem;border-left:3px solid var(--magenta)"><i class="fas fa-inbox" style="color:var(--magenta);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="adminInboxCount">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">ADMIN INBOX</div></div>
+    <div class="card card-cyber" style="padding:1.5rem;border-left:3px solid var(--gold)"><i class="fas fa-shopping-cart" style="color:var(--gold);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="pendingOrders">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">PENDING ORDERS</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem" class="dash-grid">
+    <div style="display:flex;flex-direction:column;gap:2rem">
+      <div class="card card-cyber" style="padding:1.5rem">
+        <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--gold);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-shopping-cart"></i> ORDER CONTROL</h2>
+        <div style="max-height:400px;overflow-y:auto" id="adminOrdersContainer"><div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading orders...</p></div></div>
+      </div>
+      <div class="card card-cyber" style="padding:1.5rem">
+        <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--cyan);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-users-cog"></i> MEMBER & VIP CONTROL</h2>
+        <div style="max-height:400px;overflow-y:auto" id="adminUsersContainer"><div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading members...</p></div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem">
+      <div class="card card-cyber" style="padding:1.5rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:1rem"><h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--magenta);margin:0"><i class="fas fa-inbox"></i> ADMIN INBOX</h2><button type="button" class="btn-secondary" onclick="clearAdminInbox()" style="padding:.5rem .8rem;font-size:.7rem;color:var(--red);border-color:var(--red)"><i class="fas fa-trash"></i> CLEAR INBOX</button></div>
+        <div style="max-height:300px;overflow-y:auto" id="adminInboxContainer"><div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading...</p></div></div>
+      </div>
+      <div class="card card-cyber" style="padding:1.5rem">
+        <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--green);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-paper-plane"></i> REPLY TO USER</h2>
+        <form onsubmit="sendAdminMessage(event)" style="display:flex;flex-direction:column;gap:1rem">
+          <div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--green);letter-spacing:.1em">SEND TO (SELECT USER)</label><select id="adminMsgTo" style="margin-top:.5rem" required></select></div>
+          <div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--green);letter-spacing:.1em">MESSAGE</label><textarea id="adminMsgText" rows="4" placeholder="Type your message... (Enter to send • Shift+Enter for new line)" required style="margin-top:.5rem"></textarea></div>
+          <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,var(--magenta),var(--green))"><i class="fas fa-paper-plane"></i> SEND</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>`;}
+
+function saveDownloadStatus() {
+  const rush = document.getElementById('rushStatus').value;
+  const legend = document.getElementById('legendStatus').value;
+  const rushLink = document.getElementById('rushLink').value;
+  const legendLink = document.getElementById('legendLink').value;
+  db.collection('config').doc('download_statuses').set({ rush, legend, rushLink, legendLink }).then(()=>toast('STATUS & LINKS UPDATED','success')).catch(err=>toast('ERROR: '+err.message,'error'));
+}
+
+function saveAnnouncement() {
+  const text = document.getElementById('annText').value.trim();
+  if(!text) return toast('Type a message first','error');
+  const color = document.getElementById('annColor').value;
+  const bold = document.getElementById('annBold').checked;
+  const size = document.getElementById('annSize').value || 14;
+  db.collection('config').doc('announcement').set({ text, color, bold, size }).then(()=>toast('BROADCAST SENT','success')).catch(err=>toast('ERROR: '+err.message,'error'));
+}
+function clearAnnouncement() {
+  db.collection('config').doc('announcement').delete().then(()=>{toast('BROADCAST CLEARED','success');document.getElementById('annText').value='';}).catch(err=>toast('ERROR: '+err.message,'error'));
+}
+
+function loadAdminData(){
+  db.collection('users').onSnapshot(snap=>{
+    let total=0,banned=0;
+    const c=document.getElementById('adminUsersContainer');
+    const select=document.getElementById('adminMsgTo');
+    if(snap.empty){c.innerHTML=`<tr><td colspan="5" style="text-align:center;color:var(--muted);font-family:'Share Tech Mono';padding:2rem">No members yet</td></tr>`;return;}
+    let html='<table><thead><tr><th>USER</th><th>VIP STATUS</th><th>VIP COUNTDOWN</th><th>HWID</th><th>ACTIONS</th></tr></thead><tbody>';
+    let selectHtml='';
+    snap.docs.forEach(d=>{
+      const u=d.data();
+      if(u.role!=='admin')total++;
+      if(u.role!=='admin' && u.subscription && u.subscription !== 'none' && u.subExpiresAt && !isSubscriptionActive(u)) expireVipIfNeeded({id:d.id, ...u});
+      if(u.banned)banned++;
+      
+      const sub = u.subscription || 'none';
+      let subColor = u.role==='admin' ? 'var(--red)' : (u.banned ? '#000000' : (sub === 'sf_rush' ? 'var(--green)' : sub === 'sf_legend' ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : '#ffffff'));
+      let subLabel = u.role==='admin' ? 'ADMIN' : (u.banned ? 'BANNED' : (sub === 'sf_rush' ? 'SF RUSH' : sub === 'sf_legend' ? 'SF LEGEND' : sub === 'both' ? 'RUSH+LEGEND' : 'NONE'));
+      let nameWeight = (u.role==='admin' || sub !== 'none') ? '900' : 'normal';
+      const hwid = u.hwid || 'N/A';
+      
+      html+=`<tr>
+        <td style="font-family:'Share Tech Mono'">
+          <div style="color:${subColor};font-weight:${nameWeight};text-shadow:0 0 4px ${u.role==='admin'?'var(--red)':(u.banned?'#444':subColor)}">${u.username}</div>
+          <div style="color:var(--muted);font-size:.7rem">${u.email}</div>
+        </td>
+        <td style="color:${subColor};font-weight:${nameWeight};font-family:'Share Tech Mono';font-size:.75rem">${subLabel}</td>
+        <td style="font-family:'Orbitron';font-size:.72rem;font-weight:900;color:${u.subExpiresAt && isSubscriptionActive(u) ? subColor : 'var(--muted)'}">${u.subExpiresAt && isSubscriptionActive(u) ? `<span data-vip-countdown="${u.subExpiresAt.toDate ? u.subExpiresAt.toDate().toISOString() : new Date(u.subExpiresAt).toISOString()}">${formatCountdown(u.subExpiresAt)}</span>` : '—'}</td>
+        <td style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--fg)">${hwid}</td>
+        <td>
+          ${u.role!=='admin' ? `
+          <div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:.25rem">
+            <button onclick="setSub('${d.id}','sf_rush')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">RUSH</button>
+            <button onclick="setSub('${d.id}','sf_legend')" style="background:rgba(255,149,0,.2);border:1px solid var(--orange);color:var(--orange);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">LEGEND</button>
+            <button onclick="setSub('${d.id}','both')" style="background:rgba(0,179,255,.2);border:1px solid var(--blue);color:var(--blue);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">BOTH</button>
+            <button onclick="setSub('${d.id}','none')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">CLEAR</button>
+          </div>
+          <div style="display:flex;gap:.25rem;flex-wrap:wrap">
+            ${u.banned?`<button onclick="unbanUser('${d.id}')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">UNBAN</button>`:`<button onclick="banUser('${d.id}')" style="background:rgba(255,0,60,.2);border:1px solid var(--red);color:var(--red);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">BAN</button>`}
+            <button onclick="deleteUser('${d.id}')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem"><i class="fas fa-trash"></i></button>
+            <button onclick="promoteUser('${d.id}')" style="background:rgba(188,19,254,.2);border:1px solid var(--magenta);color:var(--magenta);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'"><i class="fas fa-arrow-up"></i> ADMIN</button>
+          </div>` : `
+          <div style="display:flex;gap:.25rem;flex-wrap:wrap">
+            <button onclick="demoteUser('${d.id}')" style="background:rgba(255,255,255,.05);border:1px solid var(--muted);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'"><i class="fas fa-arrow-down"></i> DEMOTE</button>
+            ${u.banned?`<button onclick="unbanUser('${d.id}')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">UNBAN</button>`:`<button onclick="banUser('${d.id}')" style="background:rgba(255,0,60,.2);border:1px solid var(--red);color:var(--red);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">BAN</button>`}
+            <button onclick="deleteUser('${d.id}')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem"><i class="fas fa-trash"></i></button>
+          </div>`}
+        </td>
+      </tr>`;
+      
+      if(u.role!=='admin' && !u.banned) {
+        selectHtml+=`<option value="${d.id}">${u.username}</option>`;
+      }
+    });
+    html+='</tbody></table>';
+    c.innerHTML=html;
+    if(select) select.innerHTML=selectHtml || '<option value="">No users available</option>';
+    const tu=document.getElementById('totalUsers'); if(tu)tu.textContent=total;
+    const bu=document.getElementById('bannedUsers'); if(bu)bu.textContent=banned;
+  }, err => { console.error("Admin user list error:", err); });
+  
+  // Admin Inbox (Messages sent to 'admin' by users)
+  db.collection('messages').where("to", "==", "admin").onSnapshot(snap => {
+    const ic=document.getElementById('adminInboxCount'); if(!ic) return;
+    ic.textContent=snap.size;
+    const c=document.getElementById('adminInboxContainer');
+    if(snap.empty){
+      c.innerHTML=`<p style="font-family:'Share Tech Mono';font-size:.85rem;color:var(--muted);text-align:center;padding:2rem">No messages</p>`;
+      return;
+    }
+    c.innerHTML=snap.docs.slice().sort((a,b)=>{ const av=(a.data().timestamp||a.data().date||a.data().createdAt); const bv=(b.data().timestamp||b.data().date||b.data().createdAt); const am=av&&av.toMillis?av.toMillis():av?new Date(av).getTime():0; const bm=bv&&bv.toMillis?bv.toMillis():bv?new Date(bv).getTime():0; return bm-am; }).map(d=>{
+      const m=d.data();
+      let date = '';
+      const ts = m.timestamp || m.date || m.createdAt; if (ts && typeof ts.toMillis === 'function') date = new Date(ts.toMillis()).toLocaleString(); else if (ts) date = new Date(ts).toLocaleString();
+      const isRead = m.read === true;
+      const bgColor = isRead ? 'rgba(255,255,255,0.02)' : 'rgba(188,19,254,.05)';
+      const borderColor = isRead ? 'var(--muted)' : 'var(--magenta)';
+      return `<div style="padding:.75rem;border-left:2px solid ${borderColor};margin-bottom:.5rem;background:${bgColor};cursor:pointer;" onclick="markInboxRead('${d.id}')">
+        <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono';font-size:.7rem;color:var(--muted);margin-bottom:.25rem">
+          <span>FROM: <span style="color:var(--magenta);font-weight:700">${m.fromName}</span></span>
+          <span>${date}</span>
+        </div>
+        <div style="font-family:'Share Tech Mono';font-size:.85rem">${m.text}</div>
+        <button onclick="event.stopPropagation();replyUser('${m.from}')" style="background:none;border:none;color:var(--cyan);font-family:'Share Tech Mono';font-size:.7rem;cursor:pointer;margin-top:.5rem;padding:0"><i class="fas fa-reply"></i> REPLY</button>
+      </div>`;
+    }).join('');
+  }, err => { console.error("Admin inbox error:", err); });
+
+  // Load Orders
+  db.collection('orders').where("status","==","pending").onSnapshot(snap=>{
+    const po=document.getElementById('pendingOrders'); if(!po) return;
+    po.textContent=snap.size;
+    const c=document.getElementById('adminOrdersContainer');
+    if(snap.empty){
+      c.innerHTML=`<p style="font-family:'Share Tech Mono';font-size:.85rem;color:var(--muted);text-align:center;padding:2rem">No pending orders</p>`;
+      return;
+    }
+    c.innerHTML=snap.docs.map(d=>{
+      const m=d.data();
+      let date = '';
+      const ts = m.timestamp || m.date || m.createdAt; if (ts && typeof ts.toMillis === 'function') date = new Date(ts.toMillis()).toLocaleString(); else if (ts) date = new Date(ts).toLocaleString();
+      return `<div style="padding:.75rem;border-left:2px solid var(--gold);margin-bottom:.5rem;background:rgba(255,215,0,.05)">
+        <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono';font-size:.7rem;color:var(--muted);margin-bottom:.25rem">
+          <span>${m.product} (${m.duration})</span>
+          <span>${date}</span>
+        </div>
+        <div style="font-family:'Share Tech Mono';font-size:.85rem;color:var(--fg);margin-bottom:.25rem">USER: <span style="color:var(--cyan)">${m.username}</span> | HWID: ${m.hwid}</div>
+        <div style="font-family:'Share Tech Mono';font-size:.85rem;color:var(--fg);margin-bottom:.25rem">PAYMENT: <span style="color:var(--green)">${m.payment}</span> | REF: ${m.ref}</div>
+        <div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-top:.5rem">
+          <button onclick="approveOrder('${d.id}','${m.uid}','${m.product}','${m.duration}')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'"><i class="fas fa-check"></i> APPROVE</button>
+          <button onclick="rejectOrder('${d.id}')" style="background:rgba(255,0,60,.2);border:1px solid var(--red);color:var(--red);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'"><i class="fas fa-times"></i> REJECT</button>
+        </div>
+      </div>`;
+    }).join('');
+  }, err => { console.error("Admin orders error:", err); });
+}
+
+function getDurationDays(duration) {
+  const d = String(duration || '').toLowerCase();
+  if (d.includes('90')) return 120;
+  if (d.includes('60')) return 75;
+  return 30;
+}
+function getExpiryDate(ts) {
+  if (!ts) return null;
+  const date = ts.toDate ? ts.toDate() : new Date(ts);
+  return isNaN(date.getTime()) ? null : date;
+}
+function formatCountdown(ts) {
+  const expiry = getExpiryDate(ts);
+  if (!expiry) return 'NO TIMER';
+  const diff = expiry.getTime() - Date.now();
+  if (diff <= 0) return '00D 00H 00M 00S';
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return String(days).padStart(2,'0')+'D '+String(hours).padStart(2,'0')+'H '+String(minutes).padStart(2,'0')+'M '+String(seconds).padStart(2,'0')+'S';
+}
+function isSubscriptionActive(user) {
+  if (!user || !user.subscription || user.subscription === 'none') return false;
+  if (!user.subExpiresAt) return true;
+  const expiry = getExpiryDate(user.subExpiresAt);
+  return !!expiry && expiry.getTime() > Date.now();
+}
+async function expireVipIfNeeded(user) {
+  if (!user || !user.id || user.role === 'admin' || !user.subscription || user.subscription === 'none' || !user.subExpiresAt) return false;
+  const expiry = getExpiryDate(user.subExpiresAt);
+  if (!expiry || expiry.getTime() > Date.now()) return false;
+  try {
+    await db.collection('users').doc(user.id).update({
+      subscription: 'none',
+      subscriptionStatus: 'expired',
+      subDuration: firebase.firestore.FieldValue.delete(),
+      subDurationDays: firebase.firestore.FieldValue.delete(),
+      subStartedAt: firebase.firestore.FieldValue.delete(),
+      subExpiresAt: firebase.firestore.FieldValue.delete()
+    });
+    if (state.currentUser && state.currentUser.id === user.id) {
+      state.currentUser = {...state.currentUser, subscription:'none', subscriptionStatus:'expired'};
+      delete state.currentUser.subDuration;
+      delete state.currentUser.subDurationDays;
+      delete state.currentUser.subStartedAt;
+      delete state.currentUser.subExpiresAt;
+      renderNav();
+      renderPage();
+      updateChatInputState();
+      toast('VIP TIMER FINISHED • ACCESS RESET TO NORMAL MEMBER','error');
+    }
+    return true;
+  } catch (e) {
+    console.error('VIP expiry reset error:', e);
+    return false;
+  }
+}
+function refreshVipCountdowns() {
+  document.querySelectorAll('[data-vip-countdown]').forEach(el => {
+    const raw = el.getAttribute('data-vip-countdown');
+    if (!raw) return;
+    const text = formatCountdown(raw);
+    el.textContent = text;
+    if (text === '00D 00H 00M 00S') el.style.color = 'var(--red)';
+  });
+  if (state.currentUser && state.currentUser.subscription !== 'none' && state.currentUser.subExpiresAt) {
+    if (!isSubscriptionActive(state.currentUser)) expireVipIfNeeded(state.currentUser);
+  }
+}
+if (window.__omegaVipCountdownTimer) clearInterval(window.__omegaVipCountdownTimer);
+window.__omegaVipCountdownTimer = setInterval(refreshVipCountdowns, 1000);
+function subscriptionLabel(sub) {
+  return sub === 'sf_rush' ? 'SF RUSH VIP' : sub === 'sf_legend' ? 'SF LEGEND VIP' : sub === 'both' ? 'RUSH + LEGEND' : 'NO SUBSCRIPTION';
+}
+
+function approveOrder(orderId, uid, product, duration) {
+  let subType = 'none';
+  if(product.includes('RUSH') && product.includes('LEGEND')) subType = 'both';
+  else if(product.includes('RUSH')) subType = 'sf_rush';
+  else if(product.includes('LEGEND')) subType = 'sf_legend';
+  const days = getDurationDays(duration);
+  const now = new Date();
+  const expires = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+  const userUpdate = {
+    subscription: subType,
+    subStartedAt: firebase.firestore.Timestamp.fromDate(now),
+    subExpiresAt: firebase.firestore.Timestamp.fromDate(expires),
+    subscriptionStatus: 'active'
+  };
+  db.collection('users').doc(uid).update(userUpdate)
+    .then(()=>db.collection('orders').doc(orderId).update({
+      status: 'approved',
+      approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      activatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      approvedDuration: duration
+    }))
+    .then(()=>{ toast('ORDER APPROVED • VIP COUNTDOWN ACTIVATED', 'success'); loadAdminData(); })
+    .catch(err=>toast('ERROR: '+err.message,'error'));
+}
+function rejectOrder(id) { db.collection('orders').doc(id).update({status: 'rejected'}).then(()=>toast('ORDER REJECTED','success')).catch(err=>toast('ERROR: '+err.message,'error')); }
+function markInboxRead(id) { db.collection('messages').doc(id).update({read: true}).catch(()=>{}); }
+function setSub(uid, type) { db.collection('users').doc(uid).update({subscription: type}).then(()=>toast('VIP STATUS UPDATED','success')).catch(err=>toast('ERROR: '+err.message,'error')); }
+async function isOriginalAdminAccount(id){try{const d=await db.collection('users').doc(id).get();return d.exists && (d.data().email||'').trim().toLowerCase()==='admin@omega.vip';}catch(e){console.error(e);return false;}}
+async function banUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT BAN','error');return;}db.collection('users').doc(id).update({banned:true}).then(()=>toast('USER BANNED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
+function unbanUser(id){db.collection('users').doc(id).update({banned:false}).then(()=>toast('USER UNBANNED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
+async function deleteUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT DELETE','error');return;}if(!confirm('DELETE MEMBER DATA PERMANENTLY? (Auth account remains)'))return;db.collection('users').doc(id).delete().then(()=>toast('MEMBER DATA DELETED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
+async function promoteUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN ALREADY HAS FULL ADMIN ACCESS','success');return;}if(!confirm('PROMOTE THIS USER TO ADMIN? THEY WILL HAVE FULL CONTROL ACCESS.')) return; db.collection('users').doc(id).update({role:'admin'}).then(()=>toast('USER PROMOTED TO ADMIN','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
+async function demoteUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT DEMOTE','error');return;}if(!confirm('DEMOTE THIS ADMIN BACK TO USER?')) return; db.collection('users').doc(id).update({role:'user'}).then(()=>toast('ADMIN DEMOTED TO USER','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
+function replyUser(uid){const select=document.getElementById('adminMsgTo');if(select){select.value=uid;}const t=document.getElementById('adminMsgText');if(t)t.focus();}
+function sendAdminMessage(e){e.preventDefault();const toUid=document.getElementById('adminMsgTo').value;const text=document.getElementById('adminMsgText').value.trim();if(!text||!toUid)return;db.collection('messages').add({ from: 'admin', fromName: 'Admin', to: toUid, text: text, timestamp: firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{toast('MESSAGE SENT TO USER','success');document.getElementById('adminMsgText').value='';}).catch(err=>toast('ERROR: '+err.message,'error'));}
+
+// ====== INIT LIVE CHAT LISTENER ======
+db.collection('live_chat').limit(100).onSnapshot(snapshot => {
+    state.chatMessages = [];
+    if (snapshot.docs) { snapshot.docs.forEach(doc => { state.chatMessages.push({ id: doc.id, ...doc.data() }); }); }
+    state.chatMessages.sort((a, b) => {
+        let timeA = a.timestamp && typeof a.timestamp.toMillis === 'function' ? a.timestamp.toMillis() : 0;
+        let timeB = b.timestamp && typeof b.timestamp.toMillis === 'function' ? b.timestamp.toMillis() : 0;
+        return timeA - timeB;
+    });
+    if(state.chatMessages.length > 50) { state.chatMessages = state.chatMessages.slice(state.chatMessages.length - 50); }
+    renderChat();
+}, (error) => { console.error("Chat listener error: ", error); });
+
+db.collection('config').doc('announcement').onSnapshot(doc => {
+    const bar = document.getElementById('annBar');
+    if(!bar) return;
+    if(doc.exists && doc.data().text) {
+        const { text, color, bold, size } = doc.data();
+        const content = document.getElementById('annContent');
+        content.textContent = text;
+        content.style.color = color || '#bc13fe';
+        content.style.fontWeight = bold ? '900' : 'normal';
+        content.style.fontSize = (size || 14) + 'px';
+        bar.style.display = 'flex';
+    } else { bar.style.display = 'none'; }
+}, (err) => { console.error("Announcement listener error:", err); });
+
+// INIT
+document.body.classList.add('auth-locked');
+renderNav();renderPage();updateChatInputState();
+</script>
+</body>
+</html>
