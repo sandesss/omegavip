@@ -64,12 +64,12 @@ body{min-height:100vh}
 /* ===== GLOBAL BROADCAST BAR ===== */
 #globalAnnBar{position:sticky;top:64px;z-index:95;width:100%;min-height:46px;display:none;align-items:center;gap:12px;padding:10px 18px;background:linear-gradient(90deg,rgba(5,8,16,.98),rgba(12,18,32,.96),rgba(5,8,16,.98));border-top:1px solid rgba(0,243,255,.35);border-bottom:none;box-shadow:0 0 20px rgba(0,243,255,.16),inset 0 0 18px rgba(0,243,255,.05);backdrop-filter:blur(12px)}
 #globalAnnBar .global-ann-scroll{min-width:0;flex:1;overflow:hidden;position:relative;white-space:nowrap;height:26px;display:flex;align-items:center}
-#globalAnnContent{display:inline-block;white-space:nowrap;width:max-content;min-width:100%;font-family:'Rajdhani',sans-serif;line-height:1.25;text-shadow:0 0 8px currentColor;will-change:transform;animation:globalAnnMarquee 18s linear infinite;padding-left:100%;}
+#globalAnnContent{display:inline-block;white-space:nowrap;width:max-content;min-width:max-content;font-family:'Rajdhani',sans-serif;line-height:1.25;text-shadow:0 0 8px currentColor;will-change:transform;animation-fill-mode:forwards;position:relative;display:inline-block;white-space:nowrap;width:max-content;min-width:max-content;will-change:transform;}
 #globalAnnBar:hover #globalAnnContent{animation-play-state:paused}
-@keyframes globalAnnMarquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+@keyframes globalAnnMarquee{0%{transform:translateX(100vw)}100%{transform:translateX(calc(-100% - 100vw))}}
 @keyframes globalAnnPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.92)}}
 body.auth-locked #globalAnnBar{display:none!important}
-@media(max-width:768px){#globalAnnBar{top:0;min-height:44px;padding:8px 12px}#globalAnnContent{font-size:12px!important;animation-duration:14s}}
+@media(max-width:768px){#globalAnnBar{top:0;min-height:44px;padding:8px 12px}#globalAnnContent{font-size:12px!important;animation-duration:35s!important}}
 nav.topnav{position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);background:rgba(0,0,0,.85);border-bottom:1px solid var(--border);box-shadow:0 4px 20px rgba(0,243,255,.1)}
 
 /* MAANGAS NAV BUTTONS */
@@ -559,6 +559,7 @@ nav.topnav > .max-w-7xl > .flex:last-child{
   nav.topnav #navLinks .nav-link{min-width:105px !important;padding:0 12px !important;font-size:.72rem !important;}
   nav.topnav > .max-w-7xl{grid-template-columns:auto minmax(0,1fr) auto !important;column-gap:14px !important;}
 }
+
 
 </style>
 <style id="ban-hammer-theme">.banned-effect{background:#050505!important}.ban-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,0,60,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,60,.03) 1px,transparent 1px);background-size:40px 40px}.ban-scanlines{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(255,255,255,.02) 50%);background-size:100% 4px;pointer-events:none;z-index:100;animation:banScan 6s linear infinite}.ban-warning{position:absolute;width:100%;background:rgba(255,0,60,.1);border-top:1px solid #ff003c;border-bottom:1px solid #ff003c;color:#ff003c;font-family:Orbitron,sans-serif;font-size:12px;font-weight:700;letter-spacing:4px;text-align:center;padding:5px 0;text-shadow:0 0 5px #ff003c;animation:banBlink 1s infinite alternate;z-index:20}.ban-warning.top{top:0}.ban-warning.bottom{bottom:0}.ban-container{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;max-width:95vw}.hammer-area{position:relative;width:300px;height:250px;margin-bottom:20px;display:flex;justify-content:center;align-items:center}.hammer-symbol{font-size:150px;filter:drop-shadow(0 0 15px #00d2ff);animation:banHammer 2s cubic-bezier(.5,0,1,.5) infinite alternate}.shockwave{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border:2px solid #ff003c;border-radius:50%;box-shadow:0 0 20px #ff003c;opacity:0}.sw-1{animation:banShock 2s ease-out infinite}.sw-2{animation:banShock 2s ease-out infinite .5s}.sw-3{animation:banShock 2s ease-out infinite 1s}.ban-title{font-family:Orbitron,sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:900;color:#00d2ff;letter-spacing:4px;margin:0;text-shadow:0 0 20px #00d2ff}.ban-text{font-family:Orbitron,sans-serif;font-size:clamp(1.2rem,3vw,1.75rem);font-weight:700;color:#ff003c;letter-spacing:6px;margin-top:10px;text-shadow:0 0 10px #ff003c,0 0 30px #ff003c;animation:banPulse 1.5s infinite}.ban-subtext{font-family:Share Tech Mono,monospace;font-size:clamp(.8rem,2vw,1rem);color:#bc13fe;letter-spacing:2px;text-transform:uppercase;margin-top:15px;text-shadow:0 0 5px #bc13fe}@keyframes banHammer{0%{transform:rotate(-35deg) translateY(-50px)}70%{transform:rotate(0) translateY(20px)}100%{transform:rotate(0) translateY(0)}}@keyframes banShock{0%{width:50px;height:50px;opacity:1}100%{width:300px;height:300px;opacity:0}}@keyframes banScan{to{background-position:0 100vh}}@keyframes banBlink{from{opacity:.3}to{opacity:1}}@keyframes banPulse{0%,100%{opacity:.8}50%{opacity:1;text-shadow:0 0 20px #ff003c,0 0 40px #ff003c}}@media(max-width:600px){.hammer-area{width:250px;height:190px}.hammer-symbol{font-size:110px}.ban-warning{font-size:9px;letter-spacing:2px}}</style>
@@ -2367,17 +2368,39 @@ db.collection('config').doc('announcement').onSnapshot(doc => {
         const finalColor = color || '#bc13fe';
         const finalSize = Number(size) || 14;
         if(globalBar && globalContent) {
+            // The announcement travels completely across the bar, then stays
+            // off-screen for 5 seconds before starting again from the right.
+            if (globalContent._broadcastTimer) clearTimeout(globalContent._broadcastTimer);
+            if (globalContent._broadcastEndHandler) {
+                globalContent.removeEventListener('animationend', globalContent._broadcastEndHandler);
+            }
+            globalContent._broadcastEndHandler = () => {
+                // Keep the text completely off-screen during the pause.
+                // Removing the animation alone would reset transform to 0,
+                // which makes the whole message suddenly appear on the left.
+                globalContent.style.animation = 'none';
+                globalContent.style.transform = 'translateX(calc(-100% - 100vw))';
+                globalContent._broadcastTimer = setTimeout(() => {
+                    globalContent.style.animation = 'none';
+                    globalContent.style.transform = 'translateX(100vw)';
+                    void globalContent.offsetWidth;
+                    globalContent.style.animation = 'globalAnnMarquee 35s linear 1 !important';
+                }, 3000);
+            };
+            globalContent.addEventListener('animationend', globalContent._broadcastEndHandler);
+
             globalContent.textContent = text + '   •   ';
             globalContent.style.color = finalColor;
             globalContent.style.fontWeight = bold ? '900' : 'normal';
             globalContent.style.fontSize = finalSize + 'px';
             globalBar.style.color = finalColor;
-            globalBar.style.borderBottomColor = finalColor;
+            globalBar.style.borderBottomColor = 'transparent';
             globalBar.style.display = 'flex';
             // Restart the ticker whenever a new announcement arrives.
             globalContent.style.animation = 'none';
+            globalContent.style.transform = 'translateX(100vw)';
             void globalContent.offsetWidth;
-            globalContent.style.animation = '';
+            globalContent.style.animation = 'globalAnnMarquee 35s linear 1 !important';
         }
         if(chatBar && chatContent) {
             chatContent.textContent = text;
@@ -2396,5 +2419,103 @@ db.collection('config').doc('announcement').onSnapshot(doc => {
 document.body.classList.add('auth-locked');
 renderNav();renderPage();updateChatInputState();
 </script>
+
+
+
+
+
+
+
+
+
+
+<style id="omega-broadcast-exact-controller">
+#globalAnnContent{animation:none!important;position:relative!important;display:inline-block!important;white-space:nowrap!important;width:max-content!important;min-width:max-content!important;will-change:transform!important;}
+</style>
+<script id="omega-broadcast-exact-controller-js">
+(function(){
+  const HIDDEN_PAUSE = 3000;
+  const PX_PER_SECOND = 100;
+  let runId = 0;
+  let timer = null;
+  let animation = null;
+  let observedText = '';
+
+  function startBroadcast(){
+    const bar = document.getElementById('globalAnnBar');
+    const el = document.getElementById('globalAnnContent');
+    const viewport = bar && bar.querySelector('.global-ann-scroll');
+    if(!bar || !el || !viewport || !el.textContent.trim()) return;
+
+    runId++;
+    const id = runId;
+    if(timer) clearTimeout(timer);
+    if(animation){ try{ animation.cancel(); }catch(e){} }
+
+    // Wait for layout so the exact message width is known.
+    requestAnimationFrame(function(){
+      if(id !== runId) return;
+
+      const vw = viewport.clientWidth;
+      const tw = el.scrollWidth;
+
+      // Start fully outside the right edge and end fully outside the left.
+      const startX = vw;
+      const endX = -(tw + 2);
+      const distance = vw + tw;
+      const duration = Math.max(1000, distance / PX_PER_SECOND * 1000);
+
+      el.style.transform = 'translate3d('+startX+'px,0,0)';
+
+      animation = el.animate(
+        [
+          { transform:'translate3d('+startX+'px,0,0)' },
+          { transform:'translate3d('+endX+'px,0,0)' }
+        ],
+        { duration:duration, easing:'linear', fill:'forwards' }
+      );
+
+      animation.finished.then(function(){
+        if(id !== runId) return;
+
+        // It is now completely gone. ONLY NOW does the 3-second timer start.
+        el.style.transform = 'translate3d('+endX+'px,0,0)';
+        timer = setTimeout(function(){
+          if(id === runId) startBroadcast();
+        }, HIDDEN_PAUSE);
+      }).catch(function(){});
+    });
+  }
+
+  function watch(){
+    const el = document.getElementById('globalAnnContent');
+    if(!el) return;
+
+    if(observedText !== el.textContent){
+      observedText = el.textContent;
+      if(el.textContent.trim()) startBroadcast();
+    }
+  }
+
+  function init(){
+    const el = document.getElementById('globalAnnContent');
+    if(el){
+      new MutationObserver(watch).observe(el,{childList:true,characterData:true,subtree:true});
+      watch();
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{
+    init();
+  }
+
+  window.addEventListener('resize',function(){
+    if(document.getElementById('globalAnnContent')?.textContent.trim()) startBroadcast();
+  });
+})();
+</script>
+
 </body>
 </html>
