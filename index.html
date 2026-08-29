@@ -60,6 +60,16 @@ body{min-height:100vh}
 .portal-feature-item{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-family:'Share Tech Mono';font-size:.75rem;letter-spacing:.1em}
 .portal-feature-item i{font-size:1.5rem;color:var(--cyan);text-shadow:0 0 10px var(--cyan)}
 
+
+/* ===== GLOBAL BROADCAST BAR ===== */
+#globalAnnBar{position:sticky;top:64px;z-index:95;width:100%;min-height:46px;display:none;align-items:center;gap:12px;padding:10px 18px;background:linear-gradient(90deg,rgba(5,8,16,.98),rgba(12,18,32,.96),rgba(5,8,16,.98));border-top:1px solid rgba(0,243,255,.35);border-bottom:none;box-shadow:0 0 20px rgba(0,243,255,.16),inset 0 0 18px rgba(0,243,255,.05);backdrop-filter:blur(12px)}
+#globalAnnBar .global-ann-scroll{min-width:0;flex:1;overflow:hidden;position:relative;white-space:nowrap;height:26px;display:flex;align-items:center}
+#globalAnnContent{display:inline-block;white-space:nowrap;width:max-content;min-width:100%;font-family:'Rajdhani',sans-serif;line-height:1.25;text-shadow:0 0 8px currentColor;will-change:transform;animation:globalAnnMarquee 18s linear infinite;padding-left:100%;}
+#globalAnnBar:hover #globalAnnContent{animation-play-state:paused}
+@keyframes globalAnnMarquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+@keyframes globalAnnPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.92)}}
+body.auth-locked #globalAnnBar{display:none!important}
+@media(max-width:768px){#globalAnnBar{top:0;min-height:44px;padding:8px 12px}#globalAnnContent{font-size:12px!important;animation-duration:14s}}
 nav.topnav{position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);background:rgba(0,0,0,.85);border-bottom:1px solid var(--border);box-shadow:0 4px 20px rgba(0,243,255,.1)}
 
 /* MAANGAS NAV BUTTONS */
@@ -274,6 +284,8 @@ body.auth-locked #navLinks,
 body.auth-locked #authArea,
 body.auth-locked #chatToggle,
 body.auth-locked #chatPanel { display:none !important; }
+/* LOGOUT STATE: remove the entire top navigation so no buttons remain visible on the login terminal. */
+body.auth-locked nav.topnav { display:none !important; visibility:hidden !important; pointer-events:none !important; height:0 !important; min-height:0 !important; overflow:hidden !important; }
 body.auth-locked #main.auth-terminal-visible { display:block !important; }
 .vip-countdown-glow{font-family:'Orbitron';font-weight:900;letter-spacing:.06em;text-shadow:0 0 8px currentColor;white-space:nowrap}.vip-countdown-glow::before{content:'⏱ ';font-family:Arial,sans-serif}.vip-countdown-box{border-radius:6px;padding:.55rem .7rem;background:rgba(0,0,0,.38);box-shadow:0 0 14px rgba(0,255,255,.18)}
 
@@ -356,8 +368,576 @@ body.auth-locked #main.auth-terminal-visible { display:block !important; }
 @keyframes omegaPulseRing{0%,100%{opacity:.2;transform:translate(-50%,-50%) scale(1)}50%{opacity:.6;transform:translate(-50%,-50%) scale(1.05)}}
 @keyframes omegaGlitch{0%,100%{filter:drop-shadow(0 0 15px rgba(0,210,255,.8));transform:translateX(0)}92%{transform:translateX(-2px);filter:drop-shadow(2px 0 rgba(188,19,254,.8))}94%{transform:translateX(2px);filter:drop-shadow(-2px 0 rgba(0,210,255,.8))}96%{transform:translateX(0)}}
 @media(max-width:700px){.omega-new-portal{height:440px}.omega-portal-subtitle{font-size:11px;letter-spacing:5px}.omega-portal-slogan{font-size:16px;letter-spacing:2px}.omega-portal-slogan:before,.omega-portal-slogan:after{width:25px}.omega-portal-slogan:before{left:-32px}.omega-portal-slogan:after{right:-32px}.omega-portal-btn{padding:13px 32px;font-size:15px}.omega-features-row{gap:28px;bottom:25px}.omega-feature-text{font-size:10px;letter-spacing:2px}}
+
+
+/* ===== CYBER NAV BUTTON UPGRADE ===== */
+:root{
+  --nav-blue:#00f3ff;
+  --nav-orange:#ff8c00;
+  --nav-purple:#bc13fe;
+  --nav-red:#ff3838;
+}
+
+/* Main navigation buttons */
+.nav-link{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:45px;
+  padding:14px 20px;
+  margin:0 2px;
+  background:rgba(0,243,255,.10)!important;
+  border:1px solid var(--nav-blue)!important;
+  color:var(--nav-blue)!important;
+  font-family:'Orbitron',sans-serif!important;
+  font-weight:700!important;
+  font-size:.78rem!important;
+  letter-spacing:1px!important;
+  text-transform:uppercase;
+  text-shadow:0 0 5px var(--nav-blue);
+  cursor:pointer;
+  text-decoration:none;
+  transition:all .3s ease!important;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)!important;
+  box-shadow:0 0 10px rgba(0,243,255,.20);
+  overflow:hidden;
+}
+.nav-link::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:2px;
+  background:var(--nav-blue);
+  box-shadow:0 0 10px var(--nav-blue);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .3s ease;
+}
+.nav-link:hover{
+  color:#fff!important;
+  background:rgba(0,243,255,.30)!important;
+  border-color:var(--nav-blue)!important;
+  box-shadow:0 0 25px rgba(0,243,255,.60)!important;
+  transform:translateY(-2px) scale(1.03);
+}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)}
+.nav-link.active{
+  color:#fff!important;
+  background:rgba(0,243,255,.40)!important;
+  border-color:var(--nav-blue)!important;
+  box-shadow:0 0 30px rgba(0,243,255,.80)!important;
+  text-shadow:0 0 10px #fff;
+}
+
+/* Admin = orange only */
+.nav-link.admin-nav{
+  background:rgba(255,140,0,.10)!important;
+  border-color:var(--nav-orange)!important;
+  color:var(--nav-orange)!important;
+  text-shadow:0 0 5px var(--nav-orange);
+  box-shadow:0 0 10px rgba(255,140,0,.20)!important;
+}
+.nav-link.admin-nav::after{
+  background:var(--nav-orange);
+  box-shadow:0 0 10px var(--nav-orange);
+}
+.nav-link.admin-nav:hover{
+  color:#fff!important;
+  background:rgba(255,140,0,.30)!important;
+  border-color:var(--nav-orange)!important;
+  box-shadow:0 0 25px rgba(255,140,0,.60)!important;
+}
+.nav-link.admin-nav.active{
+  color:#fff!important;
+  background:rgba(255,140,0,.40)!important;
+  border-color:var(--nav-orange)!important;
+  box-shadow:0 0 30px rgba(255,140,0,.70)!important;
+  text-shadow:0 0 10px #fff;
+}
+
+/* CHAT button */
+#chatToggle{
+  min-height:45px;
+  padding:12px 18px!important;
+  background:rgba(0,243,255,.10)!important;
+  border:1px solid var(--nav-blue)!important;
+  color:var(--nav-blue)!important;
+  font-family:'Orbitron',sans-serif!important;
+  font-weight:700!important;
+  letter-spacing:1px!important;
+  text-transform:uppercase;
+  text-shadow:0 0 5px var(--nav-blue);
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  box-shadow:0 0 10px rgba(0,243,255,.20)!important;
+  transition:all .3s ease!important;
+}
+#chatToggle:hover{
+  color:#fff!important;
+  background:rgba(0,243,255,.30)!important;
+  border-color:var(--nav-blue)!important;
+  box-shadow:0 0 25px rgba(0,243,255,.60)!important;
+  transform:translateY(-2px) scale(1.03);
+}
+
+/* Login / Logout buttons generated inside authArea */
+#authArea > button.btn-secondary{
+  min-height:45px;
+  padding:12px 20px!important;
+  background:transparent!important;
+  border:1px solid var(--nav-blue)!important;
+  color:var(--nav-blue)!important;
+  font-family:'Orbitron',sans-serif!important;
+  font-weight:700!important;
+  font-size:.78rem!important;
+  letter-spacing:1px!important;
+  text-transform:uppercase;
+  text-shadow:0 0 5px var(--nav-blue);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  box-shadow:0 0 10px rgba(0,243,255,.20);
+  transition:all .3s ease!important;
+}
+#authArea > button.btn-secondary:hover{
+  color:#fff!important;
+  background:rgba(0,243,255,.25)!important;
+  border-color:var(--nav-blue)!important;
+  box-shadow:0 0 25px rgba(0,243,255,.60)!important;
+  transform:translateY(-2px) scale(1.03);
+}
+
+/* User profile area */
+#authArea > div:first-child{
+  min-height:45px;
+  padding:8px 15px;
+  background:rgba(0,0,0,.40);
+  border:1px solid var(--nav-purple);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  box-shadow:0 0 10px rgba(188,19,254,.20);
+  transition:all .3s ease;
+}
+#authArea > div:first-child:hover{
+  background:rgba(188,19,254,.18);
+  box-shadow:0 0 20px rgba(188,19,254,.40);
+}
+
+/* Keep nav usable on smaller screens */
+@media(max-width:1100px){
+  .nav-link{padding:11px 12px!important;font-size:.68rem!important;letter-spacing:.6px!important;}
+  #chatToggle{padding:10px 12px!important;font-size:.72rem!important;}
+  #authArea > button.btn-secondary{padding:10px 12px!important;font-size:.7rem!important;}
+}
+@media(max-width:768px){
+  .nav-link{min-height:40px;padding:9px 10px!important;font-size:.65rem!important;}
+}
+
+
+/* FINAL NAV SPACING FIX */
+nav.topnav #navLinks{
+  justify-content:space-evenly !important;
+  align-items:center !important;
+  gap:18px !important;
+  padding:0 10px !important;
+}
+nav.topnav #navLinks .nav-link{
+  min-width:118px !important;
+  height:46px !important;
+  padding:0 18px !important;
+  flex:0 1 auto !important;
+}
+nav.topnav > .max-w-7xl{
+  grid-template-columns:minmax(220px,auto) minmax(720px,1fr) minmax(230px,auto) !important;
+  column-gap:28px !important;
+}
+nav.topnav > .max-w-7xl > .flex:last-child{
+  justify-self:end !important;
+  white-space:nowrap !important;
+}
+@media(max-width:1250px){
+  nav.topnav #navLinks{gap:10px !important;padding:0 4px !important;}
+  nav.topnav #navLinks .nav-link{min-width:105px !important;padding:0 12px !important;font-size:.72rem !important;}
+  nav.topnav > .max-w-7xl{grid-template-columns:auto minmax(0,1fr) auto !important;column-gap:14px !important;}
+}
+
 </style>
-<style id="ban-hammer-theme">.banned-effect{background:#050505!important}.ban-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,0,60,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,60,.03) 1px,transparent 1px);background-size:40px 40px}.ban-scanlines{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(255,255,255,.02) 50%);background-size:100% 4px;pointer-events:none;z-index:100;animation:banScan 6s linear infinite}.ban-warning{position:absolute;width:100%;background:rgba(255,0,60,.1);border-top:1px solid #ff003c;border-bottom:1px solid #ff003c;color:#ff003c;font-family:Orbitron,sans-serif;font-size:12px;font-weight:700;letter-spacing:4px;text-align:center;padding:5px 0;text-shadow:0 0 5px #ff003c;animation:banBlink 1s infinite alternate;z-index:20}.ban-warning.top{top:0}.ban-warning.bottom{bottom:0}.ban-container{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;max-width:95vw}.hammer-area{position:relative;width:300px;height:250px;margin-bottom:20px;display:flex;justify-content:center;align-items:center}.hammer-symbol{font-size:150px;filter:drop-shadow(0 0 15px #00d2ff);animation:banHammer 2s cubic-bezier(.5,0,1,.5) infinite alternate}.shockwave{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border:2px solid #ff003c;border-radius:50%;box-shadow:0 0 20px #ff003c;opacity:0}.sw-1{animation:banShock 2s ease-out infinite}.sw-2{animation:banShock 2s ease-out infinite .5s}.sw-3{animation:banShock 2s ease-out infinite 1s}.ban-title{font-family:Orbitron,sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:900;color:#00d2ff;letter-spacing:4px;margin:0;text-shadow:0 0 20px #00d2ff}.ban-text{font-family:Orbitron,sans-serif;font-size:clamp(1.2rem,3vw,1.75rem);font-weight:700;color:#ff003c;letter-spacing:6px;margin-top:10px;text-shadow:0 0 10px #ff003c,0 0 30px #ff003c;animation:banPulse 1.5s infinite}.ban-subtext{font-family:Share Tech Mono,monospace;font-size:clamp(.8rem,2vw,1rem);color:#bc13fe;letter-spacing:2px;text-transform:uppercase;margin-top:15px;text-shadow:0 0 5px #bc13fe}@keyframes banHammer{0%{transform:rotate(-35deg) translateY(-50px)}70%{transform:rotate(0) translateY(20px)}100%{transform:rotate(0) translateY(0)}}@keyframes banShock{0%{width:50px;height:50px;opacity:1}100%{width:300px;height:300px;opacity:0}}@keyframes banScan{to{background-position:0 100vh}}@keyframes banBlink{from{opacity:.3}to{opacity:1}}@keyframes banPulse{0%,100%{opacity:.8}50%{opacity:1;text-shadow:0 0 20px #ff003c,0 0 40px #ff003c}}@media(max-width:600px){.hammer-area{width:250px;height:190px}.hammer-symbol{font-size:110px}.ban-warning{font-size:9px;letter-spacing:2px}}</style></head>
+<style id="ban-hammer-theme">.banned-effect{background:#050505!important}.ban-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,0,60,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,60,.03) 1px,transparent 1px);background-size:40px 40px}.ban-scanlines{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(255,255,255,.02) 50%);background-size:100% 4px;pointer-events:none;z-index:100;animation:banScan 6s linear infinite}.ban-warning{position:absolute;width:100%;background:rgba(255,0,60,.1);border-top:1px solid #ff003c;border-bottom:1px solid #ff003c;color:#ff003c;font-family:Orbitron,sans-serif;font-size:12px;font-weight:700;letter-spacing:4px;text-align:center;padding:5px 0;text-shadow:0 0 5px #ff003c;animation:banBlink 1s infinite alternate;z-index:20}.ban-warning.top{top:0}.ban-warning.bottom{bottom:0}.ban-container{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;max-width:95vw}.hammer-area{position:relative;width:300px;height:250px;margin-bottom:20px;display:flex;justify-content:center;align-items:center}.hammer-symbol{font-size:150px;filter:drop-shadow(0 0 15px #00d2ff);animation:banHammer 2s cubic-bezier(.5,0,1,.5) infinite alternate}.shockwave{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border:2px solid #ff003c;border-radius:50%;box-shadow:0 0 20px #ff003c;opacity:0}.sw-1{animation:banShock 2s ease-out infinite}.sw-2{animation:banShock 2s ease-out infinite .5s}.sw-3{animation:banShock 2s ease-out infinite 1s}.ban-title{font-family:Orbitron,sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:900;color:#00d2ff;letter-spacing:4px;margin:0;text-shadow:0 0 20px #00d2ff}.ban-text{font-family:Orbitron,sans-serif;font-size:clamp(1.2rem,3vw,1.75rem);font-weight:700;color:#ff003c;letter-spacing:6px;margin-top:10px;text-shadow:0 0 10px #ff003c,0 0 30px #ff003c;animation:banPulse 1.5s infinite}.ban-subtext{font-family:Share Tech Mono,monospace;font-size:clamp(.8rem,2vw,1rem);color:#bc13fe;letter-spacing:2px;text-transform:uppercase;margin-top:15px;text-shadow:0 0 5px #bc13fe}@keyframes banHammer{0%{transform:rotate(-35deg) translateY(-50px)}70%{transform:rotate(0) translateY(20px)}100%{transform:rotate(0) translateY(0)}}@keyframes banShock{0%{width:50px;height:50px;opacity:1}100%{width:300px;height:300px;opacity:0}}@keyframes banScan{to{background-position:0 100vh}}@keyframes banBlink{from{opacity:.3}to{opacity:1}}@keyframes banPulse{0%,100%{opacity:.8}50%{opacity:1;text-shadow:0 0 20px #ff003c,0 0 40px #ff003c}}@media(max-width:600px){.hammer-area{width:250px;height:190px}.hammer-symbol{font-size:110px}.ban-warning{font-size:9px;letter-spacing:2px}}</style>
+<style id="omega-full-cyber-nav">
+/* ===== OMEGA FULL CYBER NAV — applied to existing navigation ===== */
+nav.topnav{
+  background:linear-gradient(145deg,rgba(20,20,30,.94),rgba(10,10,15,.97))!important;
+  backdrop-filter:blur(15px)!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:0 10px 40px rgba(0,0,0,.8),inset 0 0 20px rgba(0,0,0,.45),0 0 15px rgba(0,243,255,.10)!important;
+  position:sticky!important;
+  overflow:visible;
+}
+nav.topnav::before{
+  content:'';position:absolute;top:0;left:30px;width:80px;height:3px;
+  background:#00f3ff;box-shadow:0 0 15px #00f3ff;pointer-events:none;
+}
+nav.topnav::after{
+  content:'';position:absolute;bottom:0;right:30px;width:120px;height:3px;
+  background:#00f3ff;box-shadow:0 0 15px #00f3ff;pointer-events:none;
+}
+nav.topnav > div.max-w-7xl{
+  min-height:64px;
+}
+#navLinks{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  flex-wrap:wrap;
+}
+.nav-link{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:45px;
+  padding:14px 20px!important;
+  margin:0!important;
+  border:1px solid #00f3ff!important;
+  border-radius:0!important;
+  background:rgba(0,243,255,.10)!important;
+  color:#00f3ff!important;
+  font-family:'Orbitron',sans-serif!important;
+  font-weight:700!important;
+  font-size:.78rem!important;
+  letter-spacing:1px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 0 5px #00f3ff!important;
+  box-shadow:0 0 10px rgba(0,243,255,.20)!important;
+  cursor:pointer!important;
+  position:relative!important;
+  text-decoration:none!important;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)!important;
+  transition:all .3s ease!important;
+  outline:none!important;
+}
+.nav-link::after{
+  content:''!important;
+  position:absolute!important;
+  left:0!important;bottom:0!important;width:100%!important;height:2px!important;
+  background:#00f3ff!important;box-shadow:0 0 10px #00f3ff!important;
+  transform:scaleX(0)!important;transform-origin:left!important;
+  transition:transform .3s ease!important;
+}
+.nav-link:hover{
+  color:#fff!important;
+  background:rgba(0,243,255,.30)!important;
+  border-color:#00f3ff!important;
+  box-shadow:0 0 25px rgba(0,243,255,.60)!important;
+  transform:translateY(-2px) scale(1.05)!important;
+}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)!important}
+.nav-link.active{
+  color:#fff!important;
+  background:rgba(0,243,255,.40)!important;
+  border-color:#00f3ff!important;
+  box-shadow:0 0 30px rgba(0,243,255,.80)!important;
+  text-shadow:0 0 10px #fff!important;
+}
+.nav-link.admin-nav{
+  background:rgba(255,140,0,.10)!important;
+  border-color:#ff8c00!important;
+  color:#ff8c00!important;
+  text-shadow:0 0 5px #ff8c00!important;
+  box-shadow:0 0 10px rgba(255,140,0,.20)!important;
+}
+.nav-link.admin-nav::after{background:#ff8c00!important;box-shadow:0 0 10px #ff8c00!important}
+.nav-link.admin-nav:hover{
+  color:#fff!important;background:rgba(255,140,0,.30)!important;
+  border-color:#ff8c00!important;box-shadow:0 0 25px rgba(255,140,0,.60)!important;
+}
+.nav-link.admin-nav.active{
+  color:#fff!important;background:rgba(255,140,0,.40)!important;
+  border-color:#ff8c00!important;box-shadow:0 0 30px rgba(255,140,0,.70)!important;
+  text-shadow:0 0 10px #fff!important;
+}
+#chatToggle{
+  min-height:45px!important;padding:12px 18px!important;
+  background:rgba(0,243,255,.10)!important;border:1px solid #00f3ff!important;
+  color:#00f3ff!important;font-family:'Orbitron',sans-serif!important;font-weight:700!important;
+  font-size:.78rem!important;letter-spacing:1px!important;text-transform:uppercase!important;
+  text-shadow:0 0 5px #00f3ff!important;box-shadow:0 0 10px rgba(0,243,255,.20)!important;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)!important;
+  transition:all .3s ease!important;
+}
+#chatToggle:hover{color:#fff!important;background:rgba(0,243,255,.30)!important;box-shadow:0 0 25px rgba(0,243,255,.60)!important;transform:translateY(-2px) scale(1.05)!important}
+#authArea > div:first-child{
+  min-height:45px!important;padding:8px 15px!important;background:rgba(0,0,0,.40)!important;
+  border:1px solid #bc13fe!important;box-shadow:0 0 10px rgba(188,19,254,.20)!important;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)!important;
+  transition:all .3s ease!important;
+}
+#authArea > div:first-child:hover{background:rgba(188,19,254,.25)!important;box-shadow:0 0 20px rgba(188,19,254,.40)!important}
+#authArea > button.btn-secondary{
+  min-height:45px!important;padding:12px 20px!important;background:transparent!important;
+  border:1px solid #ff3838!important;color:#ff3838!important;font-family:'Orbitron',sans-serif!important;
+  font-weight:700!important;font-size:.78rem!important;letter-spacing:2px!important;text-transform:uppercase!important;
+  text-shadow:0 0 5px #ff3838!important;box-shadow:none!important;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)!important;
+  transition:all .3s ease!important;
+}
+#authArea > button.btn-secondary:hover{
+  color:#050508!important;background:#ff3838!important;border-color:#ff3838!important;
+  box-shadow:0 0 25px rgba(255,56,56,.50)!important;transform:none!important;text-shadow:none!important;
+}
+@media(max-width:1100px){
+  #navLinks{gap:5px!important}.nav-link{padding:11px 12px!important;font-size:.68rem!important}
+  #chatToggle{padding:10px 12px!important;font-size:.72rem!important}
+  #authArea > button.btn-secondary{padding:10px 12px!important;font-size:.68rem!important}
+}
+@media(max-width:767px){
+  #navLinks{display:none!important}
+}
+
+/* =========================================================
+   OMEGA CYBER NAV — ORGANIZED / ALIGNED BUTTON OVERRIDE
+   ========================================================= */
+nav.topnav{
+  width:100%;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:linear-gradient(145deg,rgba(8,12,20,.96),rgba(3,6,12,.98));
+  border-bottom:1px solid rgba(0,243,255,.22);
+  box-shadow:0 8px 35px rgba(0,0,0,.65),0 0 20px rgba(0,243,255,.08);
+}
+nav.topnav > .max-w-7xl{
+  width:100%;
+  max-width:1600px;
+  min-height:78px;
+  height:auto !important;
+  margin:0 auto;
+  padding:12px 22px !important;
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  column-gap:22px;
+}
+nav.topnav > .max-w-7xl > .flex:first-child{min-width:max-content;}
+nav.topnav #navLinks{
+  display:flex !important;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:nowrap;
+  gap:7px !important;
+  min-width:0;
+  width:100%;
+}
+nav.topnav #navLinks .nav-link{
+  flex:0 0 auto;
+  min-width:112px;
+  height:46px;
+  padding:0 16px !important;
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(0,243,255,.75) !important;
+  border-radius:2px !important;
+  background:rgba(0,243,255,.08) !important;
+  color:#00f3ff !important;
+  font-family:'Orbitron',sans-serif !important;
+  font-size:.78rem !important;
+  font-weight:700 !important;
+  letter-spacing:.08em !important;
+  line-height:1 !important;
+  text-transform:uppercase !important;
+  text-shadow:0 0 6px rgba(0,243,255,.7) !important;
+  box-shadow:0 0 9px rgba(0,243,255,.16) !important;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px) !important;
+  transition:all .25s ease !important;
+  white-space:nowrap;
+}
+nav.topnav #navLinks .nav-link::after{display:none !important;}
+nav.topnav #navLinks .nav-link:hover{
+  transform:translateY(-2px) scale(1.035);
+  background:rgba(0,243,255,.25) !important;
+  color:#fff !important;
+  border-color:#00f3ff !important;
+  box-shadow:0 0 22px rgba(0,243,255,.55) !important;
+}
+nav.topnav #navLinks .nav-link.active{
+  background:rgba(0,243,255,.38) !important;
+  color:#fff !important;
+  border-color:#00f3ff !important;
+  box-shadow:0 0 26px rgba(0,243,255,.72) !important;
+  text-shadow:0 0 10px #fff !important;
+}
+/* ADMIN = orange only */
+nav.topnav #navLinks .nav-link.admin-nav{
+  background:rgba(255,140,0,.10) !important;
+  border-color:#ff8c00 !important;
+  color:#ff8c00 !important;
+  text-shadow:0 0 6px #ff8c00 !important;
+  box-shadow:0 0 10px rgba(255,140,0,.20) !important;
+}
+nav.topnav #navLinks .nav-link.admin-nav:hover{
+  background:rgba(255,140,0,.30) !important;
+  color:#fff !important;
+  border-color:#ff8c00 !important;
+  box-shadow:0 0 25px rgba(255,140,0,.60) !important;
+}
+nav.topnav #navLinks .nav-link.admin-nav.active{
+  background:rgba(255,140,0,.40) !important;
+  color:#fff !important;
+  border-color:#ff8c00 !important;
+  box-shadow:0 0 30px rgba(255,140,0,.70) !important;
+}
+/* RIGHT ACTIONS */
+nav.topnav > .max-w-7xl > .flex:last-child{
+  display:flex !important;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px !important;
+  min-width:max-content;
+}
+nav.topnav #chatToggle{
+  height:46px;
+  min-width:92px;
+  padding:0 15px !important;
+  border:1px solid #00f3ff !important;
+  background:rgba(0,243,255,.08) !important;
+  color:#00f3ff !important;
+  font-family:'Orbitron',sans-serif !important;
+  font-weight:700;
+  letter-spacing:.08em;
+  border-radius:2px;
+  box-shadow:0 0 10px rgba(0,243,255,.18);
+  transition:.25s ease;
+}
+nav.topnav #chatToggle:hover{
+  background:rgba(0,243,255,.25) !important;
+  color:#fff !important;
+  box-shadow:0 0 22px rgba(0,243,255,.55);
+  transform:translateY(-2px);
+}
+nav.topnav #authArea{gap:9px !important;}
+nav.topnav #authArea > button,
+nav.topnav #authArea .btn-secondary{
+  min-height:46px;
+  padding:0 16px !important;
+  border-radius:2px !important;
+  font-family:'Orbitron',sans-serif !important;
+  font-weight:700 !important;
+  letter-spacing:.08em !important;
+}
+nav.topnav #authArea > div:first-child{
+  min-height:46px;
+  padding:0 13px;
+  display:flex !important;
+  align-items:center;
+  border:1px solid rgba(188,19,254,.55);
+  background:rgba(188,19,254,.06);
+  clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+}
+/* Logo stays compact and aligned */
+nav.topnav .hex-badge{flex-shrink:0;}
+nav.topnav .max-w-7xl > .flex:first-child > div:last-child{white-space:nowrap;}
+/* Prevent button scattering on medium screens */
+@media (max-width:1250px){
+  nav.topnav > .max-w-7xl{grid-template-columns:auto 1fr;row-gap:10px;}
+  nav.topnav #navLinks{grid-column:1 / -1;grid-row:2;order:3;overflow-x:auto;justify-content:flex-start;padding:3px 2px 7px;scrollbar-width:none;}
+  nav.topnav #navLinks::-webkit-scrollbar{display:none;}
+  nav.topnav > .max-w-7xl > .flex:last-child{grid-column:2;grid-row:1;}
+}
+@media (max-width:767px){
+  nav.topnav > .max-w-7xl{display:flex !important;flex-wrap:wrap;justify-content:space-between;padding:10px 12px !important;}
+  nav.topnav #navLinks{display:flex !important;order:3;width:100%;overflow-x:auto;justify-content:flex-start;}
+  nav.topnav #navLinks .nav-link{min-width:105px;height:42px;font-size:.7rem !important;padding:0 12px !important;}
+  nav.topnav > .max-w-7xl > .flex:last-child{margin-left:auto;}
+  nav.topnav #chatToggle{min-width:48px;width:48px;padding:0 !important;font-size:0;}
+  nav.topnav #chatToggle i{font-size:1rem;}
+  nav.topnav #authArea > div:first-child{display:none !important;}
+}
+
+</style>
+
+<style id="omega-logout-final-fix">
+/* ===== OMEGA CYBER LOGOUT EFFECT — FINAL ===== */
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]{
+  position:relative!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  min-height:46px!important;
+  min-width:126px!important;
+  padding:12px 20px!important;
+  overflow:hidden!important;
+  z-index:1!important;
+  background:transparent!important;
+  border:1px solid rgba(255,56,56,.75)!important;
+  color:#ff3838!important;
+  font-family:'Orbitron',sans-serif!important;
+  font-weight:700!important;
+  font-size:.78rem!important;
+  letter-spacing:1.5px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 0 6px #ff3838!important;
+  box-shadow:0 0 10px rgba(255,56,56,.20)!important;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)!important;
+  transition:color .3s ease,box-shadow .3s ease,transform .3s ease!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]::before{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  background:#ff3838!important;
+  transform:scaleX(0)!important;
+  transform-origin:left center!important;
+  transition:transform .3s ease!important;
+  z-index:-1!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]::after{
+  content:''!important;
+  position:absolute!important;
+  top:0!important;
+  left:-120%!important;
+  width:55%!important;
+  height:100%!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)!important;
+  transform:skewX(-20deg)!important;
+  transition:left .55s ease!important;
+  pointer-events:none!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]:hover{
+  color:#050508!important;
+  background:transparent!important;
+  border-color:#ff3838!important;
+  box-shadow:0 0 25px rgba(255,56,56,.65),inset 0 0 15px rgba(255,56,56,.25)!important;
+  transform:translateY(-2px) scale(1.04)!important;
+  text-shadow:none!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]:hover::before{
+  transform:scaleX(1)!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]:hover::after{
+  left:140%!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]:active{
+  transform:translateY(0) scale(.98)!important;
+  box-shadow:0 0 12px rgba(255,56,56,.5)!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"] i{
+  position:relative!important;
+  z-index:2!important;
+  font-size:.9rem!important;
+  transition:transform .3s ease,filter .3s ease!important;
+}
+nav.topnav #authArea > button.btn-secondary[onclick*="logout"]:hover i{
+  transform:translateX(3px)!important;
+  filter:drop-shadow(0 0 4px #050508)!important;
+}
+@media(max-width:1100px){
+  nav.topnav #authArea > button.btn-secondary[onclick*="logout"]{min-width:112px!important;padding:10px 13px!important;font-size:.68rem!important}
+}
+</style>
+
+</head>
 <body>
 <canvas id="matrix"></canvas>
 <div class="grid-bg"></div>
@@ -431,6 +1011,8 @@ body.auth-locked #main.auth-terminal-visible { display:block !important; }
     </div>
   </div>
 </nav>
+<!-- GLOBAL BROADCAST -->
+<div id="globalAnnBar" role="status" aria-live="polite"><div class="global-ann-scroll"><span id="globalAnnContent"></span></div></div>
 
 <div class="chat-panel" id="chatPanel">
   <div style="padding:1rem;border-bottom:1px solid var(--cyan);display:flex;justify-content:space-between;align-items:center;background:rgba(0,243,255,.05);flex-shrink:0">
@@ -604,9 +1186,8 @@ function renderChat(){
     c.innerHTML = state.chatMessages.map(m => {
         const isMe = m.uid === state.currentUser?.id;
         let time = '';
-        if (m.timestamp && typeof m.timestamp.toMillis === 'function') {
-            time = new Date(m.timestamp.toMillis()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        }
+        const msgMillis = m.timestamp && typeof m.timestamp.toMillis === 'function' ? m.timestamp.toMillis() : m.createdAt;
+        if (msgMillis) time = new Date(msgMillis).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         const roleClass = m.role === 'admin' ? 'role-admin' : (m.banned ? 'sub-banned' : `sub-${m.subscription || 'none'}`);
         const userLabel = m.role === 'admin' ? `[ADMIN] ${(m.username || 'ADMIN').toUpperCase()}` : (m.username || 'User');
         
@@ -653,6 +1234,36 @@ function sendChat(){
         return; 
     }
     
+    // Admin chat command: /clearm.at clears the entire group chat in realtime.
+    if (text.toLowerCase() === '/clearm.at') {
+        if ((state.currentUser.role || '').toLowerCase() !== 'admin') {
+            toast('ADMIN ONLY: /clearm.at', 'error');
+            return;
+        }
+        const clearBtn = document.getElementById('chatInput');
+        clearBtn.disabled = true;
+        db.collection('live_chat').limit(500).get().then(snap => {
+            if (snap.empty) {
+                clearBtn.disabled = false;
+                input.value = '';
+                toast('CHAT IS ALREADY CLEAR', 'success');
+                return;
+            }
+            const batch = db.batch();
+            snap.docs.forEach(d => batch.delete(d.ref));
+            return batch.commit();
+        }).then(() => {
+            clearBtn.disabled = false;
+            input.value = '';
+            cancelReply();
+            toast('CHAT CLEARED IN REALTIME', 'success');
+        }).catch(err => {
+            clearBtn.disabled = false;
+            toast('CLEAR CHAT FAILED: ' + err.message, 'error');
+        });
+        return;
+    }
+
     const msgData = {
         uid: state.currentUser.id,
         username: state.currentUser.username || state.currentUser.email.split('@')[0],
@@ -660,6 +1271,9 @@ function sendChat(){
         subscription: state.currentUser.subscription || 'none',
         banned: state.currentUser.banned || false,
         text: text,
+        // Client timestamp keeps ordering/rendering instant while serverTimestamp
+        // remains the authoritative Firestore timestamp.
+        createdAt: Date.now(),
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     };
     
@@ -667,15 +1281,12 @@ function sendChat(){
         msgData.replyTo = { id: state.replyTo.id, username: state.replyTo.username, text: state.replyTo.text };
     }
     
-    db.collection('live_chat').add(msgData).then((docRef) => {
+    db.collection('live_chat').add(msgData).then(() => {
         input.value = '';
         cancelReply();
-        toast('Message sent', 'success');
-        
-        msgData.id = docRef.id;
-        msgData.timestamp = { toMillis: () => Date.now() }; 
-        state.chatMessages.push(msgData);
-        renderChat();
+        // Do not manually append here. Firestore onSnapshot receives the local
+        // write immediately, preventing duplicate messages and keeping every
+        // connected client on the same realtime source of truth.
     }).catch(err => {
         console.error("Chat write error: ", err);
         toast('Chat Send Failed: '+err.message,'error');
@@ -826,7 +1437,28 @@ auth.onAuthStateChanged(user=>{
 function renderBannedPortal(){return `<div id="bannedPortal" class="portal banned-effect" style="display:flex"><div class="ban-bg-grid"></div><div class="ban-scanlines"></div><div class="ban-warning top">⚠ BAN HAMMER INITIATED ⚠</div><div class="ban-warning bottom">⚠ CONNECTION TERMINATED ⚠</div><div class="ban-container"><div class="hammer-area"><div class="shockwave sw-1"></div><div class="shockwave sw-2"></div><div class="shockwave sw-3"></div><div class="hammer-symbol">🔨</div></div><h1 class="ban-title">ACCESS DENIED</h1><div class="ban-text">ACCOUNT BANNED</div><div class="ban-subtext">YOU NO LONGER HAVE ACCESS TO THIS PORTAL</div></div></div>`;}
 
 // ====== NAVIGATOR ======
-function renderNav(){const navLinks=document.getElementById('navLinks'),authArea=document.getElementById('authArea');const links=[{id:'home',label:'Products'},{id:'proof',label:'VIP Proof'},{id:'downloads',label:'Downloads'},{id:'contact',label:'Contact'}];if(state.currentUser){links.push({id:'dashboard',label:'Dashboard'});if(state.currentUser.role==='admin')links.push({id:'admin',label:'Admin',isAdmin:true});}navLinks.innerHTML=links.map(l=>`<a class="nav-link ${state.page===l.id?'active':''} ${l.isAdmin?'admin-nav':''}" onclick="goPage('${l.id}')">${l.label}</a>`).join('');if(state.currentUser){const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (isSubscriptionActive(state.currentUser) ? (state.currentUser.subscription==='sf_rush' ? 'var(--green)' : state.currentUser.subscription==='sf_legend' ? 'var(--orange)' : state.currentUser.subscription==='both' ? 'var(--blue)' : '#ffffff') : '#ffffff');authArea.innerHTML=`<div style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem"><i class="fas fa-user-shield" style="color:${nameColor}"></i><span style="color:${nameColor};font-weight:${state.currentUser.role==='admin'?'900':'normal'}">${displayName}</span><span style="color:var(--muted);font-size:.7rem">[${state.currentUser.role}]</span></div><button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="logout()"><i class="fas fa-sign-out-alt"></i> LOG OUT</button>`;}else{authArea.innerHTML=`<button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="goPage('login')"><i class="fas fa-sign-in-alt"></i> LOGIN</button>`;}}
+function renderNav(){const navLinks=document.getElementById('navLinks'),authArea=document.getElementById('authArea');const links=[{id:'home',label:'Products'},{id:'proof',label:'VIP Proof'},{id:'downloads',label:'Downloads'},{id:'contact',label:'Contact'}];if(state.currentUser){links.push({id:'dashboard',label:'Dashboard'});if(state.currentUser.role==='admin')links.push({id:'admin',label:'Admin',isAdmin:true});}navLinks.innerHTML=links.map(l=>`<button type="button" class="nav-link ${state.page===l.id?'active':''} ${l.isAdmin?'admin-nav':''}" data-text="${l.label.toUpperCase()}" onclick="goPage('${l.id}')">${l.label}</button>`).join('');if(state.currentUser){const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (isSubscriptionActive(state.currentUser) ? (state.currentUser.subscription==='sf_rush' ? 'var(--green)' : state.currentUser.subscription==='sf_legend' ? 'var(--orange)' : state.currentUser.subscription==='both' ? 'var(--blue)' : '#ffffff') : '#ffffff');authArea.innerHTML=`<div style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem"><i class="fas fa-user-shield" style="color:${nameColor}"></i><span style="color:${nameColor};font-weight:${state.currentUser.role==='admin'?'900':'normal'}">${displayName}</span><span style="color:var(--muted);font-size:.7rem">[${state.currentUser.role}]</span></div><button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="logout()"><i class="fas fa-sign-out-alt"></i> LOG OUT</button>`;}else{authArea.innerHTML=`<button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="goPage('login')"><i class="fas fa-sign-in-alt"></i> LOGIN</button>`;}attachNavDecrypt();}
+function attachNavDecrypt(){
+  const chars="!<>-_\\/[]{}—=+*^?#________";
+  document.querySelectorAll('#navLinks .nav-link[data-text]').forEach(btn=>{
+    const original=btn.dataset.text;
+    btn.onmouseenter=()=>{
+      let i=0;
+      if(btn._decrypt) clearInterval(btn._decrypt);
+      btn._decrypt=setInterval(()=>{
+        btn.textContent=original.split('').map((ch,idx)=>{
+          if(ch===' ') return ' ';
+          if(idx<i) return original[idx];
+          return chars[Math.floor(Math.random()*chars.length)];
+        }).join('');
+        i+=.5;
+        if(i>=original.length){clearInterval(btn._decrypt);btn.textContent=original;}
+      },40);
+    };
+    btn.onmouseleave=()=>{if(btn._decrypt) clearInterval(btn._decrypt);btn.textContent=original;};
+  });
+}
+
 function goPage(page){
   if(state.bannedLock){ state.page='portal'; renderNav(); renderPage(); window.scrollTo(0,0); return; }
   if(!state.currentUser && page!=='login'){ state.page='login'; renderNav(); renderPage(); document.body.classList.add('auth-locked'); return; }
@@ -1172,7 +1804,7 @@ function renderProof(){
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;max-width:900px;margin:0 auto">
         <div class="card card-cyber pricing-card" style="overflow:hidden">
           <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-bottom:1px solid var(--green)">
-            <iframe src="https://www.youtube.com/embed/ypFjrC_L8gs" style="position:absolute;top:0;left:0;width:100%;height:100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/fKFHV_36m6U" style="position:absolute;top:0;left:0;width:100%;height:100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
           <div style="padding:1.5rem">
             <h3 style="font-family:'Orbitron';font-weight:700;color:var(--green);margin:0;text-shadow:0 0 10px var(--green)">SF RUSH VIP</h3>
@@ -1708,30 +2340,56 @@ function replyUser(uid){const select=document.getElementById('adminMsgTo');if(se
 function sendAdminMessage(e){e.preventDefault();const toUid=document.getElementById('adminMsgTo').value;const text=document.getElementById('adminMsgText').value.trim();if(!text||!toUid)return;db.collection('messages').add({ from: 'admin', fromName: 'Admin', to: toUid, text: text, timestamp: firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{toast('MESSAGE SENT TO USER','success');document.getElementById('adminMsgText').value='';}).catch(err=>toast('ERROR: '+err.message,'error'));}
 
 // ====== INIT LIVE CHAT LISTENER ======
-db.collection('live_chat').limit(100).onSnapshot(snapshot => {
-    state.chatMessages = [];
-    if (snapshot.docs) { snapshot.docs.forEach(doc => { state.chatMessages.push({ id: doc.id, ...doc.data() }); }); }
+// Realtime chat source of truth. includeMetadataChanges makes local writes render
+// immediately (hasPendingWrites) while the same listener receives remote users'
+// messages without refresh or polling. createdAt gives stable instant ordering.
+db.collection('live_chat').orderBy('createdAt', 'desc').limit(100).onSnapshot({includeMetadataChanges:true}, snapshot => {
+    state.chatMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     state.chatMessages.sort((a, b) => {
-        let timeA = a.timestamp && typeof a.timestamp.toMillis === 'function' ? a.timestamp.toMillis() : 0;
-        let timeB = b.timestamp && typeof b.timestamp.toMillis === 'function' ? b.timestamp.toMillis() : 0;
+        const timeA = a.createdAt || (a.timestamp && typeof a.timestamp.toMillis === 'function' ? a.timestamp.toMillis() : 0);
+        const timeB = b.createdAt || (b.timestamp && typeof b.timestamp.toMillis === 'function' ? b.timestamp.toMillis() : 0);
         return timeA - timeB;
     });
-    if(state.chatMessages.length > 50) { state.chatMessages = state.chatMessages.slice(state.chatMessages.length - 50); }
+    if(state.chatMessages.length > 50) state.chatMessages = state.chatMessages.slice(-50);
     renderChat();
-}, (error) => { console.error("Chat listener error: ", error); });
+}, error => {
+    console.error('Chat listener error:', error);
+    toast('CHAT REALTIME ERROR: ' + error.message, 'error');
+});
 
 db.collection('config').doc('announcement').onSnapshot(doc => {
-    const bar = document.getElementById('annBar');
-    if(!bar) return;
+    const chatBar = document.getElementById('annBar');
+    const chatContent = document.getElementById('annContent');
+    const globalBar = document.getElementById('globalAnnBar');
+    const globalContent = document.getElementById('globalAnnContent');
     if(doc.exists && doc.data().text) {
         const { text, color, bold, size } = doc.data();
-        const content = document.getElementById('annContent');
-        content.textContent = text;
-        content.style.color = color || '#bc13fe';
-        content.style.fontWeight = bold ? '900' : 'normal';
-        content.style.fontSize = (size || 14) + 'px';
-        bar.style.display = 'flex';
-    } else { bar.style.display = 'none'; }
+        const finalColor = color || '#bc13fe';
+        const finalSize = Number(size) || 14;
+        if(globalBar && globalContent) {
+            globalContent.textContent = text + '   •   ';
+            globalContent.style.color = finalColor;
+            globalContent.style.fontWeight = bold ? '900' : 'normal';
+            globalContent.style.fontSize = finalSize + 'px';
+            globalBar.style.color = finalColor;
+            globalBar.style.borderBottomColor = finalColor;
+            globalBar.style.display = 'flex';
+            // Restart the ticker whenever a new announcement arrives.
+            globalContent.style.animation = 'none';
+            void globalContent.offsetWidth;
+            globalContent.style.animation = '';
+        }
+        if(chatBar && chatContent) {
+            chatContent.textContent = text;
+            chatContent.style.color = finalColor;
+            chatContent.style.fontWeight = bold ? '900' : 'normal';
+            chatContent.style.fontSize = finalSize + 'px';
+            chatBar.style.display = 'flex';
+        }
+    } else {
+        if(globalBar) globalBar.style.display = 'none';
+        if(chatBar) chatBar.style.display = 'none';
+    }
 }, (err) => { console.error("Announcement listener error:", err); });
 
 // INIT
