@@ -1805,11 +1805,21 @@ function renderProof(){
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;max-width:900px;margin:0 auto">
         <div class="card card-cyber pricing-card" style="overflow:hidden">
           <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-bottom:1px solid var(--green)">
-            <iframe src="https://www.youtube.com/embed/fKFHV_36m6U" style="position:absolute;top:0;left:0;width:100%;height:100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="omega-video-frame" style="position:absolute;inset:0;background:#000">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/ypFjrC_L8gs?rel=0"
+                title="SF RUSH VIP Proof"
+                style="position:absolute;inset:0;width:100%;height:100%;border:0"
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+            </div>
           </div>
           <div style="padding:1.5rem">
             <h3 style="font-family:'Orbitron';font-weight:700;color:var(--green);margin:0;text-shadow:0 0 10px var(--green)">SF RUSH VIP</h3>
-            <p style="font-family:'Share Tech Mono';font-size:.8rem;color:var(--muted);margin-top:.5rem">Gameplay footage using SF RUSH package. Smooth aimbot and ESP features.</p>
+            <p style="font-family:'Share Tech Mono';font-size:.8rem;color:var(--muted);margin-top:.5rem">SF RUSH VIP proof gameplay video.</p>
           </div>
         </div>
         <div class="card card-cyber pricing-card" style="overflow:hidden">
@@ -2517,5 +2527,16 @@ renderNav();renderPage();updateChatInputState();
 })();
 </script>
 
+
+
+<style id="omega-rush-proof-video-fix">
+  .omega-video-frame,
+  .omega-video-frame iframe{
+    background:#000;
+  }
+  .omega-video-frame iframe{
+    display:block;
+  }
+</style>
 </body>
 </html>
