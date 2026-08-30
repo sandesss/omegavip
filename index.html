@@ -141,8 +141,8 @@ nav.topnav{position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);backgrou
 .download-box.vip-active{animation:vipDownloadPulse 1.8s ease-in-out infinite;position:relative;overflow:hidden}
 .download-box.vip-active::after{content:'';position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);animation:vipDownloadSweep 2.4s ease-in-out infinite}
 .download-box.vip-active i,.download-box.vip-active span{position:relative;z-index:1}
-.download-box.rush-active{border-color:rgba(0,255,136,.8);box-shadow:0 0 12px rgba(0,255,136,.35),0 0 28px rgba(0,255,136,.18)}
-.download-box.legend-active{border-color:rgba(255,205,64,.85);box-shadow:0 0 12px rgba(255,205,64,.4),0 0 28px rgba(255,165,0,.18)}
+.download-box.rush-active{background:linear-gradient(135deg,#39ff14,#00d084);color:#001a0b!important;border-color:#39ff14;box-shadow:0 0 12px rgba(57,255,20,.75),0 0 28px rgba(57,255,20,.35)}
+.download-box.legend-active{background:linear-gradient(135deg,#ffd740,#ff9800);color:#241500!important;border-color:#ffd740;box-shadow:0 0 12px rgba(255,215,64,.75),0 0 28px rgba(255,165,0,.35)}
 .download-disabled{opacity:.65;cursor:not-allowed;filter:grayscale(.25);box-shadow:none!important;color:#cfd8dc}
 .download-disabled:hover{transform:none;filter:grayscale(.25)}
 @keyframes vipDownloadPulse{0%,100%{transform:translateY(0);filter:brightness(1)}50%{transform:translateY(-1px);filter:brightness(1.12)}}
@@ -181,6 +181,10 @@ nav.topnav{position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);backgrou
 .cyber-download-card .download-box i{font-size:1rem}
 .cyber-download-card .download-box.vip-active{background:linear-gradient(180deg,rgba(57,255,20,.2),rgba(3,9,13,.88))!important;color:var(--card-accent);box-shadow:0 0 18px var(--card-glow),inset 0 0 18px var(--card-glow);animation:cyberButtonPulse 1.8s ease-in-out infinite}
 .cyber-download-card.legend .download-box.vip-active{background:linear-gradient(180deg,rgba(255,215,0,.2),rgba(3,9,13,.88))!important}
+.cyber-download-card .download-box.vip-active{cursor:pointer!important;pointer-events:auto!important;text-decoration:none!important}
+.cyber-download-card.rush .download-box.vip-active{background:linear-gradient(180deg,rgba(57,255,20,.32),rgba(3,9,13,.95))!important;color:#39ff14!important;border-color:#39ff14!important}
+.cyber-download-card.legend .download-box.vip-active{background:linear-gradient(180deg,rgba(255,215,0,.32),rgba(3,9,13,.95))!important;color:#ffd740!important;border-color:#ffd740!important}
+.cyber-download-card .download-box.download-disabled{pointer-events:none!important;}
 .cyber-download-card .download-box.vip-active::after{background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);height:100%;width:35%;top:0;animation:vipDownloadSweep 2.6s ease-in-out infinite}
 .cyber-download-card .download-disabled{opacity:.48;color:#78828d;border-color:rgba(120,130,145,.28);background:rgba(3,9,13,.52)!important;box-shadow:none!important}
 @keyframes cyberButtonPulse{0%,100%{box-shadow:0 0 12px var(--card-glow),inset 0 0 12px var(--card-glow)}50%{box-shadow:0 0 28px var(--card-glow),inset 0 0 20px var(--card-glow)}}
@@ -1346,11 +1350,77 @@ async function handleLogin(e){
     console.error('Login error:',err);
     toast('ERROR: '+(err?.message||'LOGIN FAILED'),'error');
   }finally{
+    registrationInProgress=false;
     if(submit){submit.disabled=false;submit.innerHTML=submit.dataset.oldText||'<i class="fas fa-sign-in-alt"></i> LOGIN';}
   }
   return false;
 }
-function handleRegister(e){e.preventDefault();const email=document.getElementById('regEmail').value;const pass=document.getElementById('regPass').value;const username=document.getElementById('regUser').value;auth.createUserWithEmailAndPassword(email,pass).then(cred=>{const role=(email==='admin@omega.vip')?'admin':'user';return db.collection('users').doc(cred.user.uid).set({username:username,email:email,role:role,banned:false,subscription:'none',subDuration:'N/A',hwid:'',joined:firebase.firestore.FieldValue.serverTimestamp()});}).then(()=>{toast('ACCOUNT CREATED SUCCESSFULLY','success');}).catch(err=>toast('ERROR: '+err.message,'error'));}
+let registrationInProgress=false;
+let registrationJustCompleted=false;
+async function handleRegister(e){
+  e.preventDefault(); if(e.stopPropagation) e.stopPropagation();
+  const email=(document.getElementById('regEmail')?.value||'').trim().toLowerCase();
+  const pass=document.getElementById('regPass')?.value||'';
+  const username=(document.getElementById('regUser')?.value||'').trim();
+  if(!username||!email||!pass){toast('COMPLETE ALL REGISTRATION FIELDS','error');return false;}
+  if(pass.length<6){toast('PASSWORD MUST BE AT LEAST 6 CHARACTERS','error');return false;}
+
+  registrationInProgress=true;
+  const submit=document.querySelector('#registerForm button[type="submit"]');
+  if(submit){submit.disabled=true;submit.dataset.oldText=submit.innerHTML;submit.innerHTML='<i class="fas fa-spinner fa-spin"></i> CREATING...';}
+
+  let createdUid=null;
+  try{
+    // Firebase Authentication itself guarantees that an email address cannot be registered twice.
+    // IMPORTANT: do NOT read the whole users collection before authentication; that can trigger
+    // Firestore "Missing or insufficient permissions" under normal security rules.
+    const cred=await auth.createUserWithEmailAndPassword(email,pass);
+    createdUid=cred.user.uid;
+
+    // Username uniqueness is checked only after the user is authenticated.
+    const normalizedUser=username.toLowerCase();
+    const snap=await db.collection('users').get();
+    const duplicate=snap.docs.some(d=>{
+      const x=d.data()||{};
+      return String(x.username||'').trim().toLowerCase()===normalizedUser;
+    });
+
+    if(duplicate){
+      try{ await cred.user.delete(); }catch(cleanErr){ console.warn('Duplicate cleanup failed:',cleanErr); }
+      createdUid=null;
+      toast('REGISTRATION DENIED: USERNAME ALREADY REGISTERED','error');
+      return false;
+    }
+
+    const role=(email==='admin@omega.vip')?'admin':'user';
+    await db.collection('users').doc(cred.user.uid).set({
+      username:username,email:email,role:role,banned:false,
+      subscription:'none',subDuration:'N/A',hwid:'',
+      joined:firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    registrationJustCompleted=true;
+    await auth.signOut();
+    toast('ACCOUNT CREATED SUCCESSFULLY — YOU CAN NOW LOGIN','success');
+    switchAuthTab('login');
+    return true;
+  }catch(err){
+    // Never leave a Firebase Auth account behind when the Firestore registration fails.
+    if(createdUid && auth.currentUser && auth.currentUser.uid===createdUid){
+      try{ await auth.currentUser.delete(); }catch(cleanErr){ console.warn('Registration cleanup failed:',cleanErr); }
+    }
+    let msg=err?.message||'REGISTRATION FAILED';
+    if(err?.code==='auth/email-already-in-use'){
+      msg='REGISTRATION DENIED: EMAIL ALREADY REGISTERED';
+    }else if(err?.code==='permission-denied'){
+      msg='REGISTRATION FAILED: FIRESTORE PERMISSION DENIED';
+    }
+    toast('ERROR: '+msg,'error');
+    return false;
+  }finally{
+    if(submit){submit.disabled=false;submit.innerHTML=submit.dataset.oldText||'<i class="fas fa-user-plus"></i> CREATE ACCOUNT';}
+  }
+}
 function logout(){
   // Immediately return to the login screen; do not wait for Firebase's async signOut callback.
   state.currentUser=null;
@@ -1369,6 +1439,12 @@ function logout(){
 function handleForgot(e){e.preventDefault();const email=document.getElementById('forgotEmail').value;auth.sendPasswordResetEmail(email).then(()=>{toast('RECOVERY LINK SENT','success');switchAuthTab('login');}).catch(err=>toast('ERROR: '+err.message,'error'));}
 
 auth.onAuthStateChanged(user=>{
+  // Registration must NEVER unlock the site. The new account must log in manually.
+  if(registrationInProgress){ return; }
+  if(registrationJustCompleted){
+    if(!user){ registrationJustCompleted=false; state.currentUser=null; state.page='login'; document.body.classList.add('auth-locked'); renderNav(); renderPage(); updateChatInputState(); }
+    return;
+  }
   if(user){
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       if(!doc.exists) {
@@ -1721,16 +1797,22 @@ function renderDownloads(){
   const rushLink = state.downloads.rushLink;
   const legendLink = state.downloads.legendLink;
 
-  const sub = state.currentUser ? state.currentUser.subscription : 'none';
+  const sub = normalizeSubscription(state.currentUser ? state.currentUser.subscription : 'none');
   const subActive = state.currentUser ? isSubscriptionActive(state.currentUser) : false;
+  // Download access is tied strictly to the assigned tier.
   const hasRush = subActive && (sub === 'sf_rush' || sub === 'both');
   const hasLegend = subActive && (sub === 'sf_legend' || sub === 'both');
 
   const downloadButton = (link, enabled, tone='green') => {
-    const activeClass = enabled && link ? (tone === 'gold' ? 'vip-active legend-active' : 'vip-active rush-active') : '';
-    return enabled && link
-      ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="download-box ${activeClass}"><i class="fas fa-download"></i><span>DOWNLOAD</span></a>`
-      : `<button class="download-box download-disabled" type="button" disabled><i class="fas fa-download"></i><span>DOWNLOAD</span></button>`;
+    const activeClass = enabled ? (tone === 'gold' ? 'vip-active legend-active' : 'vip-active rush-active') : 'download-disabled';
+    const safeLink = String(link || '').trim();
+    if(enabled && safeLink){
+      return `<a href="${safeLink.replace(/"/g,'&quot;')}" target="_blank" rel="noopener noreferrer" class="download-box ${activeClass}" aria-label="DOWNLOAD"><i class="fas fa-download"></i><span>DOWNLOAD</span></a>`;
+    }
+    if(enabled){
+      return `<button class="download-box ${activeClass}" type="button" onclick="toast('DOWNLOAD LINK IS NOT SET BY ADMIN','error')"><i class="fas fa-download"></i><span>DOWNLOAD</span></button>`;
+    }
+    return `<button class="download-box download-disabled" type="button" disabled><i class="fas fa-lock"></i><span>DOWNLOAD LOCKED</span></button>`;
   };
 
   const rushColor = rushStatus === 'Undetected' ? 'var(--green)' : rushStatus === 'Detected' ? 'var(--red)' : 'var(--gold)';
@@ -1872,7 +1954,7 @@ function renderDashboard(){
   const subActive = isSubscriptionActive(state.currentUser);
   const countdown = state.currentUser.subExpiresAt ? formatCountdown(state.currentUser.subExpiresAt) : '';
   const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;
-  const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (subActive ? (sub === 'sf_rush' ? 'var(--green)' : sub === 'sf_legend' ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : '#ffffff') : '#ffffff');
+  const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (subActive ? (['sf_rush','sf_rush_nvip','sf_rush_pvip','sf_rush_svip'].includes(sub) ? 'var(--green)' : ['sf_legend_vip','sf_legend'].includes(sub) ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : '#ffffff') : '#ffffff');
   const hwid = state.currentUser.hwid || '';
   
   return `<section style="padding:2rem 0">
@@ -2135,9 +2217,9 @@ function loadAdminData(){
       if(u.role!=='admin' && u.subscription && u.subscription !== 'none' && u.subExpiresAt && !isSubscriptionActive(u)) expireVipIfNeeded({id:d.id, ...u});
       if(u.banned)banned++;
       
-      const sub = u.subscription || 'none';
-      let subColor = u.role==='admin' ? 'var(--red)' : (u.banned ? '#000000' : (sub === 'sf_rush' ? 'var(--green)' : sub === 'sf_legend' ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : '#ffffff'));
-      let subLabel = u.role==='admin' ? 'ADMIN' : (u.banned ? 'BANNED' : (sub === 'sf_rush' ? 'SF RUSH' : sub === 'sf_legend' ? 'SF LEGEND' : sub === 'both' ? 'RUSH+LEGEND' : 'NONE'));
+      const sub = normalizeSubscription(u.subscription);
+      let subColor = u.role==='admin' ? 'var(--red)' : (u.banned ? '#000000' : (['sf_rush','sf_rush_nvip','sf_rush_pvip','sf_rush_svip'].includes(sub) ? 'var(--green)' : ['sf_legend_vip','sf_legend'].includes(sub) ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : '#ffffff'));
+      let subLabel = u.role==='admin' ? 'ADMIN' : (u.banned ? 'BANNED' : (subscriptionLabel(sub)));
       let nameWeight = (u.role==='admin' || sub !== 'none') ? '900' : 'normal';
       const hwid = u.hwid || 'N/A';
       
@@ -2152,8 +2234,8 @@ function loadAdminData(){
         <td>
           ${u.role!=='admin' ? `
           <div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:.25rem">
-            <button onclick="setSub('${d.id}','sf_rush')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">RUSH</button>
-            <button onclick="setSub('${d.id}','sf_legend')" style="background:rgba(255,149,0,.2);border:1px solid var(--orange);color:var(--orange);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">LEGEND</button>
+            <button onclick="setSub('${d.id}','sf_rush')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">SF RUSH</button>
+            <button onclick="setSub('${d.id}','sf_legend')" style="background:rgba(255,149,0,.2);border:1px solid var(--orange);color:var(--orange);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">SF LEGEND</button>
             <button onclick="setSub('${d.id}','both')" style="background:rgba(0,179,255,.2);border:1px solid var(--blue);color:var(--blue);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">BOTH</button>
             <button onclick="setSub('${d.id}','none')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">CLEAR</button>
           </div>
@@ -2260,8 +2342,22 @@ function formatCountdown(ts) {
   const seconds = totalSeconds % 60;
   return String(days).padStart(2,'0')+'D '+String(hours).padStart(2,'0')+'H '+String(minutes).padStart(2,'0')+'M '+String(seconds).padStart(2,'0')+'S';
 }
+function normalizeSubscription(value) {
+  const s = String(value || 'none').trim().toLowerCase().replace(/\s+/g,'_');
+  const map = {
+    'nvip':'sf_rush','rush_nvip':'sf_rush','sf_rush_nvip':'sf_rush',
+    'pvip':'sf_rush','rush_pvip':'sf_rush','sf_rush_pvip':'sf_rush',
+    'svip':'sf_rush','rush_svip':'sf_rush','sf_rush_svip':'sf_rush',
+    'legend':'sf_legend','legend_vip':'sf_legend','sf_legend':'sf_legend','sf_legend_vip':'sf_legend',
+    'rush':'sf_rush','sf_rush':'sf_rush','both':'both','rush_legend':'both','sf_rush_legend':'both',
+    'none':'none','':'none'
+  };
+  return map[s] || s;
+}
 function isSubscriptionActive(user) {
-  if (!user || !user.subscription || user.subscription === 'none') return false;
+  if (!user) return false;
+  const sub = normalizeSubscription(user.subscription);
+  if (sub === 'none') return false;
   if (!user.subExpiresAt) return true;
   const expiry = getExpiryDate(user.subExpiresAt);
   return !!expiry && expiry.getTime() > Date.now();
@@ -2311,14 +2407,21 @@ function refreshVipCountdowns() {
 if (window.__omegaVipCountdownTimer) clearInterval(window.__omegaVipCountdownTimer);
 window.__omegaVipCountdownTimer = setInterval(refreshVipCountdowns, 1000);
 function subscriptionLabel(sub) {
-  return sub === 'sf_rush' ? 'SF RUSH VIP' : sub === 'sf_legend' ? 'SF LEGEND VIP' : sub === 'both' ? 'RUSH + LEGEND' : 'NO SUBSCRIPTION';
+  const s = String(sub || 'none').toLowerCase().trim();
+  if (s === 'both') return 'SF RUSH + SF LEGEND';
+  if (['sf_rush','rush','sf_rush_nvip','sf_rush_pvip','sf_rush_svip','nvip','pvip','svip'].includes(s)) return 'SF RUSH';
+  if (['sf_legend','sf_legend_vip','legend','legend_vip'].includes(s)) return 'SF LEGEND';
+  return 'NO SUBSCRIPTION';
 }
 
 function approveOrder(orderId, uid, product, duration) {
   let subType = 'none';
-  if(product.includes('RUSH') && product.includes('LEGEND')) subType = 'both';
-  else if(product.includes('RUSH')) subType = 'sf_rush';
-  else if(product.includes('LEGEND')) subType = 'sf_legend';
+  const productName = String(product || '').trim().toUpperCase();
+  if(productName.includes('RUSH') && productName.includes('LEGEND')) subType = 'both';
+  else if(productName.includes('RUSH')) subType = 'sf_rush';
+  else if(productName.includes('LEGEND')) subType = 'sf_legend';
+  else if(productName.includes('RUSH')) subType = 'sf_rush';
+  else if(productName.includes('LEGEND')) subType = 'sf_legend';
   const days = getDurationDays(duration);
   const now = new Date();
   const expires = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
@@ -2340,7 +2443,26 @@ function approveOrder(orderId, uid, product, duration) {
 }
 function rejectOrder(id) { db.collection('orders').doc(id).update({status: 'rejected'}).then(()=>toast('ORDER REJECTED','success')).catch(err=>toast('ERROR: '+err.message,'error')); }
 function markInboxRead(id) { db.collection('messages').doc(id).update({read: true}).catch(()=>{}); }
-function setSub(uid, type) { db.collection('users').doc(uid).update({subscription: type}).then(()=>toast('VIP STATUS UPDATED','success')).catch(err=>toast('ERROR: '+err.message,'error')); }
+function setSub(uid, type) {
+  const subType = normalizeSubscription(type);
+  const update = { subscription: subType, subscriptionStatus: subType === 'none' ? 'inactive' : 'active' };
+  // Manual tier assignment is immediately active. If an old/expired timer exists,
+  // clear it so the newly assigned tier is not accidentally blocked.
+  if (subType === 'none') {
+    update.subStartedAt = firebase.firestore.FieldValue.delete();
+    update.subExpiresAt = firebase.firestore.FieldValue.delete();
+    update.subDuration = firebase.firestore.FieldValue.delete();
+    update.subDurationDays = firebase.firestore.FieldValue.delete();
+  } else {
+    update.subStartedAt = firebase.firestore.FieldValue.serverTimestamp();
+    update.subExpiresAt = firebase.firestore.FieldValue.delete();
+    update.subDuration = 'MANUAL';
+    update.subDurationDays = firebase.firestore.FieldValue.delete();
+  }
+  db.collection('users').doc(uid).update(update)
+    .then(()=>toast(subType === 'none' ? 'VIP ACCESS CLEARED' : 'VIP TIER ASSIGNED • DOWNLOAD ACCESS ON','success'))
+    .catch(err=>toast('ERROR: '+err.message,'error'));
+}
 async function isOriginalAdminAccount(id){try{const d=await db.collection('users').doc(id).get();return d.exists && (d.data().email||'').trim().toLowerCase()==='admin@omega.vip';}catch(e){console.error(e);return false;}}
 async function banUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT BAN','error');return;}db.collection('users').doc(id).update({banned:true}).then(()=>toast('USER BANNED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
 function unbanUser(id){db.collection('users').doc(id).update({banned:false}).then(()=>toast('USER UNBANNED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
