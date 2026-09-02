@@ -565,6 +565,69 @@ nav.topnav > .max-w-7xl > .flex:last-child{
 }
 
 
+
+/* ADMIN DASHBOARD: compact ORDER + aligned MEMBER/REPLY row */
+.admin-dashboard-columns{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  column-gap:2rem !important;
+  align-items:start !important;
+}
+.admin-dashboard-columns > div{min-width:0;}
+/* Top row: keep Order Control compact, match Inbox height */
+.admin-dashboard-columns > div:first-child > .admin-top-panel,
+.admin-dashboard-columns > div:last-child > .admin-top-panel{
+  height:280px !important;
+  min-height:280px !important;
+  max-height:280px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+.admin-dashboard-columns > div:first-child > .admin-top-panel #adminOrdersContainer,
+.admin-dashboard-columns > div:last-child > .admin-top-panel #adminInboxContainer{
+  height:205px !important;
+  max-height:205px !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+/* Bottom row: MEMBER LIST and REPLY are exactly the same level and size */
+.admin-dashboard-columns > div:first-child > .admin-bottom-panel,
+.admin-dashboard-columns > div:last-child > .admin-bottom-panel{
+  height:auto !important;
+  min-height:520px !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+}
+.admin-dashboard-columns > div:first-child > .admin-bottom-panel #adminUsersContainer{
+  height:425px !important;
+  max-height:425px !important;
+  overflow-y:auto !important;
+  overflow-x:auto !important;
+}
+.admin-dashboard-columns #adminUsersContainer table{min-width:760px !important;}
+.admin-dashboard-columns #adminUsersContainer td:last-child{min-width:250px !important;white-space:normal !important;}
+.admin-dashboard-columns #adminUsersContainer td:last-child button{display:inline-flex !important;visibility:visible !important;opacity:1 !important;pointer-events:auto !important;position:relative !important;z-index:5 !important;}
+.admin-bottom-panel .inbox-reply-box{
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+@media(max-width:900px){
+  .admin-dashboard-columns{grid-template-columns:1fr !important;}
+  .admin-dashboard-columns > div > .admin-top-panel,
+  .admin-dashboard-columns > div > .admin-bottom-panel{
+    height:auto !important;min-height:0 !important;max-height:none !important;overflow:visible !important;
+  }
+  .admin-dashboard-columns > div > .admin-top-panel #adminOrdersContainer,
+  .admin-dashboard-columns > div > .admin-top-panel #adminInboxContainer,
+  .admin-dashboard-columns > div > .admin-bottom-panel #adminUsersContainer{
+    height:auto !important;max-height:400px !important;
+  }
+}
+
+/* Fixed member-list column headers while scrolling */
+#adminUsersContainer{max-height:400px !important;overflow-y:auto !important;overflow-x:auto !important;position:relative;}
+#adminUsersContainer table{border-collapse:separate !important;border-spacing:0 !important;width:100%;min-width:760px;}
+#adminUsersContainer table thead th{position:sticky !important;top:0 !important;z-index:20 !important;background:var(--bg-2) !important;box-shadow:0 2px 0 var(--border),0 6px 12px rgba(0,0,0,.18);}
+#adminUsersContainer table tbody tr:first-child td{border-top:0;}
 </style>
 <style id="ban-hammer-theme">.banned-effect{background:#050505!important}.ban-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,0,60,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,60,.03) 1px,transparent 1px);background-size:40px 40px}.ban-scanlines{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(255,255,255,.02) 50%);background-size:100% 4px;pointer-events:none;z-index:100;animation:banScan 6s linear infinite}.ban-warning{position:absolute;width:100%;background:rgba(255,0,60,.1);border-top:1px solid #ff003c;border-bottom:1px solid #ff003c;color:#ff003c;font-family:Orbitron,sans-serif;font-size:12px;font-weight:700;letter-spacing:4px;text-align:center;padding:5px 0;text-shadow:0 0 5px #ff003c;animation:banBlink 1s infinite alternate;z-index:20}.ban-warning.top{top:0}.ban-warning.bottom{bottom:0}.ban-container{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;max-width:95vw}.hammer-area{position:relative;width:300px;height:250px;margin-bottom:20px;display:flex;justify-content:center;align-items:center}.hammer-symbol{font-size:150px;filter:drop-shadow(0 0 15px #00d2ff);animation:banHammer 2s cubic-bezier(.5,0,1,.5) infinite alternate}.shockwave{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border:2px solid #ff003c;border-radius:50%;box-shadow:0 0 20px #ff003c;opacity:0}.sw-1{animation:banShock 2s ease-out infinite}.sw-2{animation:banShock 2s ease-out infinite .5s}.sw-3{animation:banShock 2s ease-out infinite 1s}.ban-title{font-family:Orbitron,sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:900;color:#00d2ff;letter-spacing:4px;margin:0;text-shadow:0 0 20px #00d2ff}.ban-text{font-family:Orbitron,sans-serif;font-size:clamp(1.2rem,3vw,1.75rem);font-weight:700;color:#ff003c;letter-spacing:6px;margin-top:10px;text-shadow:0 0 10px #ff003c,0 0 30px #ff003c;animation:banPulse 1.5s infinite}.ban-subtext{font-family:Share Tech Mono,monospace;font-size:clamp(.8rem,2vw,1rem);color:#bc13fe;letter-spacing:2px;text-transform:uppercase;margin-top:15px;text-shadow:0 0 5px #bc13fe}@keyframes banHammer{0%{transform:rotate(-35deg) translateY(-50px)}70%{transform:rotate(0) translateY(20px)}100%{transform:rotate(0) translateY(0)}}@keyframes banShock{0%{width:50px;height:50px;opacity:1}100%{width:300px;height:300px;opacity:0}}@keyframes banScan{to{background-position:0 100vh}}@keyframes banBlink{from{opacity:.3}to{opacity:1}}@keyframes banPulse{0%,100%{opacity:.8}50%{opacity:1;text-shadow:0 0 20px #ff003c,0 0 40px #ff003c}}@media(max-width:600px){.hammer-area{width:250px;height:190px}.hammer-symbol{font-size:110px}.ban-warning{font-size:9px;letter-spacing:2px}}</style>
 <style id="omega-full-cyber-nav">
@@ -942,6 +1005,32 @@ nav.topnav #authArea > button.btn-secondary[onclick*="logout"]:hover i{
 }
 </style>
 
+
+<style id="admin-layout-final-fix">
+/* MEMBER ACTIONS: compact dropdown beside/under the clicked member name */
+.member-name-trigger{cursor:pointer;display:inline-flex;align-items:center;gap:6px;max-width:100%;}
+.member-name-trigger:hover{text-decoration:underline;text-shadow:0 0 8px currentColor;}
+.member-actions-pop{display:none;margin-top:7px;padding:7px;border:1px solid var(--cyan);background:rgba(0,10,18,.96);border-radius:6px;box-shadow:0 0 14px rgba(0,243,255,.15);width:max-content;max-width:100%;}
+.member-actions-pop.open{display:flex;flex-wrap:wrap;gap:5px;position:relative;z-index:20;}
+.member-actions-pop button{white-space:nowrap;}
+.member-table-user-cell{position:relative;min-width:190px;}
+.member-table-user-cell .member-email{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;}
+.member-table-actions-hidden{display:none !important;}
+/* FINAL ADMIN ALIGNMENT: compact order control, aligned member/reply panels */
+.admin-dashboard-columns{
+  display:grid !important;
+  grid-template-columns:minmax(0, 1.35fr) minmax(0, .65fr) !important;
+  gap:1.25rem !important;
+  align-items:start !important;
+}
+.admin-dashboard-columns > .card{min-width:0 !important;}
+.admin-dashboard-columns .member-list-card{min-height:0 !important;}
+.admin-dashboard-columns .order-control-card{height:auto !important;min-height:0 !important;}
+.admin-dashboard-columns .inbox-reply-card{min-height:0 !important;}
+.admin-dashboard-columns .inbox-scroll-box{height:360px !important;min-height:360px !important;max-height:360px !important;}
+.admin-dashboard-columns .inbox-reply-box{height:125px !important;min-height:125px !important;max-height:125px !important;}
+@media(max-width:900px){.admin-dashboard-columns{grid-template-columns:1fr !important;}}
+</style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
@@ -1076,34 +1165,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Hosted-domain safe Firebase Auth initialization. GitHub Pages cannot change
-// Firebase's server-side Authorized Domains, so never fake/override auth state.
-// We only configure persistence and expose the real Firebase error code.
-window.__OMEGA_AUTH_HOST__ = location.hostname;
-window.__OMEGA_AUTH_PROTOCOL__ = location.protocol;
-try {
-  auth.languageCode = 'en';
-} catch(e) {}
-
-
-// GitHub Pages / hosted-site compatibility:
-// Keep the same Firebase Auth session when the page is served over HTTPS.
-// This is intentionally non-blocking so login still works if browser storage is restricted.
-try {
-  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
-    console.warn("Firebase Auth persistence could not be enabled:", err);
-  });
-} catch (e) {
-  console.warn("Firebase Auth persistence setup skipped:", e);
-}
-
 // ====== STATE ======
-// GitHub Pages diagnostics. Do not block authentication based on hostname.
-const runningOnGitHubPages = /(^|\.)github\.io$/i.test(location.hostname);
-if (runningOnGitHubPages && location.protocol !== 'https:') {
-  console.warn('GitHub Pages should be opened over HTTPS for Firebase Auth.');
-}
-
 const state = { 
   currentUser: null, 
   page: 'home', 
@@ -1343,6 +1405,21 @@ async function handleLogin(e){
   if(submit){submit.disabled=true;submit.dataset.oldText=submit.innerHTML;submit.innerHTML='<i class="fas fa-spinner fa-spin"></i> AUTHENTICATING...';}
   try{
     const cred=await auth.signInWithEmailAndPassword(email,pass);
+    // Do not read deletedAccounts here: normal client Firestore rules may deny
+    // that collection and incorrectly block valid admin logins.
+    // A removed account is blocked below when its /users/{uid} profile is missing.
+    const profileSnap=await db.collection('users').doc(cred.user.uid).get();
+    if(!profileSnap.exists){
+      await auth.signOut();
+      toast('ACCOUNT REMOVED — PLEASE REGISTER A NEW ACCOUNT','error');
+      return false;
+    }
+    const profileData=profileSnap.data()||{};
+    if(profileData.deleted===true){
+      await auth.signOut();
+      toast('ACCOUNT REMOVED — PLEASE REGISTER A NEW ACCOUNT','error');
+      return false;
+    }
     const isAdmin=email==='admin@omega.vip';
     // Unlock immediately after Firebase Authentication succeeds. Do not make UI access depend on Firestore.
     state.bannedLock=false;
@@ -1359,9 +1436,16 @@ async function handleLogin(e){
     // Load Firestore profile after the UI is unlocked. A Firestore-rule/network error must not trap the user on login.
     db.collection('users').doc(cred.user.uid).get().then(doc=>{
       if(!doc.exists){
-        return db.collection('users').doc(cred.user.uid).set({username:state.currentUser.username,email:cred.user.email||email,role:isAdmin?'admin':'user',banned:false,subscription:'none',subDuration:'N/A',hwid:'',joined:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(err=>console.warn('Profile create skipped:',err));
+        state.currentUser=null; state.page='portal';
+        document.body.classList.add('auth-locked');
+        return auth.signOut().then(()=>toast('ACCOUNT REMOVED — PLEASE REGISTER A NEW ACCOUNT','error'));
       }
       const data=doc.data()||{};
+      if(data.deleted===true){
+        state.currentUser=null; state.page='portal';
+        document.body.classList.add('auth-locked');
+        return auth.signOut().then(()=>toast('ACCOUNT REMOVED — PLEASE REGISTER A NEW ACCOUNT','error'));
+      }
       if(data.banned===true && !isAdmin){
         state.bannedLock=true;state.currentUser=null;state.page='portal';
         document.body.classList.add('banned-lock');
@@ -1375,19 +1459,7 @@ async function handleLogin(e){
     }).catch(err=>console.warn('Profile read skipped; authentication is already active:',err));
   }catch(err){
     console.error('Login error:',err);
-    let msg=err?.message||'LOGIN FAILED';
-    if(err?.code==='auth/unauthorized-domain'){
-      msg='LOGIN DENIED: THIS GITHUB PAGES DOMAIN IS NOT AUTHORIZED IN FIREBASE AUTHENTICATION';
-    }else if(err?.code==='auth/operation-not-allowed'){
-      msg='LOGIN DENIED: EMAIL/PASSWORD SIGN-IN IS DISABLED IN FIREBASE AUTHENTICATION';
-    }else if(err?.code==='auth/app-not-authorized'){
-      msg='LOGIN DENIED: THIS DOMAIN/API KEY IS NOT AUTHORIZED FOR FIREBASE AUTH';
-    }else if(err?.code==='auth/invalid-api-key'){
-      msg='LOGIN FAILED: FIREBASE API KEY IS INVALID OR RESTRICTED';
-    }else if(err?.code==='auth/network-request-failed'){
-      msg='LOGIN FAILED: NETWORK CONNECTION PROBLEM';
-    }
-    toast('ERROR: '+msg,'error');
+    toast('ERROR: '+(err?.message||'LOGIN FAILED'),'error');
   }finally{
     registrationInProgress=false;
     if(submit){submit.disabled=false;submit.innerHTML=submit.dataset.oldText||'<i class="fas fa-sign-in-alt"></i> LOGIN';}
@@ -1487,16 +1559,11 @@ auth.onAuthStateChanged(user=>{
   if(user){
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       if(!doc.exists) {
-        db.collection('users').doc(user.uid).set({
-          username: user.email.split('@')[0],
-          email: user.email,
-          role: (user.email === 'admin@omega.vip') ? 'admin' : 'user',
-          banned: false,
-          subscription: 'none',
-          subDuration: 'N/A',
-          hwid: '',
-          joined: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
+        // Never recreate a missing profile. Deleted accounts stay locked out.
+        state.currentUser=null; state.page='login';
+        document.body.classList.add('auth-locked');
+        renderNav(); renderPage(); updateChatInputState();
+        auth.signOut().catch(()=>{});
         return;
       }
       const userData = doc.data();
@@ -1553,7 +1620,7 @@ auth.onAuthStateChanged(user=>{
 function renderBannedPortal(){return `<div id="bannedPortal" class="portal banned-effect" style="display:flex"><div class="ban-bg-grid"></div><div class="ban-scanlines"></div><div class="ban-warning top">⚠ BAN HAMMER INITIATED ⚠</div><div class="ban-warning bottom">⚠ CONNECTION TERMINATED ⚠</div><div class="ban-container"><div class="hammer-area"><div class="shockwave sw-1"></div><div class="shockwave sw-2"></div><div class="shockwave sw-3"></div><div class="hammer-symbol">🔨</div></div><h1 class="ban-title">ACCESS DENIED</h1><div class="ban-text">ACCOUNT BANNED</div><div class="ban-subtext">YOU NO LONGER HAVE ACCESS TO THIS PORTAL</div></div></div>`;}
 
 // ====== NAVIGATOR ======
-function renderNav(){const navLinks=document.getElementById('navLinks'),authArea=document.getElementById('authArea');const links=[{id:'home',label:'Products'},{id:'proof',label:'VIP Proof'},{id:'downloads',label:'Downloads'},{id:'contact',label:'Contact'}];if(state.currentUser){links.push({id:'dashboard',label:'Dashboard'});if(state.currentUser.role==='admin')links.push({id:'admin',label:'Admin',isAdmin:true});}navLinks.innerHTML=links.map(l=>`<button type="button" class="nav-link ${state.page===l.id?'active':''} ${l.isAdmin?'admin-nav':''}" data-text="${l.label.toUpperCase()}" onclick="goPage('${l.id}')">${l.label}</button>`).join('');if(state.currentUser){const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (isSubscriptionActive(state.currentUser) ? (state.currentUser.subscription==='sf_rush' ? 'var(--green)' : state.currentUser.subscription==='sf_legend' ? 'var(--orange)' : state.currentUser.subscription==='both' ? 'var(--blue)' : '#ffffff') : '#ffffff');authArea.innerHTML=`<div style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem"><i class="fas fa-user-shield" style="color:${nameColor}"></i><span style="color:${nameColor};font-weight:${state.currentUser.role==='admin'?'900':'normal'}">${displayName}</span><span style="color:var(--muted);font-size:.7rem">[${state.currentUser.role}]</span></div><button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="logout()"><i class="fas fa-sign-out-alt"></i> LOG OUT</button>`;}else{authArea.innerHTML=`<button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="goPage('login')"><i class="fas fa-sign-in-alt"></i> LOGIN</button>`;}attachNavDecrypt();}
+function renderNav(){const navLinks=document.getElementById('navLinks'),authArea=document.getElementById('authArea');const links=[{id:'home',label:'Products'},{id:'proof',label:'VIP Proof'},{id:'downloads',label:'Downloads'},{id:'contact',label:'Contact'}];if(state.currentUser){links.push({id:'dashboard',label:'Dashboard'});if(state.currentUser.role==='admin')links.push({id:'admin',label:'Admin',isAdmin:true});}navLinks.innerHTML=links.map(l=>`<button type="button" class="nav-link ${state.page===l.id?'active':''} ${l.isAdmin?'admin-nav':''}" data-text="${l.label.toUpperCase()}" onclick="goPage('${l.id}')">${l.label}</button>`).join('');if(state.currentUser){const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : getSubscriptionColor(state.currentUser.subscription, isSubscriptionActive(state.currentUser));authArea.innerHTML=`<div style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono';font-size:.8rem"><i class="fas fa-user-shield" style="color:${nameColor}"></i><span style="color:${nameColor};font-weight:${state.currentUser.role==='admin'?'900':'normal'}">${displayName}</span><span style="color:var(--muted);font-size:.7rem">[${state.currentUser.role}]</span></div><button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="logout()"><i class="fas fa-sign-out-alt"></i> LOG OUT</button>`;}else{authArea.innerHTML=`<button class="btn-secondary" style="padding:.5rem 1rem;font-size:.8rem" onclick="goPage('login')"><i class="fas fa-sign-in-alt"></i> LOGIN</button>`;}attachNavDecrypt();}
 function attachNavDecrypt(){
   const chars="!<>-_\\/[]{}—=+*^?#________";
   document.querySelectorAll('#navLinks .nav-link[data-text]').forEach(btn=>{
@@ -1988,12 +2055,12 @@ function showForgot(){switchAuthTab('forgot')}
 // ====== USER DASHBOARD (WITH INBOX, SEND MSG, HWID BOX) ======
 function renderDashboard(){
   const sub = state.currentUser.subscription || 'none';
-  let subColor = sub === 'sf_rush' ? 'var(--green)' : sub === 'sf_legend' ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : 'var(--muted)';
+  let subColor = getSubscriptionColor(sub, sub !== 'none');
   let subLabel = sub === 'sf_rush' ? 'SF RUSH VIP' : sub === 'sf_legend' ? 'SF LEGEND VIP' : sub === 'both' ? 'RUSH + LEGEND' : 'NO SUBSCRIPTION';
   const subActive = isSubscriptionActive(state.currentUser);
   const countdown = state.currentUser.subExpiresAt ? formatCountdown(state.currentUser.subExpiresAt) : '';
   const displayName = state.currentUser.role==='admin' ? state.currentUser.username.toUpperCase() : state.currentUser.username;
-  const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : (subActive ? (['sf_rush','sf_rush_nvip','sf_rush_pvip','sf_rush_svip'].includes(sub) ? 'var(--green)' : ['sf_legend_vip','sf_legend'].includes(sub) ? 'var(--orange)' : sub === 'both' ? 'var(--blue)' : '#ffffff') : '#ffffff');
+  const nameColor = state.currentUser.role==='admin' ? 'var(--red)' : getSubscriptionColor(sub, subActive);
   const hwid = state.currentUser.hwid || '';
   
   return `<section style="padding:2rem 0">
@@ -2018,7 +2085,7 @@ function renderDashboard(){
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem" class="dash-grid">
       <div class="card card-cyber" style="padding:1.5rem">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:1rem"><h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--cyan);margin:0"><i class="fas fa-inbox"></i> INBOX</h2><button type="button" class="btn-secondary" onclick="clearUserInbox()" style="padding:.5rem .8rem;font-size:.7rem;color:var(--red);border-color:var(--red)"><i class="fas fa-trash"></i> CLEAR INBOX</button></div>
-        <div style="max-height:400px;overflow-y:auto" id="userInbox">
+        <div class="inbox-scroll-box" id="userInbox">
           <div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading messages...</p></div>
         </div>
       </div>
@@ -2026,11 +2093,11 @@ function renderDashboard(){
         <div class="card card-cyber" style="padding:1.5rem">
           <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--magenta);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-paper-plane"></i> SEND MESSAGE TO ADMIN</h2>
           <form onsubmit="sendUserMsgToAdmin(event)" style="display:flex;flex-direction:column;gap:1rem">
-            <textarea id="msgToAdmin" rows="4" placeholder="Type your message... (Enter to send • Shift+Enter for new line)" required></textarea>
+            <textarea id="msgToAdmin" class="inbox-reply-box" rows="5" placeholder="Type your message... (Enter to send • Shift+Enter for new line)" required></textarea>
             <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,var(--magenta),var(--green))"><i class="fas fa-paper-plane"></i> SEND</button>
           </form>
         </div>
-        <div class="card card-cyber" style="padding:1.5rem">
+        <div class="inbox-reply-card card card-cyber" style="padding:1.5rem">
           <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--gold);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-fingerprint"></i> HWID SUBMISSION</h2>
           <form onsubmit="saveHwid(event)" style="display:flex;flex-direction:column;gap:1rem">
             <input id="hwidInput" type="text" value="${hwid}" placeholder="Paste your HWID here">
@@ -2049,6 +2116,14 @@ function renderDashboard(){
     </div>
   </section>`;
 }
+
+function keepInboxTextAtBottom(containerId){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  c.querySelectorAll('.inbox-message-text').forEach(el=>{
+    if(el.scrollHeight > el.clientHeight) el.scrollTop=el.scrollHeight;
+  });
+}
 function loadDashboardData(){
   // Real-time Inbox Listener
   db.collection('messages').where("to", "==", state.currentUser.id).onSnapshot(snap=>{
@@ -2064,14 +2139,15 @@ function loadDashboardData(){
       const isRead = m.read === true;
       const bgColor = isRead ? 'rgba(255,255,255,0.02)' : 'rgba(0,243,255,.05)';
       const borderColor = isRead ? 'var(--muted)' : 'var(--cyan)';
-      return `<div style="padding:1rem;border-left:2px solid ${borderColor};margin-bottom:.5rem;background:${bgColor};cursor:pointer;" onclick="markUserInboxRead('${d.id}')">
-        <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted);margin-bottom:.25rem">
+      return `<div class="inbox-message" style="border-left:2px solid ${borderColor};background:${bgColor};cursor:pointer;" onclick="markUserInboxRead('${d.id}')">
+        <div class="inbox-message-header" style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted);margin-bottom:.35rem">
           <span>FROM: <span style="color:var(--cyan)">${m.fromName}</span></span>
           <span>${date}</span>
         </div>
-        <div style="font-family:'Share Tech Mono';font-size:.9rem;color:var(--fg)">${m.text}</div>
+        <div class="inbox-message-text" style="font-family:'Share Tech Mono';font-size:.9rem;color:var(--fg)">${m.text}</div>
       </div>`;
     }).join('');
+    keepInboxTextAtBottom('userInbox');
   }, err => { console.error("Inbox error:", err); });
 }
 function markUserInboxRead(id) { db.collection('messages').doc(id).update({read: true}).catch(()=>{}); }
@@ -2161,7 +2237,7 @@ function renderAdmin(){return `
     </div>
   </div>
 
-  <div class="card card-cyber" style="padding:1.5rem;margin-bottom:2rem;background:rgba(0,0,0,.8)">
+  <div class="order-control-card card card-cyber" style="padding:1.5rem;margin-bottom:2rem;background:rgba(0,0,0,.8)">
     <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--cyan);margin:0 0 1rem 0"><i class="fas fa-download"></i> DOWNLOAD CONTROL & LINKS</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
       <div>
@@ -2189,32 +2265,32 @@ function renderAdmin(){return `
   </div>
 
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem">
-    <div class="card card-cyber" style="padding:1.5rem;border-left:3px solid var(--cyan)"><i class="fas fa-users" style="color:var(--cyan);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="totalUsers">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">TOTAL MEMBERS</div></div>
-    <div class="card card-cyber" style="padding:1.5rem;border-left:3px solid var(--magenta)"><i class="fas fa-inbox" style="color:var(--magenta);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="adminInboxCount">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">ADMIN INBOX</div></div>
+    <div class="member-list-card card card-cyber" style="padding:1.5rem;border-left:3px solid var(--cyan)"><i class="fas fa-users" style="color:var(--cyan);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="totalUsers">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">TOTAL MEMBERS</div></div>
+    <div class="inbox-reply-card card card-cyber" style="padding:1.5rem;border-left:3px solid var(--magenta)"><i class="fas fa-inbox" style="color:var(--magenta);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="adminInboxCount">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">ADMIN INBOX</div></div>
     <div class="card card-cyber" style="padding:1.5rem;border-left:3px solid var(--gold)"><i class="fas fa-shopping-cart" style="color:var(--gold);font-size:1.5rem"></i><div style="font-family:'Orbitron';font-weight:900;font-size:2rem;margin-top:.5rem" id="pendingOrders">0</div><div style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--muted)">PENDING ORDERS</div></div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem" class="dash-grid">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem" class="dash-grid admin-dashboard-columns">
     <div style="display:flex;flex-direction:column;gap:2rem">
-      <div class="card card-cyber" style="padding:1.5rem">
+      <div class="card card-cyber admin-top-panel" style="padding:1.5rem">
         <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--gold);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-shopping-cart"></i> ORDER CONTROL</h2>
         <div style="max-height:400px;overflow-y:auto" id="adminOrdersContainer"><div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading orders...</p></div></div>
       </div>
-      <div class="card card-cyber" style="padding:1.5rem">
+      <div class="card card-cyber admin-bottom-panel" style="padding:1.5rem">
         <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--cyan);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-users-cog"></i> MEMBER & VIP CONTROL</h2>
         <div style="max-height:400px;overflow-y:auto" id="adminUsersContainer"><div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading members...</p></div></div>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:2rem">
-      <div class="card card-cyber" style="padding:1.5rem">
+      <div class="card card-cyber admin-top-panel" style="padding:1.5rem">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:1rem"><h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--magenta);margin:0"><i class="fas fa-inbox"></i> ADMIN INBOX</h2><button type="button" class="btn-secondary" onclick="clearAdminInbox()" style="padding:.5rem .8rem;font-size:.7rem;color:var(--red);border-color:var(--red)"><i class="fas fa-trash"></i> CLEAR INBOX</button></div>
-        <div style="max-height:300px;overflow-y:auto" id="adminInboxContainer"><div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading...</p></div></div>
+        <div class="inbox-scroll-box" id="adminInboxContainer"><div style="text-align:center;padding:2rem;color:var(--muted);font-family:'Share Tech Mono'"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.3"></i><p>Loading...</p></div></div>
       </div>
-      <div class="card card-cyber" style="padding:1.5rem">
+      <div class="card card-cyber admin-bottom-panel" style="padding:1.5rem">
         <h2 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:var(--green);margin:0 0 1rem 0;border-bottom:1px solid var(--border);padding-bottom:1rem"><i class="fas fa-paper-plane"></i> REPLY TO USER</h2>
         <form onsubmit="sendAdminMessage(event)" style="display:flex;flex-direction:column;gap:1rem">
           <div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--green);letter-spacing:.1em">SEND TO (SELECT USER)</label><select id="adminMsgTo" style="margin-top:.5rem" required></select></div>
-          <div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--green);letter-spacing:.1em">MESSAGE</label><textarea id="adminMsgText" rows="4" placeholder="Type your message... (Enter to send • Shift+Enter for new line)" required style="margin-top:.5rem"></textarea></div>
+          <div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--green);letter-spacing:.1em">MESSAGE</label><textarea id="adminMsgText" class="inbox-reply-box" rows="6" placeholder="Type your message... (Enter to send • Shift+Enter for new line)" required style="margin-top:.5rem"></textarea></div>
           <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,var(--magenta),var(--green))"><i class="fas fa-paper-plane"></i> SEND</button>
         </form>
       </div>
@@ -2247,11 +2323,12 @@ function loadAdminData(){
     let total=0,banned=0;
     const c=document.getElementById('adminUsersContainer');
     const select=document.getElementById('adminMsgTo');
-    if(snap.empty){c.innerHTML=`<tr><td colspan="5" style="text-align:center;color:var(--muted);font-family:'Share Tech Mono';padding:2rem">No members yet</td></tr>`;return;}
-    let html='<table><thead><tr><th>USER</th><th>VIP STATUS</th><th>VIP COUNTDOWN</th><th>HWID</th><th>ACTIONS</th></tr></thead><tbody>';
+    if(snap.empty){c.innerHTML=`<tr><td colspan="4" style="text-align:center;color:var(--muted);font-family:'Share Tech Mono';padding:2rem">No members yet</td></tr>`;return;}
+    let html='<table><thead><tr><th>MEMBER</th><th>VIP STATUS</th><th>VIP COUNTDOWN</th><th>HWID</th></tr></thead><tbody>';
     let selectHtml='';
     snap.docs.forEach(d=>{
-      const u=d.data();
+      const u=d.data()||{};
+      if(u.deleted===true) return;
       if(u.role!=='admin')total++;
       if(u.role!=='admin' && u.subscription && u.subscription !== 'none' && u.subExpiresAt && !isSubscriptionActive(u)) expireVipIfNeeded({id:d.id, ...u});
       if(u.banned)banned++;
@@ -2263,32 +2340,32 @@ function loadAdminData(){
       const hwid = u.hwid || 'N/A';
       
       html+=`<tr>
-        <td style="font-family:'Share Tech Mono'">
-          <div style="color:${subColor};font-weight:${nameWeight};text-shadow:0 0 4px ${u.role==='admin'?'var(--red)':(u.banned?'#444':subColor)}">${u.username}</div>
-          <div style="color:var(--muted);font-size:.7rem">${u.email}</div>
-        </td>
-        <td style="color:${subColor};font-weight:${nameWeight};font-family:'Share Tech Mono';font-size:.75rem">${subLabel}</td>
-        <td style="font-family:'Orbitron';font-size:.72rem;font-weight:900;color:${u.subExpiresAt && isSubscriptionActive(u) ? subColor : 'var(--muted)'}">${u.subExpiresAt && isSubscriptionActive(u) ? `<span data-vip-countdown="${u.subExpiresAt.toDate ? u.subExpiresAt.toDate().toISOString() : new Date(u.subExpiresAt).toISOString()}">${formatCountdown(u.subExpiresAt)}</span>` : '—'}</td>
-        <td style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--fg)">${hwid}</td>
-        <td>
-          ${u.role!=='admin' ? `
-          <div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:.25rem">
+        <td class="member-table-user-cell" style="font-family:'Share Tech Mono'">
+          <div class="member-name-trigger" onclick="toggleMemberActions('${d.id}')" title="Click member name for actions">
+            <i class="fas fa-user-circle" style="font-size:.8rem;opacity:.75"></i>
+            <span style="color:${subColor};font-weight:${nameWeight};text-shadow:0 0 4px ${u.role==='admin'?'var(--red)':(u.banned?'#444':subColor)}">${u.username}</span>
+            <i class="fas fa-chevron-down member-action-chevron" data-member-chevron="${d.id}" style="font-size:.6rem;opacity:.65"></i>
+          </div>
+          <div class="member-email" style="color:var(--muted);font-size:.7rem">${u.email}</div>
+          <div class="member-actions-pop" id="member-actions-${d.id}">
+            ${u.role!=='admin' ? `
             <button onclick="setSub('${d.id}','sf_rush')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">SF RUSH</button>
             <button onclick="setSub('${d.id}','sf_legend')" style="background:rgba(255,149,0,.2);border:1px solid var(--orange);color:var(--orange);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">SF LEGEND</button>
             <button onclick="setSub('${d.id}','both')" style="background:rgba(0,179,255,.2);border:1px solid var(--blue);color:var(--blue);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">BOTH</button>
             <button onclick="setSub('${d.id}','none')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">CLEAR</button>
-          </div>
-          <div style="display:flex;gap:.25rem;flex-wrap:wrap">
             ${u.banned?`<button onclick="unbanUser('${d.id}')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">UNBAN</button>`:`<button onclick="banUser('${d.id}')" style="background:rgba(255,0,60,.2);border:1px solid var(--red);color:var(--red);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">BAN</button>`}
             <button onclick="deleteUser('${d.id}')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem"><i class="fas fa-trash"></i></button>
             <button onclick="promoteUser('${d.id}')" style="background:rgba(188,19,254,.2);border:1px solid var(--magenta);color:var(--magenta);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'"><i class="fas fa-arrow-up"></i> ADMIN</button>
-          </div>` : `
-          <div style="display:flex;gap:.25rem;flex-wrap:wrap">
+            ` : `
             <button onclick="demoteUser('${d.id}')" style="background:rgba(255,255,255,.05);border:1px solid var(--muted);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'"><i class="fas fa-arrow-down"></i> DEMOTE</button>
             ${u.banned?`<button onclick="unbanUser('${d.id}')" style="background:rgba(57,255,20,.2);border:1px solid var(--green);color:var(--green);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">UNBAN</button>`:`<button onclick="banUser('${d.id}')" style="background:rgba(255,0,60,.2);border:1px solid var(--red);color:var(--red);padding:.25rem .5rem;cursor:pointer;font-size:.65rem;font-family:'Share Tech Mono'">BAN</button>`}
             <button onclick="deleteUser('${d.id}')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.25rem .5rem;cursor:pointer;font-size:.65rem"><i class="fas fa-trash"></i></button>
-          </div>`}
+            `}
+          </div>
         </td>
+        <td style="color:${subColor};font-weight:${nameWeight};font-family:'Share Tech Mono';font-size:.75rem">${subLabel}</td>
+        <td style="font-family:'Orbitron';font-size:.72rem;font-weight:900;color:${u.subExpiresAt && isSubscriptionActive(u) ? subColor : 'var(--muted)'}">${u.subExpiresAt && isSubscriptionActive(u) ? `<span data-vip-countdown="${u.subExpiresAt.toDate ? u.subExpiresAt.toDate().toISOString() : new Date(u.subExpiresAt).toISOString()}">${formatCountdown(u.subExpiresAt)}</span>` : '—'}</td>
+        <td style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--fg)">${hwid}</td>
       </tr>`;
       
       if(u.role!=='admin' && !u.banned) {
@@ -2305,7 +2382,7 @@ function loadAdminData(){
   // Admin Inbox (Messages sent to 'admin' by users)
   db.collection('messages').where("to", "==", "admin").onSnapshot(snap => {
     const ic=document.getElementById('adminInboxCount'); if(!ic) return;
-    ic.textContent=snap.size;
+    ic.textContent=snap.docs.filter(d => d.data().read !== true).length;
     const c=document.getElementById('adminInboxContainer');
     if(snap.empty){
       c.innerHTML=`<p style="font-family:'Share Tech Mono';font-size:.85rem;color:var(--muted);text-align:center;padding:2rem">No messages</p>`;
@@ -2318,15 +2395,16 @@ function loadAdminData(){
       const isRead = m.read === true;
       const bgColor = isRead ? 'rgba(255,255,255,0.02)' : 'rgba(188,19,254,.05)';
       const borderColor = isRead ? 'var(--muted)' : 'var(--magenta)';
-      return `<div style="padding:.75rem;border-left:2px solid ${borderColor};margin-bottom:.5rem;background:${bgColor};cursor:pointer;" onclick="markInboxRead('${d.id}')">
-        <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono';font-size:.7rem;color:var(--muted);margin-bottom:.25rem">
+      return `<div class="inbox-message" style="border-left:2px solid ${borderColor};background:${bgColor};cursor:pointer;" onclick="markInboxRead('${d.id}')">
+        <div class="inbox-message-header" style="font-family:'Share Tech Mono';font-size:.7rem;color:var(--muted);margin-bottom:.35rem">
           <span>FROM: <span style="color:var(--magenta);font-weight:700">${m.fromName}</span></span>
           <span>${date}</span>
         </div>
-        <div style="font-family:'Share Tech Mono';font-size:.85rem">${m.text}</div>
+        <div class="inbox-message-text" style="font-family:'Share Tech Mono';font-size:.85rem">${m.text}</div>
         <button onclick="event.stopPropagation();replyUser('${m.from}')" style="background:none;border:none;color:var(--cyan);font-family:'Share Tech Mono';font-size:.7rem;cursor:pointer;margin-top:.5rem;padding:0"><i class="fas fa-reply"></i> REPLY</button>
       </div>`;
     }).join('');
+    keepInboxTextAtBottom('adminInboxContainer');
   }, err => { console.error("Admin inbox error:", err); });
 
   // Load Orders
@@ -2482,6 +2560,28 @@ function approveOrder(orderId, uid, product, duration) {
 }
 function rejectOrder(id) { db.collection('orders').doc(id).update({status: 'rejected'}).then(()=>toast('ORDER REJECTED','success')).catch(err=>toast('ERROR: '+err.message,'error')); }
 function markInboxRead(id) { db.collection('messages').doc(id).update({read: true}).catch(()=>{}); }
+function toggleMemberActions(uid){
+  const panel=document.getElementById('member-actions-'+uid);
+  if(!panel) return;
+  const wasOpen=panel.classList.contains('open');
+  document.querySelectorAll('.member-actions-pop.open').forEach(el=>el.classList.remove('open'));
+  document.querySelectorAll('.member-action-chevron').forEach(el=>el.style.transform='rotate(0deg)');
+  if(!wasOpen){
+    panel.classList.add('open');
+    const chev=document.querySelector('[data-member-chevron="'+uid+'"]');
+    if(chev) chev.style.transform='rotate(180deg)';
+  }
+}
+
+function getSubscriptionColor(value, active=true) {
+  if (!active) return 'var(--muted)';
+  const sub = normalizeSubscription(value);
+  if (sub === 'sf_rush') return 'var(--green)';
+  if (sub === 'sf_legend') return 'var(--orange)';
+  if (sub === 'both') return 'var(--blue)';
+  return '#ffffff';
+}
+
 function setSub(uid, type) {
   const subType = normalizeSubscription(type);
   const update = { subscription: subType, subscriptionStatus: subType === 'none' ? 'inactive' : 'active' };
@@ -2505,7 +2605,16 @@ function setSub(uid, type) {
 async function isOriginalAdminAccount(id){try{const d=await db.collection('users').doc(id).get();return d.exists && (d.data().email||'').trim().toLowerCase()==='admin@omega.vip';}catch(e){console.error(e);return false;}}
 async function banUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT BAN','error');return;}db.collection('users').doc(id).update({banned:true}).then(()=>toast('USER BANNED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
 function unbanUser(id){db.collection('users').doc(id).update({banned:false}).then(()=>toast('USER UNBANNED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
-async function deleteUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT DELETE','error');return;}if(!confirm('DELETE MEMBER DATA PERMANENTLY? (Auth account remains)'))return;db.collection('users').doc(id).delete().then(()=>toast('MEMBER DATA DELETED','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
+async function deleteUser(id){
+  if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT DELETE','error');return;}
+  if(!confirm('DELETE MEMBER PERMANENTLY? This account will be blocked and hidden from the member list.'))return;
+  try{
+    // Mark deleted inside the existing users document. This avoids client-side
+    // delete permission problems while permanently blocking site access.
+    await db.collection('users').doc(id).update({deleted:true,banned:true,deletedAt:firebase.firestore.FieldValue.serverTimestamp()});
+    toast('MEMBER DELETED — ACCOUNT BLOCKED AND HIDDEN','success');
+  }catch(err){toast('ERROR: '+err.message,'error');}
+}
 async function promoteUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN ALREADY HAS FULL ADMIN ACCESS','success');return;}if(!confirm('PROMOTE THIS USER TO ADMIN? THEY WILL HAVE FULL CONTROL ACCESS.')) return; db.collection('users').doc(id).update({role:'admin'}).then(()=>toast('USER PROMOTED TO ADMIN','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
 async function demoteUser(id){if(await isOriginalAdminAccount(id)){toast('ORIGINAL ADMIN IS PROTECTED — CANNOT DEMOTE','error');return;}if(!confirm('DEMOTE THIS ADMIN BACK TO USER?')) return; db.collection('users').doc(id).update({role:'user'}).then(()=>toast('ADMIN DEMOTED TO USER','success')).catch(err=>toast('ERROR: '+err.message,'error'));}
 function replyUser(uid){const select=document.getElementById('adminMsgTo');if(select){select.value=uid;}const t=document.getElementById('adminMsgText');if(t)t.focus();}
@@ -2698,6 +2807,80 @@ renderNav();renderPage();updateChatInputState();
   .omega-video-frame iframe{
     display:block;
   }
+
+/* ===== OMEGA INBOX / REPLY BOX FIX ===== */
+.inbox-scroll-box{
+  height:420px !important;
+  max-height:420px !important;
+  min-height:420px !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding-right:6px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--cyan) var(--bg-2);
+}
+.inbox-scroll-box::-webkit-scrollbar{width:7px}
+.inbox-scroll-box::-webkit-scrollbar-track{background:rgba(255,255,255,.03)}
+.inbox-scroll-box::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:8px}
+.inbox-message{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  padding:12px 14px !important;
+  margin-bottom:8px !important;
+  border-radius:8px;
+  overflow:hidden;
+}
+.inbox-message-header{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:flex-start !important;
+  gap:12px !important;
+  flex-wrap:wrap;
+}
+.inbox-message-text{
+  display:block;
+  width:100%;
+  max-width:100%;
+  max-height:180px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  white-space:pre-wrap !important;
+  overflow-wrap:anywhere !important;
+  word-break:break-word !important;
+  line-height:1.5 !important;
+  padding:4px 2px 6px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--cyan) rgba(255,255,255,.03);
+}
+.inbox-message-text::-webkit-scrollbar{width:5px}
+.inbox-message-text::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:6px}
+.inbox-message-text::-webkit-scrollbar-track{background:rgba(255,255,255,.03)}
+.inbox-reply-box{
+  width:100%;
+  min-height:150px !important;
+  height:150px !important;
+  max-height:150px !important;
+  resize:vertical;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  white-space:pre-wrap !important;
+  overflow-wrap:anywhere !important;
+  line-height:1.5 !important;
+}
+.admin-dashboard-columns{
+  grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr) !important;
+  align-items:start;
+}
+.admin-inbox-card,.admin-reply-card{width:100%;min-width:0}
+@media(max-width:900px){
+  .admin-dashboard-columns{grid-template-columns:1fr !important}
+}
+@media(max-width:768px){
+  .inbox-scroll-box{height:360px !important;min-height:360px !important}
+  .inbox-message-text{max-height:160px}
+  .inbox-reply-box{height:130px !important;min-height:130px !important;max-height:130px !important}
+}
 </style>
 </body>
 </html>
