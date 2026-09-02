@@ -1305,185 +1305,6 @@ document.getElementById('chatInput').addEventListener('keypress', e => {
     }
 });
 
-// ====== SINGLE-ACCOUNT / SINGLE-BROWSER SESSION LOCK ======
-// One Firebase account may have only ONE active website session at a time.
-// The lock lives in Firestore, so it works across different browsers and PCs.
-// A normal refresh in the same tab keeps its session ID (sessionStorage).
-const SESSION_LOCK_TTL_MS = 60000;   // stale/crashed browser recovery
-const SESSION_HEARTBEAT_MS = 15000;
-let omegaSessionId = null;
-let omegaSessionTimer = null;
-let omegaSessionOwnerUid = null;
-let omegaSessionUnsub = null;
-let omegaSessionReleasing = false;
-
-function getOmegaSessionId(){
-  try{
-    let id=sessionStorage.getItem('omega_single_session_id');
-    if(!id){
-      id=(crypto?.randomUUID ? crypto.randomUUID() :
-        'sess_'+Date.now()+'_'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));
-      sessionStorage.setItem('omega_single_session_id',id);
-    }
-    return id;
-  }catch(e){
-    return 'sess_'+Date.now()+'_'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
-  }
-}
-
-function sessionLockRef(uid){
-  return db.collection('users').doc(uid);
-}
-
-async function acquireSingleSession(uid){
-  const sessionId=getOmegaSessionId();
-  const ref=sessionLockRef(uid);
-  const now=Date.now();
-  let acquired=false;
-
-  await db.runTransaction(async tx=>{
-    const snap=await tx.get(ref);
-    if(!snap.exists){
-      throw new Error('PROFILE_NOT_FOUND');
-    }
-    const d=snap.data()||{};
-    const activeId=String(d.activeSessionId||'');
-    const heartbeat=d.sessionHeartbeatMs||0;
-    const active=!!activeId && activeId!==sessionId && (now-heartbeat)<SESSION_LOCK_TTL_MS;
-
-    if(active){
-      const err=new Error('ACCOUNT_ALREADY_ACTIVE');
-      err.code='account/already-active';
-      throw err;
-    }
-
-    tx.update(ref,{
-      activeSessionId:sessionId,
-      sessionHeartbeatMs:now,
-      sessionStartedAt:firebase.firestore.FieldValue.serverTimestamp()
-    });
-    acquired=true;
-  });
-
-  if(!acquired) throw Object.assign(new Error('ACCOUNT_ALREADY_ACTIVE'),{code:'account/already-active'});
-  omegaSessionOwnerUid=uid;
-  omegaSessionId=sessionId;
-  startSingleSessionHeartbeat(uid,sessionId);
-  watchSingleSession(uid,sessionId);
-  return true;
-}
-
-function startSingleSessionHeartbeat(uid,sessionId){
-  if(omegaSessionTimer) clearInterval(omegaSessionTimer);
-  omegaSessionTimer=setInterval(async()=>{
-    if(omegaSessionOwnerUid!==uid || omegaSessionId!==sessionId || omegaSessionReleasing) return;
-    try{
-      const ref=sessionLockRef(uid);
-      await db.runTransaction(async tx=>{
-        const snap=await tx.get(ref);
-        if(!snap.exists) throw new Error('PROFILE_NOT_FOUND');
-        const d=snap.data()||{};
-        if(String(d.activeSessionId||'')!==sessionId){
-          throw Object.assign(new Error('SESSION_REPLACED'),{code:'account/session-replaced'});
-        }
-        tx.update(ref,{sessionHeartbeatMs:Date.now()});
-      });
-    }catch(err){
-      if(err?.code==='account/session-replaced'){
-        forceSessionLogout('THIS ACCOUNT WAS OPENED IN ANOTHER BROWSER OR PC.');
-      }else{
-        console.warn('Session heartbeat failed:',err);
-      }
-    }
-  },SESSION_HEARTBEAT_MS);
-}
-
-function watchSingleSession(uid,sessionId){
-  if(omegaSessionUnsub) omegaSessionUnsub();
-  omegaSessionUnsub=sessionLockRef(uid).onSnapshot(snap=>{
-    if(omegaSessionOwnerUid!==uid || omegaSessionId!==sessionId || omegaSessionReleasing) return;
-    const d=snap.data()||{};
-    if(String(d.activeSessionId||'')!==sessionId){
-      forceSessionLogout('THIS ACCOUNT WAS OPENED IN ANOTHER BROWSER OR PC.');
-    }
-  },err=>console.warn('Session lock listener:',err));
-}
-
-async function releaseSingleSession(uid){
-  if(!uid) return;
-  omegaSessionReleasing=true;
-  if(omegaSessionTimer){clearInterval(omegaSessionTimer);omegaSessionTimer=null;}
-  if(omegaSessionUnsub){omegaSessionUnsub();omegaSessionUnsub=null;}
-  const sid=omegaSessionId;
-  omegaSessionOwnerUid=null;
-  omegaSessionId=null;
-  try{
-    await db.runTransaction(async tx=>{
-      const ref=sessionLockRef(uid);
-      const snap=await tx.get(ref);
-      if(!snap.exists) return;
-      const d=snap.data()||{};
-      if(String(d.activeSessionId||'')===String(sid||'')){
-        tx.update(ref,{
-          activeSessionId:firebase.firestore.FieldValue.delete(),
-          sessionHeartbeatMs:firebase.firestore.FieldValue.delete(),
-          sessionStartedAt:firebase.firestore.FieldValue.delete()
-        });
-      }
-    });
-  }catch(err){
-    console.warn('Session release failed:',err);
-  }finally{
-    omegaSessionReleasing=false;
-  }
-}
-
-async function forceSessionLogout(message){
-  if(omegaSessionReleasing) return;
-  omegaSessionReleasing=true;
-  if(omegaSessionTimer){clearInterval(omegaSessionTimer);omegaSessionTimer=null;}
-  if(omegaSessionUnsub){omegaSessionUnsub();omegaSessionUnsub=null;}
-  omegaSessionOwnerUid=null;
-  omegaSessionId=null;
-  state.currentUser=null;
-  state.bannedLock=false;
-  state.page='login';
-  document.body.classList.add('auth-locked');
-  const main=document.getElementById('main');
-  if(main) main.classList.add('auth-terminal-visible');
-  renderNav();renderPage();updateChatInputState();window.scrollTo(0,0);
-  try{await auth.signOut();}catch(e){}
-  omegaSessionReleasing=false;
-  toast(message||'SESSION TERMINATED','error');
-}
-
-function clearSessionLockOnPageExit(){
-  // Best-effort release. The heartbeat TTL remains as a safe fallback
-  // if the browser is closed before this async cleanup completes.
-  if(omegaSessionOwnerUid && omegaSessionId){
-    const uid=omegaSessionOwnerUid, sid=omegaSessionId;
-    try{
-      db.collection('users').doc(uid).get().then(snap=>{
-        const d=snap.data()||{};
-        if(String(d.activeSessionId||'')===String(sid)){
-          return db.collection('users').doc(uid).update({
-            activeSessionId:firebase.firestore.FieldValue.delete(),
-            sessionHeartbeatMs:firebase.firestore.FieldValue.delete(),
-            sessionStartedAt:firebase.firestore.FieldValue.delete()
-          });
-        }
-      }).catch(()=>{});
-    }catch(e){}
-  }
-}
-
-window.addEventListener('beforeunload',clearSessionLockOnPageExit);
-document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && omegaSessionOwnerUid && omegaSessionId){
-    startSingleSessionHeartbeat(omegaSessionOwnerUid,omegaSessionId);
-  }
-});
-
 // ====== FIREBASE AUTH & AUTO BAN LOGOUT ======
 async function handleLogin(e){
   if(e){e.preventDefault();e.stopPropagation();}
@@ -1496,22 +1317,7 @@ async function handleLogin(e){
   try{
     const cred=await auth.signInWithEmailAndPassword(email,pass);
     const isAdmin=email==='admin@omega.vip';
-
-    // IMPORTANT: reserve the account BEFORE unlocking the website.
-    // This blocks the same Firebase account from being used simultaneously
-    // in another browser, tab, or PC.
-    try{
-      await acquireSingleSession(cred.user.uid);
-    }catch(lockErr){
-      await auth.signOut().catch(()=>{});
-      if(lockErr?.code==='account/already-active'){
-        toast('LOGIN DENIED — THIS ACCOUNT IS ALREADY ACTIVE IN ANOTHER BROWSER OR PC','error');
-      }else{
-        toast('LOGIN DENIED — COULD NOT VERIFY ACCOUNT SESSION','error');
-      }
-      return false;
-    }
-
+    // Unlock immediately after Firebase Authentication succeeds. Do not make UI access depend on Firestore.
     state.bannedLock=false;
     state.currentUser={id:cred.user.uid,email:cred.user.email||email,username:(cred.user.email||email).split('@')[0],role:isAdmin?'admin':'user',banned:false,subscription:'none',subDuration:'N/A',hwid:''};
     state.page='home';
@@ -1615,11 +1421,8 @@ async function handleRegister(e){
     if(submit){submit.disabled=false;submit.innerHTML=submit.dataset.oldText||'<i class="fas fa-user-plus"></i> CREATE ACCOUNT';}
   }
 }
-async function logout(){
-  // Release the Firestore account lock FIRST, then sign out.
-  const uid=omegaSessionOwnerUid || state.currentUser?.id || auth.currentUser?.uid || null;
-  await releaseSingleSession(uid);
-
+function logout(){
+  // Immediately return to the login screen; do not wait for Firebase's async signOut callback.
   state.currentUser=null;
   state.bannedLock=false;
   state.page='login';
@@ -1630,12 +1433,12 @@ async function logout(){
   renderPage();
   updateChatInputState();
   window.scrollTo(0,0);
-  await auth.signOut().catch(err=>console.warn('Firebase signOut error:',err));
   toast('SESSION TERMINATED — LOGIN SCREEN READY','success');
+  auth.signOut().catch(err=>console.warn('Sign-out completed locally; Firebase signOut error:',err));
 }
 function handleForgot(e){e.preventDefault();const email=document.getElementById('forgotEmail').value;auth.sendPasswordResetEmail(email).then(()=>{toast('RECOVERY LINK SENT','success');switchAuthTab('login');}).catch(err=>toast('ERROR: '+err.message,'error'));}
 
-auth.onAuthStateChanged(async user=>{
+auth.onAuthStateChanged(user=>{
   // Registration must NEVER unlock the site. The new account must log in manually.
   if(registrationInProgress){ return; }
   if(registrationJustCompleted){
@@ -1643,28 +1446,6 @@ auth.onAuthStateChanged(async user=>{
     return;
   }
   if(user){
-    // Firebase can restore a previous auth session automatically on page load.
-    // Re-validate/reserve the single-browser lock before showing protected content.
-    try{
-      await acquireSingleSession(user.uid);
-    }catch(lockErr){
-      if(lockErr?.code==='account/already-active'){
-        state.currentUser=null;
-        state.page='login';
-        document.body.classList.add('auth-locked');
-        const main=document.getElementById('main');
-        if(main) main.classList.add('auth-terminal-visible');
-        renderNav();renderPage();updateChatInputState();
-        await auth.signOut().catch(()=>{});
-        toast('LOGIN DENIED — THIS ACCOUNT IS ALREADY ACTIVE IN ANOTHER BROWSER OR PC','error');
-      }else{
-        console.error('Session lock error:',lockErr);
-        await auth.signOut().catch(()=>{});
-        toast('SESSION VERIFICATION FAILED — PLEASE LOGIN AGAIN','error');
-      }
-      return;
-    }
-
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       if(!doc.exists) {
         db.collection('users').doc(user.uid).set({
