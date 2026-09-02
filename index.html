@@ -1076,7 +1076,24 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// GitHub Pages / hosted-site compatibility:
+// Keep the same Firebase Auth session when the page is served over HTTPS.
+// This is intentionally non-blocking so login still works if browser storage is restricted.
+try {
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
+    console.warn("Firebase Auth persistence could not be enabled:", err);
+  });
+} catch (e) {
+  console.warn("Firebase Auth persistence setup skipped:", e);
+}
+
 // ====== STATE ======
+// GitHub Pages diagnostics. Do not block authentication based on hostname.
+const runningOnGitHubPages = /(^|\.)github\.io$/i.test(location.hostname);
+if (runningOnGitHubPages && location.protocol !== 'https:') {
+  console.warn('GitHub Pages should be opened over HTTPS for Firebase Auth.');
+}
+
 const state = { 
   currentUser: null, 
   page: 'home', 
@@ -1348,7 +1365,15 @@ async function handleLogin(e){
     }).catch(err=>console.warn('Profile read skipped; authentication is already active:',err));
   }catch(err){
     console.error('Login error:',err);
-    toast('ERROR: '+(err?.message||'LOGIN FAILED'),'error');
+    let msg=err?.message||'LOGIN FAILED';
+    if(err?.code==='auth/unauthorized-domain'){
+      msg='LOGIN DENIED: THIS GITHUB PAGES DOMAIN IS NOT AUTHORIZED IN FIREBASE AUTHENTICATION';
+    }else if(err?.code==='auth/operation-not-allowed'){
+      msg='LOGIN DENIED: EMAIL/PASSWORD SIGN-IN IS DISABLED IN FIREBASE AUTHENTICATION';
+    }else if(err?.code==='auth/network-request-failed'){
+      msg='LOGIN FAILED: NETWORK CONNECTION PROBLEM';
+    }
+    toast('ERROR: '+msg,'error');
   }finally{
     registrationInProgress=false;
     if(submit){submit.disabled=false;submit.innerHTML=submit.dataset.oldText||'<i class="fas fa-sign-in-alt"></i> LOGIN';}
