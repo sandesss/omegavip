@@ -1076,6 +1076,16 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// Hosted-domain safe Firebase Auth initialization. GitHub Pages cannot change
+// Firebase's server-side Authorized Domains, so never fake/override auth state.
+// We only configure persistence and expose the real Firebase error code.
+window.__OMEGA_AUTH_HOST__ = location.hostname;
+window.__OMEGA_AUTH_PROTOCOL__ = location.protocol;
+try {
+  auth.languageCode = 'en';
+} catch(e) {}
+
+
 // GitHub Pages / hosted-site compatibility:
 // Keep the same Firebase Auth session when the page is served over HTTPS.
 // This is intentionally non-blocking so login still works if browser storage is restricted.
@@ -1370,6 +1380,10 @@ async function handleLogin(e){
       msg='LOGIN DENIED: THIS GITHUB PAGES DOMAIN IS NOT AUTHORIZED IN FIREBASE AUTHENTICATION';
     }else if(err?.code==='auth/operation-not-allowed'){
       msg='LOGIN DENIED: EMAIL/PASSWORD SIGN-IN IS DISABLED IN FIREBASE AUTHENTICATION';
+    }else if(err?.code==='auth/app-not-authorized'){
+      msg='LOGIN DENIED: THIS DOMAIN/API KEY IS NOT AUTHORIZED FOR FIREBASE AUTH';
+    }else if(err?.code==='auth/invalid-api-key'){
+      msg='LOGIN FAILED: FIREBASE API KEY IS INVALID OR RESTRICTED';
     }else if(err?.code==='auth/network-request-failed'){
       msg='LOGIN FAILED: NETWORK CONNECTION PROBLEM';
     }
