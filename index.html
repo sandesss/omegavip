@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMEGA VIP CHEATS // v3.0.0 [LIVE FIREBASE]</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -992,6 +992,383 @@ html,body,*{cursor:none!important}
 @keyframes debrisFly{to{transform:translate(var(--dx),var(--dy)) scale(.15);opacity:0}}
 
 @keyframes screenRecoil{50%{transform:translate(-1px,1px)}100%{transform:none}}
+
+/* =========================================================
+   OMEGA AUTH PORTAL — SAFE AUTH-ONLY OVERRIDE
+   Does not alter dashboard/nav/chat/admin styles.
+   ========================================================= */
+.omega-auth-screen{
+  position:relative;
+  width:100%;
+  max-width:560px;
+  margin:0 auto;
+  padding:2.5rem .75rem 3rem;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  isolation:isolate;
+}
+.omega-auth-screen::before{
+  content:"";
+  position:absolute;
+  inset:-80px -120px;
+  z-index:-3;
+  background:
+    linear-gradient(rgba(0,243,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,243,255,.035) 1px,transparent 1px);
+  background-size:40px 40px;
+  animation:omegaAuthGrid 18s linear infinite;
+  pointer-events:none;
+}
+.omega-auth-screen::after{
+  content:"";
+  position:absolute;
+  width:680px;height:680px;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  z-index:-2;
+  background:radial-gradient(circle,rgba(0,243,255,.10),transparent 67%);
+  pointer-events:none;
+}
+@keyframes omegaAuthGrid{to{background-position:40px 40px}}
+
+.omega-auth-shell{
+  position:relative;
+  width:min(500px,100%);
+}
+.omega-auth-ring{
+  position:absolute;
+  left:50%;top:50%;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:-1;
+}
+.omega-auth-ring.r1{
+  width:540px;height:540px;
+  border:1px dashed rgba(0,243,255,.30);
+  box-shadow:0 0 24px rgba(0,243,255,.08);
+  animation:omegaAuthSpin 22s linear infinite;
+}
+.omega-auth-ring.r2{
+  width:450px;height:450px;
+  border:1px solid rgba(0,243,255,.12);
+  animation:omegaAuthSpinReverse 15s linear infinite;
+}
+.omega-auth-ring.r3{
+  width:610px;height:610px;
+  border:1px solid rgba(174,245,255,.045);
+  animation:omegaAuthPulse 4s ease-in-out infinite;
+}
+@keyframes omegaAuthSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes omegaAuthSpinReverse{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+@keyframes omegaAuthPulse{
+  0%,100%{opacity:.35;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:.65;transform:translate(-50%,-50%) scale(1.025)}
+}
+
+.omega-auth-card{
+  position:relative;
+  width:100%;
+  padding:38px 34px 26px;
+  background:rgba(5,10,16,.92);
+  border:1px solid rgba(0,243,255,.85);
+  border-radius:10px;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.75),
+    0 0 34px rgba(0,243,255,.10),
+    inset 0 0 24px rgba(0,243,255,.035);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  text-align:center;
+}
+.omega-auth-card::before{
+  content:"";
+  position:absolute;
+  top:0;left:8%;right:8%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#00f3ff,transparent);
+  box-shadow:0 0 12px #00f3ff;
+}
+.omega-auth-corner{
+  position:absolute;width:18px;height:18px;
+  border:2px solid #00f3ff;
+  pointer-events:none;
+}
+.omega-auth-corner.tl{top:9px;left:9px;border-right:0;border-bottom:0}
+.omega-auth-corner.tr{top:9px;right:9px;border-left:0;border-bottom:0}
+.omega-auth-corner.bl{bottom:9px;left:9px;border-right:0;border-top:0}
+.omega-auth-corner.br{bottom:9px;right:9px;border-left:0;border-top:0}
+
+.omega-auth-welcome{
+  font-family:'Rajdhani',sans-serif;
+  font-weight:600;
+  font-size:.95rem;
+  color:#00f3ff;
+  letter-spacing:.55em;
+  text-transform:uppercase;
+  margin-bottom:9px;
+  text-shadow:0 0 10px rgba(0,243,255,.8);
+}
+.omega-auth-omega{
+  font-family:'Black Ops One',cursive;
+  font-size:clamp(3.2rem,12vw,4.65rem);
+  line-height:.9;
+  letter-spacing:2px;
+  color:#00f3ff;
+  background:linear-gradient(110deg,#00f3ff 0%,#fff 18%,#00f3ff 38%,#0a7080 50%,#00f3ff 62%,#fff 82%,#00f3ff 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:omegaAuthShine 3.2s linear infinite;
+  filter:drop-shadow(0 0 12px rgba(0,243,255,.55));
+}
+@keyframes omegaAuthShine{to{background-position:200% center}}
+.omega-auth-vip{
+  font-family:'Black Ops One',cursive;
+  font-size:clamp(1.85rem,7vw,2.65rem);
+  line-height:.95;
+  letter-spacing:4px;
+  margin-top:7px;
+  background:linear-gradient(to bottom,#fff 0%,#d1f5ff 38%,#777 50%,#d1f5ff 62%,#2c2c2c 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 0 #000) drop-shadow(0 0 8px rgba(0,243,255,.35));
+}
+.omega-auth-divider{
+  width:145px;height:2px;
+  margin:19px auto 17px;
+  background:linear-gradient(90deg,transparent,#00f3ff,transparent);
+  box-shadow:0 0 9px #00f3ff;
+}
+.omega-auth-status{
+  height:1.2em;
+  margin-bottom:17px;
+  color:#5c6f7e;
+  font-family:'Inter',sans-serif;
+  font-size:.68rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.omega-auth-status span{
+  color:#39ff14;
+  text-shadow:0 0 6px #39ff14;
+}
+
+.omega-auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:13px;
+}
+.omega-auth-tab{
+  min-height:43px;
+  padding:9px 10px;
+  border:1px solid rgba(0,243,255,.48);
+  background:rgba(0,243,255,.055);
+  color:#00f3ff;
+  font-family:'Orbitron',sans-serif;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  cursor:pointer;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+  transition:background .2s,border-color .2s,box-shadow .2s,color .2s;
+}
+.omega-auth-tab:hover,
+.omega-auth-tab.active{
+  color:#fff;
+  background:rgba(0,243,255,.19);
+  border-color:#00f3ff;
+  box-shadow:0 0 17px rgba(0,243,255,.28);
+  text-shadow:0 0 7px #00f3ff;
+}
+
+.omega-auth-form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  text-align:left;
+  padding:17px;
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(0,243,255,.15);
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+}
+.omega-auth-field label{
+  display:block;
+  margin-bottom:5px;
+  color:#00f3ff;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.69rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.omega-auth-form input{
+  width:100%;
+  min-height:44px;
+  margin:0!important;
+  padding:10px 12px!important;
+  background:rgba(0,0,0,.65)!important;
+  border:1px solid rgba(0,243,255,.28)!important;
+  color:#aef5ff!important;
+  font-family:'Share Tech Mono',monospace!important;
+}
+.omega-auth-form input:focus{
+  border-color:#00f3ff!important;
+  box-shadow:0 0 13px rgba(0,243,255,.22)!important;
+}
+.omega-auth-form input::placeholder{color:#536575}
+
+.omega-auth-forgot{
+  align-self:flex-end;
+  color:#bc13fe;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;
+  cursor:pointer;
+  text-shadow:0 0 7px rgba(188,19,254,.45);
+}
+.omega-auth-forgot:hover{text-decoration:underline}
+.omega-auth-submit{
+  width:100%;
+  min-height:47px;
+  margin-top:2px;
+  border:1px solid #00f3ff;
+  background:rgba(0,243,255,.09);
+  color:#fff;
+  font-family:'Orbitron',sans-serif;
+  font-size:.82rem;
+  font-weight:900;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  cursor:pointer;
+  clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);
+  box-shadow:0 4px 17px rgba(0,243,255,.18);
+  transition:background .2s,box-shadow .2s,transform .2s;
+}
+.omega-auth-submit:hover{
+  background:rgba(0,243,255,.20);
+  box-shadow:0 5px 25px rgba(0,243,255,.38);
+  transform:translateY(-1px);
+}
+.omega-auth-footer{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:17px;
+  padding-top:13px;
+  border-top:1px solid rgba(0,243,255,.14);
+  color:#5c6f7e;
+  font-family:'Inter',sans-serif;
+  font-size:.64rem;
+}
+.omega-auth-online{color:#39ff14}
+.omega-auth-online::before{
+  content:"";
+  display:inline-block;
+  width:6px;height:6px;
+  margin-right:5px;
+  border-radius:50%;
+  background:#39ff14;
+  box-shadow:0 0 6px #39ff14;
+}
+.omega-auth-powered{font-family:'Orbitron',sans-serif}
+.omega-auth-powered strong{color:#00f3ff}
+
+@media(max-width:600px){
+  .omega-auth-screen{padding:1.75rem .25rem 2rem}
+  .omega-auth-card{padding:31px 16px 22px}
+  .omega-auth-ring.r1{width:410px;height:410px}
+  .omega-auth-ring.r2{width:340px;height:340px}
+  .omega-auth-ring.r3{width:470px;height:470px}
+  .omega-auth-welcome{letter-spacing:.4em}
+  .omega-auth-footer{font-size:.58rem}
+}
+
+/* ===== NEW OMEGA NEON PORTAL ===== */
+#portal-stage.new-neon-portal{position:fixed;inset:0;z-index:10000;background:#03070d;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;isolation:isolate;transition:opacity .75s ease,transform .75s ease}
+#portal-stage.new-neon-portal.omega-portal-hidden{opacity:0;transform:scale(1.08);pointer-events:none}
+.neon-grid{position:absolute;inset:0;z-index:-5;background-image:linear-gradient(rgba(0,243,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,243,255,.035) 1px,transparent 1px);background-size:50px 50px;animation:neonGridMove 18s linear infinite}
+@keyframes neonGridMove{to{background-position:50px 50px}}
+.neon-glow{position:absolute;width:min(1000px,120vw);height:min(1000px,120vw);border-radius:50%;background:radial-gradient(circle,rgba(0,243,255,.1),transparent 68%);z-index:-4;animation:neonGlowPulse 4s ease-in-out infinite}
+@keyframes neonGlowPulse{50%{transform:scale(1.18);opacity:.8}}
+.tech-ring-new{position:absolute;width:min(650px,100vw);height:min(650px,100vw);border:1px dashed rgba(0,243,255,.28);border-radius:50%;z-index:-2;animation:techRingSpin 22s linear infinite}
+.tech-ring-new:before{content:"";position:absolute;top:-7px;left:50%;width:14px;height:14px;background:#00f3ff;transform:translateX(-50%) rotate(45deg);box-shadow:0 0 18px #00f3ff}
+@keyframes techRingSpin{to{transform:rotate(360deg)}}
+
+/* SECURE ACCESS POWER-UP: the large rotating diamond/ring accelerates */
+#portal-stage.secure-power .tech-ring-new{
+  animation-duration:2.2s;
+  border-color:rgba(0,243,255,.65);
+  box-shadow:0 0 35px rgba(0,243,255,.22), inset 0 0 25px rgba(0,243,255,.08);
+}
+#portal-stage.secure-power .tech-ring-new:before{
+  width:26px;height:26px;
+  box-shadow:0 0 14px #00f3ff,0 0 32px #00f3ff,0 0 60px rgba(0,243,255,.9);
+  animation:secureDiamondPulse .7s ease-in-out infinite alternate;
+}
+@keyframes secureDiamondPulse{
+  from{transform:translateX(-50%) rotate(45deg) scale(.9);opacity:.75}
+  to{transform:translateX(-50%) rotate(45deg) scale(1.35);opacity:1}
+}
+body.secure-access-power #omega-new-bg .omega-wheel{
+  animation-duration:2.8s;
+}
+body.secure-access-power #omega-new-bg .omega-core:before{
+  animation-duration:1.1s;
+}
+
+.new-particles{position:absolute;inset:0;z-index:-1;pointer-events:none}.new-particle{position:absolute;border-radius:50%;background:#00f3ff;box-shadow:0 0 8px #00f3ff;animation:particleRise linear infinite;opacity:0}
+@keyframes particleRise{0%{transform:translateY(105vh) scale(.2);opacity:0}12%{opacity:.8}88%{opacity:.8}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
+.portal-wrapper-new{position:relative;width:min(560px,92vw);height:min(600px,92vh);display:flex;align-items:center;justify-content:center;transform-style:preserve-3d}
+.portal-container-new{width:min(500px,88vw);height:min(500px,88vw);max-height:500px;position:relative;border:1px solid #00f3ff;border-radius:50%;background:rgba(6,12,20,.82);backdrop-filter:blur(14px);box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 55px rgba(0,243,255,.12),inset 0 0 25px rgba(0,243,255,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:55px 35px;animation:portalFloat 6s ease-in-out infinite}
+@keyframes portalFloat{50%{transform:translateY(-10px) rotateY(2deg)}}
+.portal-container-new:before{content:"";position:absolute;inset:12px;border:1px solid rgba(0,243,255,.12);border-radius:50%;pointer-events:none}
+.portal-container-new:after{content:"";position:absolute;bottom:0;left:7%;right:7%;height:120px;border-radius:0 0 50% 50%;background:linear-gradient(to top,rgba(0,243,255,.13),transparent);pointer-events:none}
+.portal-marker{position:absolute;background:#00f3ff;box-shadow:0 0 12px #00f3ff;z-index:3}.portal-marker.top,.portal-marker.bottom{width:46px;height:2px;left:50%;transform:translateX(-50%)}.portal-marker.top{top:15px}.portal-marker.bottom{bottom:15px}.portal-marker.left,.portal-marker.right{width:2px;height:46px;top:50%;transform:translateY(-50%)}.portal-marker.left{left:15px}.portal-marker.right{right:15px}
+.welcome-new{font-family:'Rajdhani';font-size:15px;letter-spacing:8px;color:#00f3ff;text-shadow:0 0 10px #00f3ff;margin-bottom:12px}
+.omega-logo-new{font-family:'Black Ops One';font-size:clamp(3.5rem,12vw,5.2rem);line-height:.82;letter-spacing:2px;background:linear-gradient(110deg,#00f3ff,#fff 22%,#00f3ff 43%,#006b7a 50%,#00f3ff 62%,#fff 82%,#00f3ff);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 16px rgba(0,243,255,.55));animation:omegaShine 3s linear infinite}
+@keyframes omegaShine{to{background-position:220% center}}
+.vip-logo-new{font-family:'Black Ops One';font-size:clamp(2rem,8vw,3rem);line-height:.9;letter-spacing:6px;background:linear-gradient(to bottom,#fff,#d7f8ff 42%,#6c777c 52%,#d7f8ff 63%,#222);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 0 #000) drop-shadow(0 0 10px rgba(0,243,255,.35));margin-top:7px}
+.portal-divider-new{width:155px;height:2px;background:linear-gradient(90deg,transparent,#00f3ff,transparent);box-shadow:0 0 10px #00f3ff;margin:24px 0}
+.boot-log-new{height:20px;font-family:'Share Tech Mono';font-size:12px;letter-spacing:1px;color:#68798a;text-transform:uppercase;margin-bottom:24px;transition:opacity .3s}.boot-log-new span{color:#39ff14;text-shadow:0 0 6px #39ff14}
+.enter-btn-new{position:relative;overflow:hidden;width:215px;height:50px;margin-left:auto;margin-right:auto;background:linear-gradient(135deg,rgba(0,243,255,.12),rgba(0,30,55,.55));border:1px solid #00f3ff;color:#fff;font-family:'Orbitron';font-size:12px;font-weight:900;letter-spacing:2px;cursor:pointer;clip-path:none;border-radius:8px;box-shadow:0 0 14px rgba(0,243,255,.28),inset 0 0 16px rgba(0,243,255,.10);transition:transform .22s ease,box-shadow .22s ease,background .22s ease;z-index:100;pointer-events:auto;isolation:isolate;touch-action:manipulation}.enter-btn-new::before{content:'';position:absolute;inset:2px;border:1px solid rgba(255,255,255,.12);border-radius:6px;pointer-events:none}.enter-btn-new::after{content:'';position:absolute;top:0;left:-45%;width:35%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);transform:skewX(-20deg);animation:portalBtnSweep 3s linear infinite;pointer-events:none}@keyframes portalBtnSweep{to{left:130%}}
+.enter-btn-new > *{pointer-events:none}.enter-btn-new:hover{background:linear-gradient(135deg,rgba(0,243,255,.24),rgba(0,70,110,.72));box-shadow:0 0 26px rgba(0,243,255,.62),inset 0 0 22px rgba(0,243,255,.18);transform:translateY(-2px)}.enter-btn-new:disabled{cursor:wait;opacity:.85}.enter-btn-new.scanning{animation:portalBtnShake .12s infinite}@keyframes portalBtnShake{50%{transform:translateX(-1px)}}
+.portal-arrow{margin-left:8px;color:#00f3ff}.btn-progress-new{position:absolute;left:0;bottom:0;width:0;height:3px;background:#fff;box-shadow:0 0 14px #00f3ff;transition:width 1.5s linear}
+.status-footer-new{position:absolute;bottom:43px;width:74%;padding-top:13px;border-top:1px solid rgba(0,243,255,.18);display:flex;justify-content:space-between;color:#566676;font:10px 'Share Tech Mono';letter-spacing:1px}.status-footer-new i{display:inline-block;width:7px;height:7px;background:#39ff14;border-radius:50%;box-shadow:0 0 7px #39ff14;margin-right:5px;animation:statusPulse 1.5s infinite}@keyframes statusPulse{50%{transform:scale(1.5);opacity:.55}}
+.energy-blade{position:absolute;top:50%;width:54px;height:260px;transform:translateY(-50%);z-index:2;background:linear-gradient(90deg,#0d1720,#020407,#0d1720);border:1px solid #00f3ff;box-shadow:0 0 24px rgba(0,243,255,.4),inset 0 0 20px rgba(0,243,255,.25);transition:.35s}.energy-blade span{position:absolute;top:12%;bottom:12%;width:2px;background:#dffcff;box-shadow:0 0 12px #00f3ff,0 0 22px #fff}.blade-left-new{left:-15px;clip-path:polygon(0 50%,100% 0,100% 30%,68% 50%,100% 70%,100% 100%)}.blade-right-new{right:-15px;clip-path:polygon(100% 50%,0 0,0 30%,32% 50%,0 70%,0 100%)}.blade-left-new span{right:12px}.blade-right-new span{left:12px}.energy-blade.firing{box-shadow:0 0 42px rgba(0,243,255,.8),inset 0 0 30px rgba(0,243,255,.5)}
+.energy-blade.firing:after{content:"";position:absolute;top:50%;height:5px;width:330px;background:#00f3ff;box-shadow:0 0 20px #00f3ff,0 0 35px #fff}.blade-left-new.firing:after{right:100%;background:linear-gradient(90deg,transparent,#00f3ff,#fff)}.blade-right-new.firing:after{left:100%;background:linear-gradient(270deg,transparent,#00f3ff,#fff)}
+.scan-message-new{position:absolute;display:none;z-index:30;width:min(500px,86vw);padding:24px;background:rgba(2,8,14,.96);border:1px solid #00f3ff;box-shadow:0 0 35px rgba(0,243,255,.25);font-family:'Share Tech Mono';text-align:left}.scan-message-new.active{display:block;animation:scanPop .35s ease}@keyframes scanPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}.scan-title{color:#00f3ff;font-family:'Orbitron';font-weight:900;letter-spacing:3px;margin-bottom:14px}.scan-lines-new{height:190px;overflow:hidden;color:#93a8b8;font-size:12px;line-height:1.65}.scan-lines-new .ok{color:#39ff14}.scan-lines-new .line{opacity:0;transform:translateX(-8px);transition:.2s}.scan-lines-new .line.show{opacity:1;transform:none}.scan-progress-new{display:flex;align-items:center;gap:12px;margin-top:12px;color:#00f3ff;font-size:11px}.scan-progress-new b{height:4px;flex:1;background:#101b26;overflow:hidden;position:relative}.scan-progress-new b:after{content:"";position:absolute;left:0;top:0;height:100%;width:var(--scan-width,0%);background:linear-gradient(90deg,#00f3ff,#fff);box-shadow:0 0 10px #00f3ff}
+.portal-welcome-overlay{position:absolute;inset:0;display:none;z-index:40;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:rgba(2,7,12,.92);backdrop-filter:blur(8px)}.portal-welcome-overlay.show{display:flex;animation:welcomeFade .5s ease}@keyframes welcomeFade{from{opacity:0}to{opacity:1}}.welcome-check{width:76px;height:76px;border:2px solid #39ff14;border-radius:50%;display:grid;place-items:center;color:#39ff14;font-size:40px;box-shadow:0 0 35px rgba(57,255,20,.45);animation:checkPop .5s ease}@keyframes checkPop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}.welcome-big{font-family:'Orbitron';font-size:clamp(1.7rem,6vw,3rem);font-weight:900;color:#fff;text-shadow:0 0 15px #00f3ff;margin-top:18px}.welcome-small{font-family:'Share Tech Mono';font-size:12px;letter-spacing:3px;color:#00f3ff;margin-top:9px}.portal-welcome-overlay button{margin-top:25px;padding:13px 34px;background:#00f3ff;border:0;color:#001016;font-family:'Orbitron';font-weight:900;letter-spacing:2px;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);box-shadow:0 0 25px rgba(0,243,255,.55)}
+.portal-flash-new{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:50}.portal-flash-new.fire{animation:flashNew .22s ease}@keyframes flashNew{0%{opacity:0}30%{opacity:.8}100%{opacity:0}}
+.portal-explosion-new{position:absolute;width:10px;height:10px;border-radius:50%;pointer-events:none;z-index:45}.portal-explosion-new .spark{position:absolute;left:0;top:0;width:2px;height:var(--len);background:#00f3ff;box-shadow:0 0 8px #fff;transform-origin:0 0;transform:rotate(var(--a));animation:sparkNew .65s ease-out var(--delay) forwards;opacity:0}@keyframes sparkNew{0%{opacity:1;transform:rotate(var(--a)) scaleY(.1)}100%{opacity:0;transform:rotate(var(--a)) translateX(var(--len))}}
+@media(max-width:700px){.portal-container-new{height:min(440px,88vw);padding:45px 25px}.energy-blade{display:none}.status-footer-new{bottom:32px;width:78%;font-size:8px}.welcome-new{font-size:11px;letter-spacing:5px}.portal-divider-new{margin:18px 0}.boot-log-new{font-size:9px}}
+
+
+/* PRODUCT FEATURE / INJECTION FIX */
+#injectOverlay{z-index:20000!important;pointer-events:auto!important}
+#injectOverlay.active{display:flex!important}
+#pricingModal{z-index:19000!important;pointer-events:none}
+#pricingModal.active{display:flex!important;pointer-events:auto!important}
+#pricingModalContent{position:relative;z-index:19001;pointer-events:auto!important}
+#pricingModalContent .pricing-card{position:relative;z-index:1;pointer-events:auto!important}
+#pricingModalContent button,.pricing-card button{position:relative;z-index:5;pointer-events:auto!important;cursor:pointer!important}
+#pricingModalContent .feature-list-container{position:relative;z-index:2;pointer-events:auto!important;touch-action:auto;overscroll-behavior:contain}
+#pricingModalContent .feature-item,#pricingModalContent .feature-cat{pointer-events:auto}
+@media(max-width:767px){
+  #pricingModal{padding:1rem!important;align-items:flex-start!important}
+  #pricingModalContent{padding-top:1rem;padding-bottom:2rem}
+  #pricingModalContent>div{grid-template-columns:1fr!important}
+  #pricingModalContent .feature-list-container{max-height:360px}
+}
+
+/* FULL ENTER PORTAL HIT AREA FIX */
+#omegaUnlockBtn{position:relative !important;z-index:9999 !important;pointer-events:auto !important;cursor:pointer !important;clip-path:none !important;border-radius:4px !important;}
+#omegaUnlockBtn::before,#omegaUnlockBtn::after{pointer-events:none !important;}
+#omegaUnlockBtn span{pointer-events:none !important;}
+.portal-container-new{isolation:isolate;}
 </style>
 <style id="ban-hammer-theme">.banned-effect{background:#050505!important}.ban-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,0,60,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,60,.03) 1px,transparent 1px);background-size:40px 40px}.ban-scanlines{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(255,255,255,.02) 50%);background-size:100% 4px;pointer-events:none;z-index:100;animation:banScan 6s linear infinite}.ban-warning{position:absolute;width:100%;background:rgba(255,0,60,.1);border-top:1px solid #ff003c;border-bottom:1px solid #ff003c;color:#ff003c;font-family:Orbitron,sans-serif;font-size:12px;font-weight:700;letter-spacing:4px;text-align:center;padding:5px 0;text-shadow:0 0 5px #ff003c;animation:banBlink 1s infinite alternate;z-index:20}.ban-warning.top{top:0}.ban-warning.bottom{bottom:0}.ban-container{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;max-width:95vw}.hammer-area{position:relative;width:300px;height:250px;margin-bottom:20px;display:flex;justify-content:center;align-items:center}.hammer-symbol{font-size:150px;filter:drop-shadow(0 0 15px #00d2ff);animation:banHammer 2s cubic-bezier(.5,0,1,.5) infinite alternate}.shockwave{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border:2px solid #ff003c;border-radius:50%;box-shadow:0 0 20px #ff003c;opacity:0}.sw-1{animation:banShock 2s ease-out infinite}.sw-2{animation:banShock 2s ease-out infinite .5s}.sw-3{animation:banShock 2s ease-out infinite 1s}.ban-title{font-family:Orbitron,sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:900;color:#00d2ff;letter-spacing:4px;margin:0;text-shadow:0 0 20px #00d2ff}.ban-text{font-family:Orbitron,sans-serif;font-size:clamp(1.2rem,3vw,1.75rem);font-weight:700;color:#ff003c;letter-spacing:6px;margin-top:10px;text-shadow:0 0 10px #ff003c,0 0 30px #ff003c;animation:banPulse 1.5s infinite}.ban-subtext{font-family:Share Tech Mono,monospace;font-size:clamp(.8rem,2vw,1rem);color:#bc13fe;letter-spacing:2px;text-transform:uppercase;margin-top:15px;text-shadow:0 0 5px #bc13fe}@keyframes banHammer{0%{transform:rotate(-35deg) translateY(-50px)}70%{transform:rotate(0) translateY(20px)}100%{transform:rotate(0) translateY(0)}}@keyframes banShock{0%{width:50px;height:50px;opacity:1}100%{width:300px;height:300px;opacity:0}}@keyframes banScan{to{background-position:0 100vh}}@keyframes banBlink{from{opacity:.3}to{opacity:1}}@keyframes banPulse{0%,100%{opacity:.8}50%{opacity:1;text-shadow:0 0 20px #ff003c,0 0 40px #ff003c}}@media(max-width:600px){.hammer-area{width:250px;height:190px}.hammer-symbol{font-size:110px}.ban-warning{font-size:9px;letter-spacing:2px}}</style>
 <style id="omega-full-cyber-nav">
@@ -1606,58 +1983,39 @@ body{position:relative}
 <div class="grid-bg"></div>
 <div class="scanlines"></div>
 
-<!-- OMEGA SECURE PORTAL // REPLACED PORTAL ENGINE -->
-<div id="portal-stage">
-  <div class="bg-stars"></div><div class="grid-floor"></div><canvas id="particles"></canvas>
-  <div class="noise"></div><div class="vignette"></div><div class="scanlines"></div>
-  <div class="hud">
-    <div class="hud-corner tl"></div><div class="hud-corner tr"></div><div class="hud-corner bl"></div><div class="hud-corner br"></div>
-    <div class="hud-top"><span class="dot"></span><span>OMEGA // SECURE GATEWAY v3.4</span><span style="color:var(--amber)">● LIVE</span><span id="omegaPortalClock">00:00:00</span></div>
-    <div class="hud-side left">NODE: OMEGA-01<br>LOC: SECTOR-9<br>ENC: AES-512<br>PING: <span id="omegaPortalPing">12</span>ms<br>THREAT: <span style="color:var(--green)">NONE</span></div>
-    <div class="hud-side right">USERS: <span id="omegaPortalUsers">1,247</span><br>STATUS: <span id="omegaPortalStatus" style="color:var(--amber)">LOCKED</span><br>BUILD: 2024.11<br>CHEATS: 312<br>UNDETECTED: <span style="color:var(--green)">YES</span></div>
-    <div class="hud-bottom"><span>SYS: <b>NOMINAL</b></span><span>FPS: <b id="omegaPortalFps">60</b></span><span>MEM: <b>42%</b></span><span>SEC: <b>ARMED</b></span><span>AI: <b>ACTIVE</b></span></div>
-  </div>
-  <div class="title-above" id="omegaPortalTitle"><div class="small">// SECURE ACCESS PORTAL //</div><div class="big glitch" data-text="OMEGA CHEATS">OMEGA CHEATS</div><div class="sub">PREMIUM GAMING SOLUTIONS</div></div>
-  <div class="portal-wrap" id="omegaPortalWrap">
-    <div class="ring-3"></div><div class="ring-2"></div><div class="ring"></div>
-    <div class="vault locked" id="omegaVault">
-      <div class="bolts" id="omegaBolts"></div><div class="lock-ring" id="omegaLockRing"></div>
-      <div class="segments"><div class="seg s1"></div><div class="seg s2"></div><div class="seg s3"></div><div class="seg s4"></div></div>
-      <div class="wheel" id="omegaWheel">
-        <div class="spoke" style="--r:0deg"></div><div class="spoke" style="--r:60deg"></div><div class="spoke" style="--r:120deg"></div><div class="spoke" style="--r:180deg"></div><div class="spoke" style="--r:240deg"></div><div class="spoke" style="--r:300deg"></div>
-        <div class="spoke-num" style="--r:0deg">01</div><div class="spoke-num" style="--r:60deg">02</div><div class="spoke-num" style="--r:120deg">03</div><div class="spoke-num" style="--r:180deg">04</div><div class="spoke-num" style="--r:240deg">05</div><div class="spoke-num" style="--r:300deg">06</div>
-      </div><div class="core"><div class="core-emblem">Ω</div></div>
+<!-- OMEGA SECURE PORTAL // NEW NEON PORTAL -->
+<div id="portal-stage" class="new-neon-portal">
+  <div class="neon-grid"></div><div class="neon-glow"></div><div class="tech-ring-new"></div>
+  <div id="particles" class="new-particles"></div>
+  <div class="portal-wrapper-new" id="omegaPortalWrap">
+    <div class="energy-blade blade-left-new" id="bladeLeft"><span></span></div>
+    <div class="energy-blade blade-right-new" id="bladeRight"><span></span></div>
+    <div class="portal-container-new">
+      <div class="portal-marker top"></div><div class="portal-marker bottom"></div>
+      <div class="portal-marker left"></div><div class="portal-marker right"></div>
+      <div class="welcome-new">WELCOME TO</div>
+      <div class="omega-logo-new">OMEGA</div><div class="vip-logo-new">VIP CHEATS</div>
+      <div class="portal-divider-new"></div>
+      <div class="boot-log-new" id="boot-log-new">INITIALIZING AI MATRIX... <span>OK</span></div>
+      <button class="enter-btn-new" id="omegaUnlockBtn" type="button">
+        <span id="portalBtnText">ENTER PORTAL</span><span class="portal-arrow">▶</span>
+        <span class="btn-progress-new" id="portalProgress"></span>
+      </button>
+      <div class="status-footer-new">
+        <span><i></i> SYSTEM ONLINE</span><span>SECURE GATEWAY</span><span>VER: 3.0</span>
+      </div>
     </div>
   </div>
-  <div class="console" id="omegaConsole"><div class="auth-line"><span class="blink"></span> BIOMETRIC CIPHER READY // AWAITING AUTHORIZATION</div><button class="unlock-btn" id="omegaUnlockBtn"><i class="fa-solid fa-fingerprint" style="margin-right:10px"></i>UNLOCK PORTAL</button><div class="keyhint">PRESS <kbd>SPACE</kbd> OR <kbd>ENTER</kbd> TO INITIATE</div></div>
-  <div class="terminal" id="omegaTerminal"><div class="head"><span>OMEGA-SEC // AUTHENTICATION SEQUENCE</span><span id="omegaSeq">0%</span></div><div class="lines" id="omegaLines"></div></div>
-  <div class="flash" id="omegaFlash"></div><div class="omega-explosion" id="omegaExplosion"><div class="blast-ring"></div><div class="blast-ring r2"></div><div class="blast-ring r3"></div><div class="core-burst"></div><div class="shockwave"></div></div>
-  <div class="welcome" id="omegaWelcome"><div class="welcome-inner"><div class="pre">// ACCESS GRANTED //</div><div class="mega glitch" data-text="WELCOME TO OMEGA CHEATS">WELCOME TO OMEGA CHEATS</div><div class="tag">UNDETECTED · PREMIUM · UNSTOPPABLE</div><div class="div"></div><button class="enter-btn" id="omegaEnterBtn"><i class="fa-solid fa-arrow-right-to-bracket" style="margin-right:10px"></i>ENTER FACILITY</button><div class="foot">// YOU ARE NOW CONNECTED TO OMEGA MAINFRAME // ENJOY YOUR STAY //</div></div><div class="features"><div class="feat"><i class="fa-solid fa-shield-halved"></i><span>SECURE ACCESS</span></div><div class="feat"><i class="fa-solid fa-crosshairs"></i><span>PRECISION HUD</span></div><div class="feat"><i class="fa-solid fa-eye"></i><span>LIVE MONITORING</span></div><div class="feat"><i class="fa-solid fa-bolt"></i><span>INSTANT UPDATES</span></div><div class="feat"><i class="fa-solid fa-headset"></i><span>24/7 SUPPORT</span></div></div></div>
-</div>
-
-<div class="inject-overlay" id="injectOverlay">
-  <div style="font-family:'Orbitron';font-weight:900;font-size:2rem;color:var(--cyan);letter-spacing:.1em">INJECTING PAYLOAD</div>
-  <div id="injectStatus" style="font-family:'Share Tech Mono';color:var(--green);margin-top:1rem;height:20px">INITIALIZING...</div>
-  <div class="inject-bar"><div class="inject-bar-fill" id="injectFill"></div></div>
-  <div id="injectPercent" style="font-family:'Orbitron';font-size:1.5rem;color:var(--cyan);margin-top:1rem">0%</div>
-</div>
-
-<div class="pricing-modal" id="pricingModal">
-  <div id="pricingModalContent" style="width:100%;max-width:1200px;margin:0 auto"></div>
-</div>
-
-<div class="order-modal" id="orderModal">
-  <div id="orderModalContent" style="width:100%;display:flex;justify-content:center;"></div>
-</div>
-
-<div class="success-overlay" id="successOverlay">
-  <div class="success-box">
-    <i class="fas fa-check-circle success-check"></i>
-    <h2 style="font-family:'Orbitron';font-weight:900;font-size:2rem;color:var(--cyan);margin:0;text-shadow:0 0 15px var(--cyan)">ORDER SUBMITTED</h2>
-    <p style="font-family:'Share Tech Mono';color:var(--green);margin-top:1rem;font-size:1.2rem;letter-spacing:.1em">SUCCESSFULLY SENT</p>
-    <p style="font-family:'Share Tech Mono';color:var(--muted);margin-top:.5rem;font-size:.85rem">Your order is now pending for admin approval.</p>
-    <button onclick="closeSuccessOverlay()" class="btn-primary" style="margin-top:2rem">CONTINUE</button>
+  <div class="scan-message-new" id="omegaTerminal">
+    <div class="scan-title">SECURE ACCESS</div><div class="scan-lines-new" id="omegaLines"></div>
+    <div class="scan-progress-new"><span id="omegaSeq">0%</span><b></b></div>
   </div>
+  <div class="portal-welcome-overlay" id="omegaWelcome">
+    <div class="welcome-check">✓</div><div class="welcome-big">ACCESS GRANTED</div>
+    <div class="welcome-small">WELCOME TO OMEGA VIP CHEATS</div>
+    <button id="omegaEnterBtn" type="button">CONTINUE <span>▶</span></button>
+  </div>
+  <div class="portal-flash-new" id="omegaFlash"></div><div class="portal-explosion-new" id="omegaExplosion"></div>
 </div>
 
 <nav class="topnav">
@@ -1718,6 +2076,27 @@ body{position:relative}
     <input id="chatInput" placeholder="Login to chat..." style="flex:1;height:46px;padding:.75rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.9rem;" disabled>
     <button class="btn-primary" style="padding:.5rem 1.25rem;height:46px;display:flex;align-items:center;justify-content:center;" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
   </div>
+</div>
+
+
+<!-- OMEGA PRODUCT INJECTION / PRICING MODALS -->
+<div id="injectOverlay" class="inject-overlay" aria-hidden="true" role="dialog" aria-label="Product injection">
+  <div style="font-family:'Orbitron';font-weight:900;color:var(--cyan);font-size:1.5rem;text-shadow:0 0 15px var(--cyan)">OMEGA PRODUCT INJECTION</div>
+  <div id="injectStatus" style="font-family:'Share Tech Mono';color:var(--fg);margin-top:.75rem">INITIALIZING...</div>
+  <div class="inject-bar"><div id="injectFill" class="inject-bar-fill"></div></div>
+  <div id="injectPercent" style="font-family:'Orbitron';color:var(--cyan);margin-top:.75rem">0%</div>
+</div>
+
+<div id="pricingModal" class="pricing-modal" aria-hidden="true" role="dialog" aria-modal="true">
+  <div id="pricingModalContent" style="width:100%;max-width:1200px;"></div>
+</div>
+
+<div id="orderModal" class="order-modal" aria-hidden="true" role="dialog" aria-modal="true">
+  <div id="orderModalContent" style="width:100%;max-width:500px;"></div>
+</div>
+
+<div id="successOverlay" aria-hidden="true" class="success-overlay" aria-hidden="true">
+  <div id="successContent" class="success-box"></div>
 </div>
 
 <main class="max-w-7xl mx-auto px-4 py-8" id="main"></main>
@@ -2337,34 +2716,164 @@ function renderProducts(){
     </div>`;
 }
 
-function triggerInject(name) {
-    const overlay = document.getElementById('injectOverlay'), fill = document.getElementById('injectFill'), percent = document.getElementById('injectPercent'), status = document.getElementById('injectStatus');
-    overlay.classList.add('active');
-    let prog = 0;
-    const stages = ['INITIALIZING...', 'BYPASSING KERNEL...', 'SPOOFING HWID...', 'INJECTING PAYLOAD...', 'FINALIZING...'];
-    const interval = setInterval(() => {
-        prog += Math.random() * 10;
-        if (prog > 100) prog = 100;
-        fill.style.width = prog + '%';
-        percent.textContent = Math.floor(prog) + '%';
-        status.textContent = stages[Math.floor(prog / 20)];
-        if (prog >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                overlay.classList.remove('active');
-                fill.style.width = '0%';
-                toast(`${name === 'rush' ? 'SPECIALFORCE RUSH' : 'SPECIALFORCE LEGEND'} INJECTED SUCCESSFULLY!`, 'success');
-                // The new HUD passes product IDs ('rush' / 'legend'), while the
-                // old pricing flow expected full product names. Support both.
-                if (name === 'rush' || name === 'SPECIALFORCE RUSH') {
-                    showRushPricing();
-                } else if (name === 'legend' || name === 'SPECIALFORCE LEGEND') {
-                    showLegendPricing();
-                }
-            }, 1000);
-        }
-    }, 150);
+function ensureProductModals() {
+  // Older versions of this portal rendered the modal CSS but not the actual
+  // modal DOM nodes. Create/recover them before any product action.
+  let overlay = document.getElementById('injectOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'injectOverlay';
+    overlay.className = 'inject-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `
+      <div style="font-family:'Orbitron';font-weight:900;color:var(--cyan);font-size:1.5rem;text-shadow:0 0 15px var(--cyan)">OMEGA PRODUCT INJECTION</div>
+      <div id="injectStatus" style="font-family:'Share Tech Mono';color:var(--fg);margin-top:.75rem">INITIALIZING...</div>
+      <div class="inject-bar"><div id="injectFill" class="inject-bar-fill"></div></div>
+      <div id="injectPercent" style="font-family:'Orbitron';color:var(--cyan);margin-top:.75rem">0%</div>`;
+    document.body.appendChild(overlay);
+  }
+
+  let pricing = document.getElementById('pricingModal');
+  if (!pricing) {
+    pricing = document.createElement('div');
+    pricing.id = 'pricingModal';
+    pricing.className = 'pricing-modal';
+    pricing.setAttribute('aria-hidden', 'true');
+    pricing.innerHTML = `<div id="pricingModalContent" style="width:100%;max-width:1200px;"></div>`;
+    document.body.appendChild(pricing);
+  }
+
+  let content = document.getElementById('pricingModalContent');
+  if (!content) {
+    content = document.createElement('div');
+    content.id = 'pricingModalContent';
+    content.style.cssText = 'width:100%;max-width:1200px;';
+    pricing.appendChild(content);
+  }
+
+  let order = document.getElementById('orderModal');
+  if (!order) {
+    order = document.createElement('div');
+    order.id = 'orderModal';
+    order.className = 'order-modal';
+    order.setAttribute('aria-hidden', 'true');
+    order.innerHTML = `<div id="orderModalContent" style="width:100%;max-width:500px;"></div>`;
+    document.body.appendChild(order);
+  }
+
+  let orderContent = document.getElementById('orderModalContent');
+  if (!orderContent) {
+    orderContent = document.createElement('div');
+    orderContent.id = 'orderModalContent';
+    orderContent.style.cssText = 'width:100%;max-width:500px;';
+    order.appendChild(orderContent);
+  }
+
+  return {
+    overlay,
+    fill: document.getElementById('injectFill'),
+    percent: document.getElementById('injectPercent'),
+    status: document.getElementById('injectStatus'),
+    pricing,
+    pricingContent: content
+  };
 }
+
+function triggerInject(name) {
+  const productId = String(name || '').toLowerCase().trim();
+  const isRush = productId === 'rush' || productId.includes('specialforce rush');
+  const isLegend = productId === 'legend' || productId.includes('specialforce legend');
+
+  if (!isRush && !isLegend) {
+    toast('PRODUCT MODULE NOT FOUND', 'error');
+    return false;
+  }
+
+  const ui = ensureProductModals();
+  if (!ui.overlay || !ui.fill || !ui.percent || !ui.status || !ui.pricing || !ui.pricingContent) {
+    toast('PRODUCT UI FAILED TO INITIALIZE', 'error');
+    return false;
+  }
+
+  if (window.__omegaInjectTimer) {
+    clearInterval(window.__omegaInjectTimer);
+    window.__omegaInjectTimer = null;
+  }
+  if (window.__omegaInjectFinishTimer) {
+    clearTimeout(window.__omegaInjectFinishTimer);
+    window.__omegaInjectFinishTimer = null;
+  }
+
+  // Close any previous product/order modal before starting a new injection.
+  ui.pricing.classList.remove('active');
+  const orderModal = document.getElementById('orderModal');
+  if (orderModal) orderModal.classList.remove('active');
+
+  ui.overlay.classList.add('active');
+  ui.overlay.setAttribute('aria-hidden', 'false');
+  ui.fill.style.width = '0%';
+  ui.percent.textContent = '0%';
+  ui.status.textContent = isRush ? 'INITIALIZING SF RUSH...' : 'INITIALIZING SF LEGEND...';
+
+  let prog = 0;
+  const stages = [
+    'INITIALIZING...',
+    'CHECKING PRODUCT MODULE... OK',
+    'VERIFYING ACCESS... OK',
+    'LOADING FEATURE DATABASE... OK',
+    'PREPARING PRODUCT FEATURES...',
+    'FINALIZING...'
+  ];
+
+  const finish = () => {
+    if (!document.body.contains(ui.overlay)) {
+      window.__omegaInjectTimer = null;
+      return;
+    }
+
+    ui.overlay.classList.remove('active');
+    ui.overlay.setAttribute('aria-hidden', 'true');
+    ui.fill.style.width = '0%';
+    ui.percent.textContent = '0%';
+
+    // Let the browser paint the closed overlay before opening pricing.
+    requestAnimationFrame(() => {
+      try {
+        if (isRush) {
+          showRushPricing();
+          toast('SPECIALFORCE RUSH FEATURES READY', 'success');
+        } else {
+          showLegendPricing();
+          toast('SPECIALFORCE LEGEND FEATURES READY', 'success');
+        }
+      } catch (err) {
+        console.error('Product pricing open error:', err);
+        toast('PRODUCT FEATURES FAILED TO OPEN', 'error');
+      }
+    });
+  };
+
+  window.__omegaInjectTimer = setInterval(() => {
+    prog = Math.min(100, prog + Math.max(5, Math.random() * 10));
+    ui.fill.style.width = prog + '%';
+    ui.percent.textContent = Math.floor(prog) + '%';
+    ui.status.textContent = stages[Math.min(stages.length - 1, Math.floor(prog / 18))];
+
+    if (prog >= 100) {
+      clearInterval(window.__omegaInjectTimer);
+      window.__omegaInjectTimer = null;
+      window.__omegaInjectFinishTimer = setTimeout(() => {
+        window.__omegaInjectFinishTimer = null;
+        finish();
+      }, 300);
+    }
+  }, 100);
+
+  return true;
+}
+
+// Explicit global export: keeps the dynamically rendered inline product button reliable.
+window.triggerInject = triggerInject;
 
 function generateFeatures(features) {
   const headers = ["D3D", "ESP", "SKELETON", "PLAYER", "WEAPON", "SETTINGS", "AIMBOT", "D3D / VISUALS", "STATS BOOSTER", "GAMEHACK", "OPK", "PLAYER MODS", "WEAPON MODS", "STAT BOOSTERS", "INCOMING FEATURES", "KILLHACK", "🚀 INCOMING FEATURES"];
@@ -2377,7 +2886,9 @@ function generateFeatures(features) {
 }
 
 function showRushPricing() {
-    document.getElementById('pricingModal').classList.add('active');
+    const ui = ensureProductModals();
+    ui.pricing.classList.add('active');
+    ui.pricing.setAttribute('aria-hidden','false');
     const nvipFeatures = ["Chams (Front and Back Adjustable Colors)","Crosshair (Adjustable Colors and type)","Naked Hack (Visible Enemy Behind Walls)","ESP","Adjustable Skeleton Type (Low and High)","Skeleton","PLAYER","Kjump","SpeedHack","Multi Exp Points","WEAPON","Norecoil (No Recoil / Adjustable)","Fast Switch","SETTINGS","Stream Proof (OBS Software)"];
     const pvipFeatures = ["D3D","Chams (Front and Back Adjustable Colors)","Crosshair (Adjustable Colors and type)","Naked Hack (Visible Enemy Behind Walls)","ESP","Adjustable Skeleton Type (Low and High)","Manual Update Database (Less Lag/CPU, Less Detection)","FPS counter","Name (Adjustable Colors)","Health Bar","Distance","Lines","Skeleton","AIMBOT","Selection (Enemy Only / ALL)","AIM type (Head, Neck, Body)","AIM Key (Mouse, X button, CTRL, Shift)","AIM FOV (0-200 size)","AIM Smoothness (1 slow - 5 fastest)","PLAYER","No Flash","No Smoke","No GrenadeShake","Kjump","SpeedHack","SuperJump","Multipoint Boost","WEAPON","Primary Damage (Normal + Add Damage)","Secondary Damage","Melee Damage","Norecoil (No Recoil / Adjustable)","Weapon Type (Grenade, Flash, Smoke, Robot)","Fast Switch","Rapid Fire","Unli Ammo","Long Knife","No Scope","Scope Zoom","Scope Crosshair Type","SETTINGS","Stream Proof (OBS Software)","Disable Screen Capture (Anti Screenshot/Record)"];
     const svipFeatures = ["D3D / VISUALS","Chams (Front and Back Adjustable Colors)","Crosshair (Adjustable Colors and type)","Naked Hack (Visible Enemy Behind Walls)","ESP","Adjustable Skeleton Type (Low and High)","Manual Update Database (Less Lag/CPU, Less Detection)","FPS counter","Name (Adjustable Colors)","Health Bar","Distance","Lines","Skeleton","Weapon Name (Adjustable Colors)","Grenade Name (Adjustable Colors)","Grenade Skeleton","AIMBOT","Selection (Enemy Only / ALL)","AIM type (Head, Neck, Body)","AIM Key (Mouse, X button, CTRL, Shift)","AIM FOV (0-200 size)","AIM Smoothness (1 slow - 5 fastest)","PLAYER","No Flash","No Smoke","No GrenadeShake","God Mode","Kjump","SpeedHack","SuperJump","Titan Mode","Teleport","Multi Exp Points","WEAPON","Primary Damage (Normal + Add Damage)","Secondary Damage","Melee Damage","Norecoil (No Recoil / Adjustable)","Weapon Type (Grenade, Flash, Smoke, Robot)","Fast Switch","Rapid Fire","Unli Ammo","Long Knife","No Scope","Scope Zoom","Scope Crosshair Type","STATS BOOSTER","Win / Lose","Kill / Death","Mission","Head Shot / Assist","Accuracy","Survival Points / Rate","Score Points (conversion into EXP)","GAMEHACK","Battle Mode / Auto Win","Fast Respawn / Safe Exit","Fake Lobby Chat / Fake Ingame Name (w/ Anti Kick)","Fake Killer / Fake Ingame Chat Name","Force Host / Ping Spoofer / Anti Kick","Killrate / Emblem Unlock (Visual)","OPK","Manual Update List Name (Avoid Detection)","Mode (Follow / Stay)","Type (ALL / Enemy / Single Target)","KILLHACK","Select Killer / Select Victim","Auto Head","Kill Type Weapon","SETTINGS","Stream Proof (OBS Software)","Disable Screen Capture (Anti Screenshot/Record)"];
@@ -2421,7 +2932,9 @@ function showRushPricing() {
 }
 
 function showLegendPricing() {
-    document.getElementById('pricingModal').classList.add('active');
+    const ui = ensureProductModals();
+    ui.pricing.classList.add('active');
+    ui.pricing.setAttribute('aria-hidden','false');
     const legendFeatures = ["D3D / VISUALS","D3D Chams","Crosshair (Xhair)","PLAYER MODS","No Flash","SpeedHack","SuperJump","Imba Jump","WEAPON MODS","Unli Ammo","No Recoil","Rapid Fire","Primary Damage","Secondary Damage","Melee Setter","STAT BOOSTERS","EXP Boost","SP Boost","Kill","Lose","🚀 INCOMING FEATURES","Imgui Upgrade","ESP","Aimbot","Titan Mode"];
     document.getElementById('pricingModalContent').innerHTML = `
         <h2 style="font-family:'Orbitron';font-weight:900;font-size:2rem;color:var(--gold);margin-bottom:2rem;text-shadow:0 0 15px var(--gold);text-align:center;">SF LEGEND VIP</h2>
@@ -2439,14 +2952,20 @@ function showLegendPricing() {
 }
 
 function closePricingModal() {
-    document.getElementById('pricingModal').classList.remove('active');
-    document.getElementById('pricingModalContent').innerHTML = '';
+    const ui = ensureProductModals();
+    ui.pricing.classList.remove('active');
+    ui.pricing.setAttribute('aria-hidden','true');
+    ui.pricingContent.innerHTML = '';
 }
 
 // ====== ORDER FORM MODAL (STATIC GCASH AT TOP) ======
 function showOrderForm(product) {
     closePricingModal();
-    document.getElementById('orderModal').classList.add('active');
+    const ui = ensureProductModals();
+    ui.orderModal = document.getElementById('orderModal');
+    ui.orderContent = document.getElementById('orderModalContent');
+    ui.orderModal.classList.add('active');
+    ui.orderModal.setAttribute('aria-hidden','false');
     document.getElementById('orderModalContent').innerHTML = `
         <div class="card card-cyber order-form-card" style="padding:2rem;">
             <h2 style="font-family:'Orbitron';font-weight:900;text-align:center;color:var(--cyan);margin-bottom:1rem;text-shadow:0 0 10px var(--cyan)">PURCHASE ORDER FORM</h2>
@@ -2510,7 +3029,7 @@ function showOrderForm(product) {
 }
 
 function closeOrderForm() {
-    document.getElementById('orderModal').classList.remove('active');
+    document.getElementById('orderModal')?.classList.remove('active');
     document.getElementById('orderModalContent').innerHTML = '';
 }
 
@@ -2534,11 +3053,40 @@ function submitOrder(e) {
 }
 
 function showSuccessOverlay() {
-    document.getElementById('successOverlay').classList.add('active');
-    setTimeout(() => { closeSuccessOverlay(); }, 3000);
+    const overlay = document.getElementById('successOverlay');
+    const content = document.getElementById('successContent');
+    if (!overlay || !content) return;
+
+    content.innerHTML = `
+      <div class="omega-success-panel" role="dialog" aria-modal="true" aria-labelledby="omegaSuccessTitle">
+        <div class="omega-success-check">✓</div>
+        <h2 id="omegaSuccessTitle" class="omega-success-title">PURCHASE SUCCESSFULLY SENT</h2>
+        <p class="omega-success-message">
+          Thank you for your purchase order. Your order has been successfully submitted.
+        </p>
+        <p class="omega-success-note">
+          Please wait for the admin to review and confirm your order. Keep your submitted details available for reference.
+        </p>
+        <button type="button" class="omega-success-ok" onclick="closePurchaseSuccess()">OK</button>
+      </div>`;
+
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden','false');
+
+    // IMPORTANT: no auto-close timer. The buyer must press OK.
+    clearTimeout(window.__successOverlayTimer);
+    window.__successOverlayTimer = null;
 }
+
 function closeSuccessOverlay() {
-    document.getElementById('successOverlay').classList.remove('active');
+    const overlay = document.getElementById('successOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden','true');
+}
+
+function closePurchaseSuccess() {
+    closeSuccessOverlay();
 }
 
 // ====== DOWNLOADS PAGE (WITH ACCESS RESTRICTION) ======
@@ -2693,8 +3241,87 @@ function renderContact(){
 }
 
 // ====== LOGIN & REGISTER ======
-function renderLogin(){return `<section style="padding:3rem 0;max-width:480px;margin:0 auto"><div style="text-align:center;margin-bottom:2rem"><div style="font-family:'Share Tech Mono';color:var(--cyan);letter-spacing:.4em;font-size:.8rem;margin-bottom:1rem">[ SECURE ACCESS ]</div><h1 style="font-family:'Orbitron';font-weight:900;font-size:2.5rem;color:var(--cyan);letter-spacing:.1em">ACCESS TERMINAL</h1></div><div style="display:flex;gap:1rem;margin-bottom:2rem"><button id="tabLogin" class="btn-primary" style="flex:1" onclick="switchAuthTab('login')">LOGIN</button><button id="tabRegister" class="btn-secondary" style="flex:1" onclick="switchAuthTab('register')">CREATE</button></div><form id="loginForm" onsubmit="handleLogin(event)" class="card card-cyber" style="padding:2rem;display:flex;flex-direction:column;gap:1rem"><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">EMAIL ADDRESS</label><input id="loginUser" type="email" placeholder="enter email" required style="margin-top:.5rem"></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">PASSWORD</label><input id="loginPass" type="password" placeholder="enter password" required style="margin-top:.5rem"></div><div style="text-align:right"><a onclick="showForgot()" style="color:var(--magenta);font-family:'Share Tech Mono';font-size:.8rem;cursor:pointer">Forgot password?</a></div><button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> LOGIN</button></form><form id="registerForm" onsubmit="handleRegister(event)" class="card card-cyber" style="padding:2rem;display:none;flex-direction:column;gap:1rem"><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">USERNAME</label><input id="regUser" placeholder="choose username" required style="margin-top:.5rem"></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">EMAIL</label><input id="regEmail" type="email" placeholder="enter email" required style="margin-top:.5rem"></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">PASSWORD</label><input id="regPass" type="password" placeholder="create password (min 6 chars)" required style="margin-top:.5rem"></div><button type="submit" class="btn-primary"><i class="fas fa-user-plus"></i> CREATE ACCOUNT</button></form><form id="forgotForm" onsubmit="handleForgot(event)" class="card card-cyber" style="padding:2rem;display:none;flex-direction:column;gap:1rem"><div style="text-align:center"><i class="fas fa-key" style="font-size:2rem;color:var(--magenta);margin-bottom:1rem"></i><h3 style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em">PASSWORD RECOVERY</h3></div><div><label style="font-family:'Share Tech Mono';font-size:.75rem;color:var(--cyan);letter-spacing:.1em">EMAIL</label><input id="forgotEmail" type="email" placeholder="enter registered email" required style="margin-top:.5rem"></div><button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> SEND RECOVERY LINK</button><button type="button" class="btn-secondary" onclick="switchAuthTab('login')">BACK TO LOGIN</button></form><div style="text-align:center;font-family:'Orbitron';font-size:.75rem;color:var(--muted);margin-top:1rem">Powered by: <span style="color:var(--cyan);font-weight:700">OMEGAVIP</span></div></section>`;}
-function switchAuthTab(tab){document.getElementById('loginForm').style.display=tab==='login'?'flex':'none';document.getElementById('registerForm').style.display=tab==='register'?'flex':'none';document.getElementById('forgotForm').style.display=tab==='forgot'?'flex':'none';const l=document.getElementById('tabLogin'),r=document.getElementById('tabRegister');if(tab==='login'){l.style.opacity='1';r.style.opacity='.5'}else if(tab==='register'){l.style.opacity='.5';r.style.opacity='1'}else{l.style.opacity='.5';r.style.opacity='.5'}}
+function renderLogin(){
+  return `<section class="omega-auth-screen">
+    <div class="omega-auth-shell">
+      <div class="omega-auth-ring r1"></div>
+      <div class="omega-auth-ring r2"></div>
+      <div class="omega-auth-ring r3"></div>
+      <div class="omega-auth-card">
+        <span class="omega-auth-corner tl"></span><span class="omega-auth-corner tr"></span>
+        <span class="omega-auth-corner bl"></span><span class="omega-auth-corner br"></span>
+        <div class="omega-auth-welcome">Welcome to</div>
+        <div class="omega-auth-omega">OMEGA</div>
+        <div class="omega-auth-vip">VIP CHEATS</div>
+        <div class="omega-auth-divider"></div>
+        <div class="omega-auth-status">Secure Access Terminal... <span>ONLINE</span></div>
+
+        <div class="omega-auth-tabs">
+          <button type="button" id="tabLogin" class="omega-auth-tab active" onclick="switchAuthTab('login')">LOGIN</button>
+          <button type="button" id="tabRegister" class="omega-auth-tab" onclick="switchAuthTab('register')">CREATE ACCOUNT</button>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)" class="omega-auth-form">
+          <div class="omega-auth-field">
+            <label>Email Address</label>
+            <input id="loginUser" type="email" placeholder="enter email" autocomplete="email" required>
+          </div>
+          <div class="omega-auth-field">
+            <label>Password</label>
+            <input id="loginPass" type="password" placeholder="enter password" autocomplete="current-password" required>
+          </div>
+          <div class="omega-auth-forgot" onclick="showForgot()">Forgot password?</div>
+          <button type="submit" class="omega-auth-submit"><i class="fas fa-sign-in-alt"></i> ENTER PORTAL</button>
+        </form>
+
+        <form id="registerForm" onsubmit="handleRegister(event)" class="omega-auth-form" style="display:none">
+          <div class="omega-auth-field">
+            <label>Username</label>
+            <input id="regUser" type="text" placeholder="choose username" autocomplete="username" required>
+          </div>
+          <div class="omega-auth-field">
+            <label>Email Address</label>
+            <input id="regEmail" type="email" placeholder="enter email" autocomplete="email" required>
+          </div>
+          <div class="omega-auth-field">
+            <label>Password</label>
+            <input id="regPass" type="password" placeholder="create password (min 6 chars)" autocomplete="new-password" required>
+          </div>
+          <button type="submit" class="omega-auth-submit"><i class="fas fa-user-plus"></i> CREATE ACCOUNT</button>
+        </form>
+
+        <form id="forgotForm" onsubmit="handleForgot(event)" class="omega-auth-form" style="display:none">
+          <div style="text-align:center;padding:3px 0 5px">
+            <i class="fas fa-key" style="font-size:2rem;color:var(--magenta);text-shadow:0 0 12px var(--magenta)"></i>
+            <div style="font-family:'Orbitron';font-weight:700;letter-spacing:.1em;color:#fff;margin-top:7px">PASSWORD RECOVERY</div>
+          </div>
+          <div class="omega-auth-field">
+            <label>Email Address</label>
+            <input id="forgotEmail" type="email" placeholder="enter registered email" autocomplete="email" required>
+          </div>
+          <button type="submit" class="omega-auth-submit"><i class="fas fa-paper-plane"></i> SEND RECOVERY LINK</button>
+          <button type="button" class="omega-auth-submit" onclick="switchAuthTab('login')" style="background:transparent;color:var(--cyan)"><i class="fas fa-arrow-left"></i> BACK TO LOGIN</button>
+        </form>
+
+        <div class="omega-auth-footer">
+          <span class="omega-auth-online">System Online</span>
+          <span class="omega-auth-powered">Powered by: <strong>OMEGAVIP</strong></span>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+function switchAuthTab(tab){
+  const login=document.getElementById('loginForm');
+  const register=document.getElementById('registerForm');
+  const forgot=document.getElementById('forgotForm');
+  if(login) login.style.display=tab==='login'?'flex':'none';
+  if(register) register.style.display=tab==='register'?'flex':'none';
+  if(forgot) forgot.style.display=tab==='forgot'?'flex':'none';
+  const l=document.getElementById('tabLogin'), r=document.getElementById('tabRegister');
+  if(l) l.classList.toggle('active',tab==='login');
+  if(r) r.classList.toggle('active',tab==='register');
+}
 function showForgot(){switchAuthTab('forgot')}
 
 // ====== USER DASHBOARD (WITH INBOX, SEND MSG, HWID BOX) ======
@@ -3710,50 +4337,29 @@ renderNav();renderPage();updateChatInputState();
 
 <script id="omega-replacement-portal-js">
 (function(){
- const stage=document.getElementById('portal-stage'); if(!stage)return;
- const $=id=>document.getElementById(id), vault=$('omegaVault'), wheel=$('omegaWheel'), btn=$('omegaUnlockBtn'), consoleEl=$('omegaConsole'), terminal=$('omegaTerminal'), lines=$('omegaLines'), seq=$('omegaSeq'), flash=$('omegaFlash'), welcome=$('omegaWelcome'), enter=$('omegaEnterBtn');
- const main=$('main'); let busy=false, entered=false, audioCtx=null;
- const ac=()=>{try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}catch(e){return null}};
- function tone(f,d=.08,type='sine',gain=.08,end){const c=ac();if(!c)return;try{const t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(end)o.frequency.exponentialRampToValueAtTime(Math.max(1,end),t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(gain,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
- function noise(d=.4,gain=.15){const c=ac();if(!c)return;try{const b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;const s=c.createBufferSource(),g=c.createGain(),f=c.createBiquadFilter();s.buffer=b;f.type='lowpass';f.frequency.value=1800;g.gain.setValueAtTime(gain,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+d);s.connect(f).connect(g).connect(c.destination);s.start();s.stop(c.currentTime+d)}catch(e){}}
- function impact(){tone(95,1.5,'sine',.45,25);tone(55,1.2,'sawtooth',.22,28);noise(1.2,.25)}
- function addLine(html){const d=document.createElement('div');d.className='line';d.innerHTML=html;lines.appendChild(d);requestAnimationFrame(()=>d.classList.add('show'));}
- function setSeq(n){seq.textContent=n+'%'} function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
- // bolts + LEDs
- for(let i=0;i<24;i++){const b=document.createElement('div');b.className='bolt';b.style.setProperty('--a',(i/24*360)+'deg');$('omegaBolts').appendChild(b)}
- const leds=[];for(let i=0;i<8;i++){const l=document.createElement('div');l.className='lock-led';l.style.setProperty('--a',(i/8*360)+'deg');$('omegaLockRing').appendChild(l);leds.push(l)}
- // particle field
- const c=$('particles'),pctx=c.getContext('2d');let W,H,ps=[];function resize(){W=c.width=innerWidth;H=c.height=innerHeight}resize();addEventListener('resize',resize);for(let i=0;i<90;i++)ps.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.6+.3,a:Math.random()*.5+.1});let last=performance.now();function draw(t){const dt=t-last;last=t;pctx.clearRect(0,0,W,H);for(const q of ps){q.x+=q.vx;q.y+=q.vy;if(q.x<0)q.x=W;if(q.x>W)q.x=0;if(q.y<0)q.y=H;if(q.y>H)q.y=0;pctx.beginPath();pctx.fillStyle=`rgba(0,234,255,${q.a})`;pctx.arc(q.x,q.y,q.r,0,Math.PI*2);pctx.fill()}$('omegaPortalFps').textContent=Math.round(1000/Math.max(1,dt));requestAnimationFrame(draw)}requestAnimationFrame(draw);
- setInterval(()=>{$('omegaPortalClock').textContent=new Date().toTimeString().slice(0,8)},1000);setInterval(()=>{$('omegaPortalPing').textContent=8+Math.floor(Math.random()*15)},1500);
- let users=1247;setInterval(()=>{$('omegaPortalUsers').textContent=(users+=Math.floor(Math.random()*5)-2).toLocaleString()},2200);
- async function start(){if(busy||entered)return;busy=true;btn.disabled=true;ac();consoleEl.classList.add('omega-hidden');terminal.classList.add('show');lines.innerHTML='';
-  const steps=['> INITIATING AUTHENTICATION PROTOCOL...','> SCANNING BIOMETRIC SIGNATURE...','<span class="ok">✓</span> BIOMETRIC MATCH: <span class="ok">CONFIRMED</span>','> ESTABLISHING SECURE TUNNEL...','<span class="ok">✓</span> AES-512 HANDSHAKE: <span class="ok">COMPLETE</span>','> BYPASSING FIREWALL LAYERS...','<span class="warn">!</span> LAYER 1 / 2 / 3 — <span class="ok">BYPASSED</span>','> VERIFYING OMEGA CREDENTIALS...','<span class="ok">✓</span> CLEARANCE LEVEL: <span class="ok">OMEGA</span>'];
-  tone(110,.8,'sawtooth',.18,880);for(let i=0;i<steps.length;i++){addLine(steps[i]);setSeq(Math.round((i+1)/steps.length*80));leds[i%8].classList.add('on');tone(1500,.04,'square',.06);await sleep(320+Math.random()*180)}
-  addLine('> ENGAGING VAULT MECHANISM...');setSeq(90);await sleep(400);addLine('<span class="warn">!</span> ROTATING CYLINDER...');setSeq(95);vault.classList.add('spinning');wheel.style.transform='rotate(1080deg)';noise(3.5,.16);for(let i=0;i<5;i++){tone(180, .35,'sine',.18,30,i*.55)}await sleep(3500);vault.classList.remove('spinning');leds.forEach(l=>l.classList.add('on'));addLine('<span class="ok">✓</span> ALL SYSTEMS GREEN — UNLOCKING...');setSeq(100);await sleep(500);addLine('> RELEASING AIRLOCK PRESSURE...');noise(1.3,.3);await sleep(900);vault.classList.add('opening');vault.classList.remove('locked');tone(200,1.2,'sine',.15,1200);await sleep(1000);impact();flash.classList.add('fire');stage.classList.add('omega-screen-shake');await sleep(180);flash.classList.remove('fire');stage.classList.remove('omega-screen-shake');vault.classList.add('open');
-  const explosion=$('omegaExplosion');
-  if(explosion){
-    explosion.querySelectorAll('.spark').forEach(s=>s.remove());
-    for(let i=0;i<28;i++){
-      const s=document.createElement('div');s.className='spark';
-      s.style.setProperty('--a',(i/28*360)+'deg');
-      s.style.setProperty('--len',(80+Math.random()*150)+'px');
-      s.style.setProperty('--delay',(Math.random()*.10)+'s');
-      explosion.appendChild(s);
-    }
-    explosion.classList.remove('active');
-    stage.classList.remove('omega-explosion-flash');
-    void explosion.offsetWidth;
-    explosion.classList.add('active');
-    stage.classList.add('omega-explosion-flash');
-    impact();tone(55,1.0,'sawtooth',.35,45);
-  }
-  await sleep(780);
-  if(explosion) explosion.classList.remove('active');
-  stage.classList.remove('omega-explosion-flash');
-  welcome.classList.add('show');
+ const stage=document.getElementById('portal-stage');if(!stage)return;
+ const $=id=>document.getElementById(id),btn=$('omegaUnlockBtn'),btnText=$('portalBtnText'),progress=$('portalProgress');
+ const log=$('boot-log-new'),wrap=$('omegaPortalWrap'),terminal=$('omegaTerminal'),lines=$('omegaLines'),seq=$('omegaSeq'),welcome=$('omegaWelcome'),enter=$('omegaEnterBtn'),flash=$('omegaFlash'),explosion=$('omegaExplosion'),main=$('main'),left=$('bladeLeft'),right=$('bladeRight');
+ let busy=false,entered=false,audioCtx=null;
+ function audio(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}catch(e){return null}}
+ function tone(f,d=.1,type='sine',gain=.06,end){const c=audio();if(!c)return;try{const t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(end)o.frequency.exponentialRampToValueAtTime(Math.max(1,end),t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(gain,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
+ function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+ function addLine(h){const d=document.createElement('div');d.className='line';d.innerHTML=h;lines.appendChild(d);requestAnimationFrame(()=>d.classList.add('show'))}
+ function setProgress(n){seq.textContent=n+'%';const b=document.querySelector('.scan-progress-new b');if(b)b.style.setProperty('--scan-width',n+'%')}
+ const pc=$('particles');if(pc)for(let i=0;i<24;i++){const p=document.createElement('span');p.className='new-particle';const z=1+Math.random()*3;p.style.width=z+'px';p.style.height=z+'px';p.style.left=Math.random()*100+'%';p.style.animationDuration=(6+Math.random()*8)+'s';p.style.animationDelay=(-Math.random()*10)+'s';pc.appendChild(p)}
+ const bootTexts=['INITIALIZING AI MATRIX... <span>OK</span>','ESTABLISHING SECURE LINK... <span>OK</span>','BYPASSING ANTI-CHEAT... <span>OK</span>','SYSTEM READY. <span>AWAITING ENTRY</span>'];let bi=0;
+ setInterval(()=>{if(busy)return;log.style.opacity=0;setTimeout(()=>{bi=(bi+1)%bootTexts.length;log.innerHTML=bootTexts[bi];log.style.opacity=1},250)},2600);
+ addEventListener('mousemove',e=>{if(busy||stage.classList.contains('omega-portal-hidden'))return;const dx=(e.clientX-innerWidth/2)/(innerWidth/2),dy=(e.clientY-innerHeight/2)/(innerHeight/2);wrap.style.transform=`perspective(1200px) rotateY(${dx*3}deg) rotateX(${-dy*3}deg)`});
+ async function start(){
+  if(busy||entered)return;busy=true;btn.disabled=true;btn.classList.add('scanning');audio();tone(700,.08,'square',.07);btnText.textContent='SCANNING...';progress.style.width='0%';requestAnimationFrame(()=>progress.style.width='100%');terminal.classList.add('active');stage.classList.add('secure-power');document.body.classList.add('secure-access-power');lines.innerHTML='';
+  const steps=['> INITIALIZING SECURE ACCESS...','> VERIFYING OMEGA GATEWAY...','<span class="ok">✓</span> GATEWAY STATUS: <span class="ok">ONLINE</span>','> ESTABLISHING ENCRYPTED TUNNEL...','<span class="ok">✓</span> SECURE LINK: <span class="ok">CONNECTED</span>','> CHECKING PORTAL INTEGRITY...','<span class="ok">✓</span> INTEGRITY CHECK: <span class="ok">PASSED</span>','> AUTHORIZATION READY...'];
+  for(let i=0;i<steps.length;i++){addLine(steps[i]);setProgress(Math.round((i+1)/steps.length*85));tone(1100,.035,'square',.035);await sleep(220+Math.random()*130)}
+  setProgress(100);left.classList.add('firing');right.classList.add('firing');tone(1800,.18,'sawtooth',.08,80);await sleep(420);terminal.classList.remove('active');stage.classList.remove('secure-power');document.body.classList.remove('secure-access-power');left.classList.remove('firing');right.classList.remove('firing');btn.classList.remove('scanning');btnText.textContent='ACCESS GRANTED ✓';tone(523,.1);setTimeout(()=>tone(659,.1),100);setTimeout(()=>tone(784,.16),200);
+  flash.classList.add('fire');if(explosion){explosion.innerHTML='';for(let i=0;i<24;i++){const s=document.createElement('span');s.className='spark';s.style.setProperty('--a',(i/24*360)+'deg');s.style.setProperty('--len',(70+Math.random()*130)+'px');s.style.setProperty('--delay',(Math.random()*.08)+'s');explosion.appendChild(s)}explosion.classList.add('active');setTimeout(()=>explosion.classList.remove('active'),800)}await sleep(650);welcome.classList.add('show');btn.style.opacity='.25';
  }
- function enterFacility(){if(entered)return;entered=true;welcome.classList.remove('show');setTimeout(()=>{stage.classList.add('omega-portal-hidden');if(main){document.body.classList.add('auth-locked');main.classList.add('auth-terminal-visible');if(typeof window.renderLogin==='function'){try{main.innerHTML=window.renderLogin()}catch(e){}}if(typeof window.renderNav==='function'){try{window.renderNav()}catch(e){}}if(typeof window.switchAuthTab==='function'){try{window.switchAuthTab('login')}catch(e){}}}setTimeout(()=>{stage.style.display='none'},1000)},700)}
- btn.addEventListener('click',start);enter.addEventListener('click',enterFacility);addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='Enter')&&!busy&&!welcome.classList.contains('show')){e.preventDefault();start()}});btn.addEventListener('mouseenter',()=>{if(!busy)tone(1500,.03,'sine',.03)});addEventListener('mousemove',e=>{if(stage.classList.contains('omega-portal-hidden'))return;const dx=(e.clientX-innerWidth/2)/(innerWidth/2),dy=(e.clientY-innerHeight/2)/(innerHeight/2);$('omegaPortalWrap').style.transform=`perspective(1200px) rotateY(${dx*4}deg) rotateX(${-dy*4}deg)`});
+ function enterFacility(){if(entered)return;entered=true;welcome.classList.remove('show');tone(420,.12,'sine',.07,900);stage.classList.add('omega-portal-hidden');if(main){document.body.classList.add('auth-locked');main.classList.add('auth-terminal-visible');if(typeof window.renderLogin==='function'){try{main.innerHTML=window.renderLogin()}catch(e){console.error(e)}}if(typeof window.renderNav==='function'){try{window.renderNav()}catch(e){}}if(typeof window.switchAuthTab==='function'){try{window.switchAuthTab('login')}catch(e){}}}setTimeout(()=>stage.style.display='none',800)}
+ btn.addEventListener('click',start);enter.addEventListener('click',enterFacility);
+ addEventListener('keydown',e=>{if((e.code==='Enter'||e.code==='Space')&&welcome.classList.contains('show')){e.preventDefault();enterFacility()}else if((e.code==='Enter'||e.code==='Space')&&!busy){e.preventDefault();start()}});
 })();
 </script>
 
@@ -3786,6 +4392,100 @@ renderNav();renderPage();updateChatInputState();
     requestAnimationFrame(draw);
   }
   draw();
+})();
+</script>
+
+
+<style id="omega-purchase-success-final">
+#successOverlay{
+  z-index:40000 !important;
+  pointer-events:none !important;
+}
+#successOverlay.active{
+  pointer-events:auto !important;
+}
+#successOverlay .omega-success-ok{position:relative;z-index:5;pointer-events:auto!important;touch-action:manipulation;}
+#successOverlay .success-card,
+#successOverlay .success-box,
+#successOverlay .success-content{
+  max-width:560px !important;
+}
+.omega-success-panel{
+  position:relative;
+  width:min(92vw,560px);
+  padding:34px 30px 30px;
+  border:1px solid rgba(0,234,255,.55);
+  border-radius:22px;
+  background:linear-gradient(145deg,rgba(5,18,31,.98),rgba(3,10,22,.98));
+  box-shadow:0 0 25px rgba(0,220,255,.28), inset 0 0 35px rgba(0,120,255,.08);
+  text-align:center;
+  overflow:hidden;
+}
+.omega-success-panel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(115deg,transparent 25%,rgba(0,234,255,.08) 50%,transparent 75%);
+  animation:omegaSuccessSweep 3s linear infinite;
+  pointer-events:none;
+}
+@keyframes omegaSuccessSweep{
+  from{transform:translateX(-100%)}
+  to{transform:translateX(100%)}
+}
+.omega-success-check{
+  width:76px;height:76px;margin:0 auto 18px;
+  border-radius:50%;
+  display:grid;place-items:center;
+  border:2px solid #45ffb0;
+  color:#45ffb0;
+  font-size:42px;font-weight:900;
+  box-shadow:0 0 12px rgba(69,255,176,.7),0 0 35px rgba(69,255,176,.28);
+}
+.omega-success-title{
+  margin:0 0 10px;
+  color:#45ffb0;
+  font-family:Orbitron,Arial,sans-serif;
+  font-size:clamp(1.2rem,4vw,1.65rem);
+  letter-spacing:.08em;
+  font-weight:900;
+}
+.omega-success-message{
+  margin:0 auto 8px;
+  color:#f2fcff;
+  font-size:1rem;
+  line-height:1.6;
+}
+.omega-success-note{
+  margin:0 auto 24px;
+  color:#9ccbd5;
+  font-size:.9rem;
+  line-height:1.5;
+}
+.omega-success-ok{
+  min-width:145px;
+  height:46px;
+  border:1px solid #00eaff;
+  border-radius:12px;
+  background:linear-gradient(135deg,#06283a,#0a4a68);
+  color:#fff;
+  font-family:Orbitron,Arial,sans-serif;
+  font-weight:800;
+  letter-spacing:.12em;
+  cursor:pointer;
+  box-shadow:0 0 12px rgba(0,234,255,.35);
+  transition:.2s ease;
+}
+.omega-success-ok:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 0 20px rgba(0,234,255,.65);
+}
+</style>
+<script>
+(function(){
+  // Final purchase-success wiring: use the real submit handler above.
+  window.showPurchaseSuccess = window.showSuccessOverlay;
+  window.closePurchaseSuccess = window.closePurchaseSuccess || window.closeSuccessOverlay;
 })();
 </script>
 
